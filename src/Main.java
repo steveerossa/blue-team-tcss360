@@ -6,15 +6,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
+import javax.swing.SwingConstants;
 
 
 public class Main {
 
 	private JFrame mainFrame;
 	private JTextField userNameTF;
-	private JTextField pinTF;
+	private JPasswordField pinTF;
 
 	/**
 	 * Launch the application.
@@ -80,32 +82,37 @@ public class Main {
 		mainFrame.getContentPane().add(userNameTF);
 		userNameTF.setColumns(10);
 		
-		pinTF = new JTextField();
+		pinTF = new JPasswordField();
 		pinTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(pinTF.getText().isEmpty()) {
+				if(pinTF.getPassword() == null) {
 					pinTF.setText("PIN");
+					
 				}
 			}
 		});
 		pinTF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(pinTF.getText().equalsIgnoreCase("PIN")) {
+				if(pinTF.getPassword().toString().equalsIgnoreCase("PIN")) {
 					pinTF.setText("");
 				}
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				if(pinTF.getText().isEmpty()) {
+				if(pinTF.getPassword() == null) {
 					pinTF.setText("PIN");
 				}
 			}
 		});
-		pinTF.setText("PIN");
 		pinTF.setBounds(186, 144, 86, 20);
 		mainFrame.getContentPane().add(pinTF);
 		pinTF.setColumns(10);
+		
+		JLabel lblPin = new JLabel("Pin:");
+		lblPin.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPin.setBounds(130, 147, 46, 14);
+		mainFrame.getContentPane().add(lblPin);
 	}
 }
