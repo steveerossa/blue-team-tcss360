@@ -46,6 +46,7 @@ public class Main {
 	 */
 	private void initialize() {
 		mainFrame = new JFrame();
+		mainFrame.setTitle("Global Business Logistics");
 		mainFrame.setBounds(100, 100, 450, 300);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
