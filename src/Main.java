@@ -6,19 +6,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.DropMode;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-//comment
 
 
 public class Main {
 
 	private JFrame mainFrame;
 	private JTextField userNameTF;
-	private JPasswordField pinTF;
+	private JTextField pinTF;
 
 	/**
 	 * Launch the application.
@@ -85,11 +83,11 @@ public class Main {
 		mainFrame.getContentPane().add(userNameTF);
 		userNameTF.setColumns(10);
 		
-		pinTF = new JPasswordField();
+		pinTF = new JTextField();
 		pinTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(pinTF.getPassword() == null) {
+				if(pinTF.getText().isEmpty()) {
 					pinTF.setText("PIN");
 					
 				}
@@ -99,13 +97,13 @@ public class Main {
 		pinTF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if(pinTF.getPassword().toString().equalsIgnoreCase("PIN")) {
+				if(pinTF.getText().toString().equalsIgnoreCase("PIN")) {
 					pinTF.setText("");
 				}
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				if(pinTF.getPassword() == null) {
+				if(pinTF.getText().isEmpty()) {
 					pinTF.setText("PIN");
 				}
 			}
