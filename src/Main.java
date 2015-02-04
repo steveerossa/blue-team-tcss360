@@ -117,4 +117,5 @@ public class Main {
 		lblPin.setBounds(130, 147, 46, 14);
 		mainFrame.getContentPane().add(lblPin);
 	}
-}
+} // end main
+
