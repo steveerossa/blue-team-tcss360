@@ -56,7 +56,7 @@ public class LoginView {
 	public void initializeLogin(JFrame mainFrame) {
 		
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
-				Main.class.getResource("/images/title_bar_icon.png")));
+				Main.class.getResource("/files/title_bar_icon.png")));
 		addListeners();
 		
 		lblLogin.setBounds(316, 140, 46, 14);
