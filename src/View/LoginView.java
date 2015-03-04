@@ -6,6 +6,8 @@ package View;
 
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -22,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Controller.Main;
+import Model.User;
 
 /**
  * Login view class to initialize the login page.
@@ -126,6 +129,13 @@ public class LoginView {
 				if(pinTF.getText().isEmpty()) {
 					pinTF.setText("PIN");
 				}
+			}
+		});
+		btnLogin.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				User temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
+				
 			}
 		});
 	}
