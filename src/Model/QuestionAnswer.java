@@ -1,5 +1,12 @@
 package Model;
 
+/**
+ * This class is the element that is to be stored in the database for the program. Each individual element is produced
+ * from an excel spread sheet specified by the layout provided from the instructor. The data base is responsible for reading
+ * in the excel spread sheet element and populating the database.
+ * @author Jeremiah Stowe
+ *
+ */
 public class QuestionAnswer {
 
 	private String my_Category;
