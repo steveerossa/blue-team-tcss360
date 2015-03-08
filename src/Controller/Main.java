@@ -25,7 +25,7 @@ import View.LoginView;
  * when the program is started which starts up the login page and initializes all other
  * necessary  parts of the program.
  * @author Alex Day
- *
+ * 
  */
 public class Main {
 
