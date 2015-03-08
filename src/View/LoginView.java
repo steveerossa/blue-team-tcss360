@@ -146,7 +146,7 @@ public class LoginView {
 
 		public ImagePanel() {
 			try {                
-				image = ImageIO.read(Main.class.getResource("/images/smaller.png"));
+				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
 			} catch (IOException ex) {
 				//just toss it cause we smart
 			}
