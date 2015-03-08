@@ -1,4 +1,6 @@
-//sr stowe
+//Portions of this code borrowed and modified from:
+//http://howtodoinjava.com/2013/06/19/readingwriting-excel-files-in-java-poi-tutorial/
+//For the use of basic Excel file parsing
 
 package Model;
 
@@ -69,7 +71,6 @@ public class Database {
                     }
                 }
                 my_data.add(new QuestionAnswer(rowContents[0],rowContents[1],rowContents[2],rowContents[3],editLevel));
-                System.out.println("");
             }
             workbook.close();
             file.close();
