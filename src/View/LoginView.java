@@ -135,7 +135,15 @@ public class LoginView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				User temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
-				
+				////////////////////////////////////////////////////////////////////////////////////
+				//Pretty sure we don't want this to be right here but since the user is created here locally
+				//either the authentication check has to happen here or we have to pass the user somewhere else
+				//Once it gets past this point we need a way to launch the actual RFP. 
+				temp.UserList();
+				if(temp.userlist.containsKey(temp.getName())&& temp.userlist.get(temp.getName()).equals(temp.getPin())){
+					System.out.println("Authenticated");
+					}
+				////////////////////////////////////////////////////////////////////////////////////
 			}
 		});
 	}
