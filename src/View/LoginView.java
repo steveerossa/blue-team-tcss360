@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -32,6 +33,8 @@ import Model.User;
  *
  */
 public class LoginView {
+	//////////////////////////////////Added this JFrame field to access elsewhere in the class
+	private JFrame my_mainFrame;
 	private JLabel lblLogin;
 	private JLabel lblchckAdmin;
 	private JTextField userNameTF;
@@ -55,6 +58,8 @@ public class LoginView {
 
 	public void initializeLogin(JFrame mainFrame) {
 		
+		//////////////////////////////////This is where I attached the reference to the main frame to the class field
+		my_mainFrame = mainFrame;
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				Main.class.getResource("/files/title_bar_icon.png")));
 		addListeners();
@@ -135,14 +140,29 @@ public class LoginView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				User temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
-				////////////////////////////////////////////////////////////////////////////////////
+				//////////////////////////////////////////////////////////////////////////////////// Jeremiah Added this nonsense
 				//Pretty sure we don't want this to be right here but since the user is created here locally
 				//either the authentication check has to happen here or we have to pass the user somewhere else
 				//Once it gets past this point we need a way to launch the actual RFP. 
-				temp.UserList();
+				temp.UserList();//The way User is written you have to create the list of acceptable users.
+				//The next line checks to make sure the typed data matches the user list
 				if(temp.userlist.containsKey(temp.getName())&& temp.userlist.get(temp.getName()).equals(temp.getPin())){
-					System.out.println("Authenticated");
+					//Rather than this println replace with the action that creates the RFP
+					//System.out.println("Authenticated");
+					//I added the my_mainFrame field so that it could be accessed from inside the class
+					//Again this is a design choice we either need to move it all outside the class and have
+					//all this happen in the Login model class or just do it all here.
+					my_mainFrame.getContentPane().removeAll();
+					my_mainFrame.setBounds(100, 100, 1024, 720);
+					my_mainFrame.getContentPane().add(new RFPView().rootPane);
 					}
+				else{
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(panel,
+						    "Either Username or Pin are incorrect.",
+						    "Login Failed",
+						    JOptionPane.ERROR_MESSAGE);
+				}
 				////////////////////////////////////////////////////////////////////////////////////
 			}
 		});
