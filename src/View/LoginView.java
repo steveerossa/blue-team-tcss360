@@ -33,8 +33,12 @@ import Model.User;
  *
  */
 public class LoginView {
-	//////////////////////////////////Added this JFrame field to access elsewhere in the class
+	
+	/*Added this JFrame field "my_mainFrame" to access elsewhere in the class
+	Will need to pass control of the mainframe somehow to update to the RFP screen
+	If not here somewhere else*/
 	private JFrame my_mainFrame;
+	
 	private JLabel lblLogin;
 	private JLabel lblchckAdmin;
 	private JTextField userNameTF;
@@ -58,7 +62,7 @@ public class LoginView {
 
 	public void initializeLogin(JFrame mainFrame) {
 		
-		//////////////////////////////////This is where I attached the reference to the main frame to the class field
+		//////////////////////////////////This is where I attached the reference for the main frame to this class's field
 		my_mainFrame = mainFrame;
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				Main.class.getResource("/files/title_bar_icon.png")));
@@ -140,11 +144,16 @@ public class LoginView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				User temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
+				
 				//////////////////////////////////////////////////////////////////////////////////// Jeremiah Added this nonsense
-				//Pretty sure we don't want this to be right here but since the user is created here locally
-				//either the authentication check has to happen here or we have to pass the user somewhere else
-				//Once it gets past this point we need a way to launch the actual RFP. 
+				/*Pretty sure we don't want this to be right here but since 
+				*the user class is created here locally with the login details 
+				*then either the authentication check has to happen here or we 
+				*have to pass the user somewhere else like to the login model
+				*Once it gets past this point we need a way to launch the actual RFP.*/ 
+				
 				temp.UserList();//The way User is written you have to create the list of acceptable users.
+				
 				//The next line checks to make sure the typed data matches the user list
 				if(temp.userlist.containsKey(temp.getName())&& temp.userlist.get(temp.getName()).equals(temp.getPin())){
 					//Rather than this println replace with the action that creates the RFP
@@ -163,7 +172,7 @@ public class LoginView {
 						    "Login Failed",
 						    JOptionPane.ERROR_MESSAGE);
 				}
-				////////////////////////////////////////////////////////////////////////////////////
+				///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			}
 		});
 	}
