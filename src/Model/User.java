@@ -38,5 +38,17 @@ public class User {
 		userlist.put("john", "0012");
 		userlist.put("admin", "1234");
 		
-	}	
+	}
+	
+	public String getName()
+	{
+		return userName;
+		
+	}
+	
+	public String getPin()
+	{
+		return userPin;
+		
+	}
 }
