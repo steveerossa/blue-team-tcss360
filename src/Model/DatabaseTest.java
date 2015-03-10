@@ -15,7 +15,9 @@ public class DatabaseTest {
 	public void testDatabase() {
 		
 		Database testing = new Database();
-		fail("Not yet implemented");
+		System.out.println(testing.getKeyPhrases());
+		System.out.println(testing.searchQuestionAnswers("Legal"));
+		
 	}
 
 }
