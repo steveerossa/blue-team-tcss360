@@ -162,12 +162,12 @@ public class LoginView {
 				temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
 				if(temp.loginAttempt() == true) {
 					if(chckAdmin.isSelected()) {
-						//initialize admin
+						AdminView adminView = new AdminView();
+						adminView.initializeAdminView(my_mainFrame);
 					}
 					else {
 						RFPView rfpView = new RFPView();
 						rfpView.initialize(my_mainFrame);
-						my_mainFrame.repaint();
 					}
 				};				
 			}
