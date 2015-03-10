@@ -20,12 +20,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Controller.Main;
 import Model.User;
+//import Model.User;
 
 /**
  * Login view class to initialize the login page.
@@ -46,6 +46,7 @@ public class LoginView {
 	private JPanel panel;
 	private JButton btnLogin;
 	private JCheckBox chckAdmin;
+	private User temp;
 	
 	
 	public LoginView() {
@@ -57,7 +58,7 @@ public class LoginView {
 		panel = new ImagePanel();
 		btnLogin = new JButton("Login");
 		chckAdmin = new JCheckBox();
-		
+		temp = new User();
 	}
 
 	public void initializeLogin(JFrame mainFrame) {
@@ -65,7 +66,7 @@ public class LoginView {
 		//////////////////////////////////This is where I attached the reference for the main frame to this class's field
 		my_mainFrame = mainFrame;
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
-				Main.class.getResource("/files/title_bar_icon.png")));
+				this.getClass().getResource("/files/title_bar_icon.png")));
 		addListeners();
 		
 		lblLogin.setBounds(316, 140, 46, 14);
@@ -121,7 +122,6 @@ public class LoginView {
 			public void focusLost(FocusEvent arg0) {
 				if(pinTF.getText().isEmpty()) {
 					pinTF.setText("PIN");
-
 				}
 			}
 		});
@@ -143,36 +143,17 @@ public class LoginView {
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				User temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
-				
-				//////////////////////////////////////////////////////////////////////////////////// Jeremiah Added this nonsense
-				/*Pretty sure we don't want this to be right here but since 
-				*the user class is created here locally with the login details 
-				*then either the authentication check has to happen here or we 
-				*have to pass the user somewhere else like to the login model
-				*Once it gets past this point we need a way to launch the actual RFP.*/ 
-				
-				temp.UserList();//The way User is written you have to create the list of acceptable users.
-				
-				//The next line checks to make sure the typed data matches the user list
-				if(temp.userlist.containsKey(temp.getName())&& temp.userlist.get(temp.getName()).equals(temp.getPin())){
-					//Rather than this println replace with the action that creates the RFP
-					//System.out.println("Authenticated");
-					//I added the my_mainFrame field so that it could be accessed from inside the class
-					//Again this is a design choice we either need to move it all outside the class and have
-					//all this happen in the Login model class or just do it all here.
-					my_mainFrame.getContentPane().removeAll();
-					my_mainFrame.setBounds(100, 100, 1024, 720);
-					my_mainFrame.getContentPane().add(new RFPView().rootPane);
+				temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
+				if(temp.loginAttempt() == true) {
+					if(chckAdmin.isSelected()) {
+						//initialize admin
 					}
-				else{
-					Toolkit.getDefaultToolkit().beep();
-					JOptionPane.showMessageDialog(panel,
-						    "Either Username or Pin are incorrect.",
-						    "Login Failed",
-						    JOptionPane.ERROR_MESSAGE);
-				}
-				///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					else {
+						RFPView rfpView = new RFPView();
+						rfpView.initialize(my_mainFrame);
+						my_mainFrame.repaint();
+					}
+				};				
 			}
 		});
 	}

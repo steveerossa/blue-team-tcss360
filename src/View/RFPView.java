@@ -1,56 +1,185 @@
-//alex
 package View;
 
-import javax.swing.JRootPane;
-import java.awt.GridBagLayout;
-import javax.swing.JRadioButton;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class RFPView {
+
+	private JPanel contentPane;
+	private JTextField textField;
+
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					UIManager.setLookAndFeel(
+//				            UIManager.getSystemLookAndFeelClassName());
+//					RFPView frame = new RFPView();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+
+	/**
+	 * Create the frame.
+	 */
 	
-	JRootPane rootPane;
 	
 	public RFPView() {
-		rootPane = new JRootPane();
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		rootPane.getContentPane().setLayout(gridBagLayout);
 		
-		JRadioButton rdbtnBusiness = new JRadioButton("Business");
-		GridBagConstraints gbc_rdbtnBusiness = new GridBagConstraints();
-		gbc_rdbtnBusiness.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnBusiness.gridx = 0;
-		gbc_rdbtnBusiness.gridy = 0;
-		rootPane.getContentPane().add(rdbtnBusiness, gbc_rdbtnBusiness);
+	}
+	public void initialize(JFrame my_mainFrame) {
+		my_mainFrame.setTitle("Global Business Logistics");
+		my_mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(RFPView.class.getResource("/files/title_bar_icon.png")));
+		my_mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		my_mainFrame.setBounds(100, 100, 706, 468);
+		my_mainFrame.setResizable(true);
 		
-		JRadioButton rdbtnTechnical = new JRadioButton("Technical");
-		GridBagConstraints gbc_rdbtnTechnical = new GridBagConstraints();
-		gbc_rdbtnTechnical.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnTechnical.gridx = 1;
-		gbc_rdbtnTechnical.gridy = 0;
-		rootPane.getContentPane().add(rdbtnTechnical, gbc_rdbtnTechnical);
+		JMenuBar menuBar = new JMenuBar();
+		my_mainFrame.setJMenuBar(menuBar);
 		
-		JLabel lblFilter = new JLabel("Filter:");
-		GridBagConstraints gbc_lblFilter = new GridBagConstraints();
-		gbc_lblFilter.insets = new Insets(0, 0, 5, 5);
-		gbc_lblFilter.gridx = 0;
-		gbc_lblFilter.gridy = 1;
-		rootPane.getContentPane().add(lblFilter, gbc_lblFilter);
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
 		
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.gridheight = 2;
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 3;
-		gbc_panel.gridy = 2;
-		rootPane.getContentPane().add(panel, gbc_panel);
+		JMenu mnEdit = new JMenu("Edit");
+		menuBar.add(mnEdit);
+		
+		JMenu mnView = new JMenu("View");
+		menuBar.add(mnView);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		my_mainFrame.setContentPane(contentPane);
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{127, 0, 249, 66, 154, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		contentPane.setLayout(gbl_contentPane);
+		
+		textField = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 0;
+		contentPane.add(textField, gbc_textField);
+		textField.setColumns(10);
+		
+		JLabel btnSearch = new JLabel("");
+		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
+		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearch.gridx = 1;
+		gbc_btnSearch.gridy = 0;
+		contentPane.add(btnSearch, gbc_btnSearch);
+		
+		JComboBox comboBox = new JComboBox();
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 2;
+		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 0;
+		gbc_comboBox.gridy = 1;
+		contentPane.add(comboBox, gbc_comboBox);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.insets = new Insets(0, 0, 0, 5);
+		gbc_textArea.gridheight = 3;
+		gbc_textArea.fill = GridBagConstraints.BOTH;
+		gbc_textArea.gridx = 2;
+		gbc_textArea.gridy = 1;
+		contentPane.add(textArea, gbc_textArea);
+		
+		JList list = new JList();
+		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		GridBagConstraints gbc_list = new GridBagConstraints();
+		gbc_list.gridwidth = 2;
+		gbc_list.gridheight = 2;
+		gbc_list.insets = new Insets(0, 0, 0, 5);
+		gbc_list.fill = GridBagConstraints.BOTH;
+		gbc_list.gridx = 0;
+		gbc_list.gridy = 2;
+		contentPane.add(list, gbc_list);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		gbc_tabbedPane.gridheight = 3;
+		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
+		gbc_tabbedPane.gridx = 4;
+		gbc_tabbedPane.gridy = 1;
+		contentPane.add(tabbedPane, gbc_tabbedPane);
+		
+		JPanel notesPanel = new JPanel();
+		tabbedPane.addTab("Notes", null, notesPanel, null);
+		notesPanel.setLayout(new BorderLayout(0, 0));
+		
+		JTextArea notesText = new JTextArea();
+		notesText.setPreferredSize(new Dimension(10, 22));
+		notesText.setLineWrap(true);
+		notesText.setAlignmentY(Component.TOP_ALIGNMENT);
+		notesText.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		notesPanel.add(notesText);
+		
+		JPanel selectedAnsPanel = new JPanel();
+		tabbedPane.addTab("Selected Answers", null, selectedAnsPanel, null);
+		selectedAnsPanel.setLayout(new BorderLayout(0, 0));
+		
+		JList selectedAnsList = new JList();
+		selectedAnsPanel.add(selectedAnsList);
+		
+		JLabel btnAddQ = new JLabel("");
+		btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
+		GridBagConstraints gbc_btnAddQ = new GridBagConstraints();
+		gbc_btnAddQ.anchor = GridBagConstraints.SOUTH;
+		gbc_btnAddQ.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAddQ.gridx = 3;
+		gbc_btnAddQ.gridy = 2;
+		contentPane.add(btnAddQ, gbc_btnAddQ);
+		
+		JLabel btnAddToClip = new JLabel("");
+		btnAddToClip.setIcon(new ImageIcon(RFPView.class.getResource("/files/copyToClipIcon.png")));
+		GridBagConstraints gbc_btnAddToClip = new GridBagConstraints();
+		gbc_btnAddToClip.anchor = GridBagConstraints.NORTH;
+		gbc_btnAddToClip.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAddToClip.gridx = 3;
+		gbc_btnAddToClip.gridy = 3;
+		contentPane.add(btnAddToClip, gbc_btnAddToClip);
+		
 	}
 
 }
