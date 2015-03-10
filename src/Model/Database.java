@@ -46,7 +46,7 @@ public class Database {
 			String keys[] = temp.split("\\*");
 			for(String next : keys)
 			{
-				keyPhrases.add(next);
+				keyPhrases.add(next.trim());
 			}
 			
 		}

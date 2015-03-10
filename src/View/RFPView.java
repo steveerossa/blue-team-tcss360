@@ -37,15 +37,19 @@ import java.awt.event.InputEvent;
 import java.awt.ComponentOrientation;
 import javax.swing.JScrollPane;
 
+import Model.Database;
+
 public class RFPView 
 //				extends JFrame
 								{
 
 	private JPanel contentPane;
 	private JTextField textField;
+	private Database my_database;
 
 
 	public void initialize(JFrame my_mainFrame) {
+		my_database = new Database();
 		my_mainFrame.setTitle("Global Business Logistics");
 		my_mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(RFPView.class.getResource("/files/title_bar_icon.png")));
 		my_mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -140,7 +144,9 @@ public class RFPView
 	JList selectedQAsList = new JList();
 	tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
 	
-	JComboBox comboBox = new JComboBox();
+	
+	String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
+	JComboBox<String> comboBox = new JComboBox<String>(my_list);
 	GridBagConstraints gbc_comboBox = new GridBagConstraints();
 	gbc_comboBox.gridwidth = 2;
 	gbc_comboBox.insets = new Insets(0, 0, 5, 5);
