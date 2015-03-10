@@ -1,22 +1,20 @@
 package View;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Toolkit;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import javax.swing.JTextPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 
 public class AdminView 
 //extends JFrame 
@@ -53,11 +51,8 @@ public class AdminView
 	 */
 	public void initializeAdminView(JFrame my_mainFrame) {
 		
-		my_mainFrame.setTitle("Global Business Logistics");
-		my_mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(AdminView.class.getResource("/files/title_bar_icon.png")));
-		my_mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		my_mainFrame.setResizable(true);
-		my_mainFrame.setBounds(100, 100, 450, 300);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		my_mainFrame.setContentPane(contentPane);
@@ -184,6 +179,7 @@ public class AdminView
 		gbc_btnCancel.gridx = 2;
 		gbc_btnCancel.gridy = 5;
 		contentPane.add(btnCancel, gbc_btnCancel);
+		my_mainFrame.repaint();
 	}
 
 }

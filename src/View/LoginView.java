@@ -64,7 +64,6 @@ public class LoginView {
 
 	public void initializeLogin(JFrame mainFrame) {
 		
-		//////////////////////////////////This is where I attached the reference for the main frame to this class's field
 		my_mainFrame = mainFrame;
 		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				this.getClass().getResource("/files/title_bar_icon.png")));
@@ -169,7 +168,7 @@ public class LoginView {
 						RFPView rfpView = new RFPView();
 						rfpView.initialize(my_mainFrame);
 					}
-				};				
+				};
 			}
 		});
 	}
