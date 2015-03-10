@@ -16,8 +16,7 @@ public class DatabaseTest {
 		
 		Database testing = new Database();
 		System.out.println(testing.getKeyPhrases());
-		System.out.println(testing.searchQuestionAnswers("Legal"));
-		
+		System.out.println(testing.searchQuestionAnswers("Legal")); 
 	}
 
 }
