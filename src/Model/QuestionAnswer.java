@@ -23,6 +23,26 @@ public class QuestionAnswer {
 		my_EditLevel = the_level;
 	}
 	
+	public String getKeyPhrases()
+	{
+		return my_KeyPhrases;
+	}
+	
+	public String getAnswer()
+	{
+		return my_Answer;
+	}
+	
+	public String getCategory()
+	{
+		return my_Category;
+	}
+	
+	public String getQuestion()
+	{
+		return my_SampleQuestion;
+	}
+	
 	@Override
 	public String toString()
 	{
