@@ -24,8 +24,7 @@ public class QuestionAnswer {
 	}
 	
 	@Override
-	public
-	String toString()
+	public String toString()
 	{
 		return my_Category + " " + my_KeyPhrases + " " + my_SampleQuestion + " " + my_Answer + " " + my_EditLevel;
 		

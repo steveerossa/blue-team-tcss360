@@ -6,7 +6,7 @@
  * 
  * Project Description:
  * 	This is the final product of our project for Global Business Logistics.
- * 	We focused on loging in to the program as specified with the option of logging in
+ * 	We focused on logging in to the program as specified with the option of logging in
  * 	as an analyst or as an administrator.  Out other main focus was the main window
  * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
  */
