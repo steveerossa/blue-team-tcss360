@@ -29,6 +29,7 @@ import View.LoginView;
 public class Main {
 
 	private JFrame mainFrame;
+	public LoginView loginView;
 
 
 	/**
@@ -69,7 +70,7 @@ public class Main {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
 
-		LoginView loginView = new LoginView();
+		loginView = new LoginView();
 		loginView.initializeLogin(mainFrame);
 
 	}
