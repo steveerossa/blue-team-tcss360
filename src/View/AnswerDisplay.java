@@ -24,7 +24,7 @@ public class AnswerDisplay extends JPanel
 	private JTextArea my_answer_field;
 	
 	/**The pre-selected questions.*/
-	private String [] my_questions;
+//	private String [] my_questions;
 	
 	/**Array of strings that contains keys for querying the database.*/
 	private String [] my_keys;
