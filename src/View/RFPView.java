@@ -34,6 +34,8 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.awt.ComponentOrientation;
+import javax.swing.JScrollPane;
 
 public class RFPView 
 //				extends JFrame
@@ -67,11 +69,8 @@ public class RFPView
 	mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 	mnFile.add(mntmSave);
 	
-	JMenuItem mntmSaveAs = new JMenuItem("Save as...");
+	JMenuItem mntmSaveAs = new JMenuItem("Save As...");
 	mnFile.add(mntmSaveAs);
-	
-	JMenuItem mntmLogOut = new JMenuItem("Log out");
-	mnFile.add(mntmLogOut);
 	
 	JMenuItem mntmExit = new JMenuItem("Exit");
 	mnFile.add(mntmExit);
@@ -94,7 +93,7 @@ public class RFPView
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	my_mainFrame.setContentPane(contentPane);
 	GridBagLayout gbl_contentPane = new GridBagLayout();
-	gbl_contentPane.columnWidths = new int[]{127, 0, 249, 66, 154, 0};
+	gbl_contentPane.columnWidths = new int[]{127, 0, 226, 66, 200, 0};
 	gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
 	gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 	gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
@@ -121,6 +120,25 @@ public class RFPView
 	gbc_btnSearch.gridx = 1;
 	gbc_btnSearch.gridy = 0;
 	contentPane.add(btnSearch, gbc_btnSearch);
+	
+	JScrollPane scrollPane = new JScrollPane();
+	GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+	gbc_scrollPane.fill = GridBagConstraints.BOTH;
+	gbc_scrollPane.gridheight = 4;
+	gbc_scrollPane.gridx = 4;
+	gbc_scrollPane.gridy = 0;
+	contentPane.add(scrollPane, gbc_scrollPane);
+	
+	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	tabbedPane.setBorder(null);
+	scrollPane.setViewportView(tabbedPane);
+	tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+	
+	JTextArea notesArea = new JTextArea();
+	tabbedPane.addTab("Notes", null, notesArea, null);
+	
+	JList selectedQAsList = new JList();
+	tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
 	
 	JComboBox comboBox = new JComboBox();
 	GridBagConstraints gbc_comboBox = new GridBagConstraints();
@@ -155,32 +173,6 @@ public class RFPView
 	gbc_list.gridy = 2;
 	contentPane.add(list, gbc_list);
 	
-	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-	gbc_tabbedPane.gridheight = 3;
-	gbc_tabbedPane.fill = GridBagConstraints.BOTH;
-	gbc_tabbedPane.gridx = 4;
-	gbc_tabbedPane.gridy = 1;
-	contentPane.add(tabbedPane, gbc_tabbedPane);
-	
-	JPanel notesPanel = new JPanel();
-	tabbedPane.addTab("Notes", null, notesPanel, null);
-	notesPanel.setLayout(new BorderLayout(0, 0));
-	
-	JTextArea notesText = new JTextArea();
-	notesText.setPreferredSize(new Dimension(10, 22));
-	notesText.setLineWrap(true);
-	notesText.setAlignmentY(Component.TOP_ALIGNMENT);
-	notesText.setAlignmentX(Component.RIGHT_ALIGNMENT);
-	notesPanel.add(notesText);
-	
-	JPanel selectedAnsPanel = new JPanel();
-	tabbedPane.addTab("Selected Answers", null, selectedAnsPanel, null);
-	selectedAnsPanel.setLayout(new BorderLayout(0, 0));
-	
-	JList selectedAnsList = new JList();
-	selectedAnsPanel.add(selectedAnsList);
-	
 	JButton btnAddQ = new JButton("");
 	btnAddQ.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -206,7 +198,6 @@ public class RFPView
 	gbc_btnAddToClip.gridx = 3;
 	gbc_btnAddToClip.gridy = 3;
 	contentPane.add(btnAddToClip, gbc_btnAddToClip);
-		
 	}
 	
 	
@@ -231,10 +222,10 @@ public class RFPView
 //			}
 //		});
 //	}
-//
-//	/**
-//	 * Create the frame.
-//	 */
+
+	/**
+	 * Create the frame.
+	 */
 	
 	
 	public RFPView() {
@@ -286,7 +277,7 @@ public class RFPView
 //		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 //		setContentPane(contentPane);
 //		GridBagLayout gbl_contentPane = new GridBagLayout();
-//		gbl_contentPane.columnWidths = new int[]{127, 0, 249, 66, 154, 0};
+//		gbl_contentPane.columnWidths = new int[]{127, 0, 226, 66, 200, 0};
 //		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
 //		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 //		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
@@ -313,6 +304,25 @@ public class RFPView
 //		gbc_btnSearch.gridx = 1;
 //		gbc_btnSearch.gridy = 0;
 //		contentPane.add(btnSearch, gbc_btnSearch);
+//		
+//		JScrollPane scrollPane = new JScrollPane();
+//		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+//		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+//		gbc_scrollPane.gridheight = 4;
+//		gbc_scrollPane.gridx = 4;
+//		gbc_scrollPane.gridy = 0;
+//		contentPane.add(scrollPane, gbc_scrollPane);
+//		
+//		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+//		tabbedPane.setBorder(null);
+//		scrollPane.setViewportView(tabbedPane);
+//		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+//		
+//		JTextArea notesArea = new JTextArea();
+//		tabbedPane.addTab("Notes", null, notesArea, null);
+//		
+//		JList selectedQAsList = new JList();
+//		tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
 //		
 //		JComboBox comboBox = new JComboBox();
 //		GridBagConstraints gbc_comboBox = new GridBagConstraints();
@@ -346,32 +356,6 @@ public class RFPView
 //		gbc_list.gridx = 0;
 //		gbc_list.gridy = 2;
 //		contentPane.add(list, gbc_list);
-//		
-//		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-//		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-//		gbc_tabbedPane.gridheight = 3;
-//		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
-//		gbc_tabbedPane.gridx = 4;
-//		gbc_tabbedPane.gridy = 1;
-//		contentPane.add(tabbedPane, gbc_tabbedPane);
-//		
-//		JPanel notesPanel = new JPanel();
-//		tabbedPane.addTab("Notes", null, notesPanel, null);
-//		notesPanel.setLayout(new BorderLayout(0, 0));
-//		
-//		JTextArea notesText = new JTextArea();
-//		notesText.setPreferredSize(new Dimension(10, 22));
-//		notesText.setLineWrap(true);
-//		notesText.setAlignmentY(Component.TOP_ALIGNMENT);
-//		notesText.setAlignmentX(Component.RIGHT_ALIGNMENT);
-//		notesPanel.add(notesText);
-//		
-//		JPanel selectedAnsPanel = new JPanel();
-//		tabbedPane.addTab("Selected Answers", null, selectedAnsPanel, null);
-//		selectedAnsPanel.setLayout(new BorderLayout(0, 0));
-//		
-//		JList selectedAnsList = new JList();
-//		selectedAnsPanel.add(selectedAnsList);
 //		
 //		JButton btnAddQ = new JButton("");
 //		btnAddQ.addActionListener(new ActionListener() {
