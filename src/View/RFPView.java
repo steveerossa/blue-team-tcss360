@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -203,7 +205,7 @@ public class RFPView
 
 
 		String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
-		JComboBox<String> comboBox = new JComboBox<String>(my_list);
+		final JComboBox<String> comboBox = new JComboBox<String>(my_list);
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.gridwidth = 2;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
@@ -211,6 +213,15 @@ public class RFPView
 		gbc_comboBox.gridx = 0;
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				searchTextField.setText((String) comboBox.getSelectedItem());
+				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
+				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
+				searchResults.toArray(questionAnswerList);
+				list.setListData(questionAnswerList);
+			}			
+		});
 
 		JButton btnAddQ = new JButton("");
 		btnAddQ.addActionListener(new ActionListener() {
@@ -263,6 +274,34 @@ public class RFPView
 			}			
 		});
 
+		searchTextField.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				searchTextField.selectAll();
+				
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}			
+		});
+		
 	}
 
 
