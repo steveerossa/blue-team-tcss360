@@ -30,6 +30,8 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Model.Database;
 import Model.QuestionAnswer;
@@ -117,6 +119,18 @@ public class RFPView
 		gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
+		
+		final JTextArea answerTextArea = new JTextArea();
+		answerTextArea.setEditable(false);
+		answerTextArea.setLineWrap(true);
+		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.insets = new Insets(0, 0, 10, 5);
+		gbc_textArea.gridheight = 3;
+		gbc_textArea.fill = GridBagConstraints.BOTH;
+		gbc_textArea.gridx = 2;
+		gbc_textArea.gridy = 1;
+		contentPane.add(answerTextArea, gbc_textArea);
 
 		searchTextField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
@@ -141,8 +155,23 @@ public class RFPView
 		gbc_list.gridx = 0;
 		gbc_list.gridy = 2;
 		contentPane.add(new JScrollPane(list), gbc_list);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				if(!list.isSelectionEmpty()){
+				answerTextArea.setText(list.getSelectedValue().getAnswer());
+				}
+			}			
+		});
 
 		JButton btnSearch = new JButton("");
+		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
+		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearch.gridx = 1;
+		gbc_btnSearch.gridy = 0;
+		contentPane.add(btnSearch, gbc_btnSearch);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -151,12 +180,6 @@ public class RFPView
 				list.setListData(questionAnswerList);
 			}			
 		});
-		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
-		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
-		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSearch.gridx = 1;
-		gbc_btnSearch.gridy = 0;
-		contentPane.add(btnSearch, gbc_btnSearch);
 		
 
 		final JScrollPane scrollPane = new JScrollPane();
@@ -189,18 +212,6 @@ public class RFPView
 		gbc_comboBox.gridx = 0;
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
-
-		JTextArea answerTextArea = new JTextArea();
-		answerTextArea.setEditable(false);
-		answerTextArea.setLineWrap(true);
-		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.insets = new Insets(0, 0, 10, 5);
-		gbc_textArea.gridheight = 3;
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 2;
-		gbc_textArea.gridy = 1;
-		contentPane.add(answerTextArea, gbc_textArea);
 
 		JButton btnAddQ = new JButton("");
 		btnAddQ.addActionListener(new ActionListener() {
