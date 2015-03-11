@@ -24,10 +24,11 @@ public class AdminView
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	private JFrame mainFrame;
 
-//	/**
-//	 * Launch the application.
-//	 */
+	/**
+	 * Launch the application.
+	 */
 //	public static void main(String[] args) {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
@@ -50,12 +51,13 @@ public class AdminView
 	 * @return 
 	 */
 	public void initializeAdminView(JFrame my_mainFrame) {
+		mainFrame = my_mainFrame;
 		
-		my_mainFrame.setResizable(true);
+		mainFrame.setResizable(true);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		my_mainFrame.setContentPane(contentPane);
+		mainFrame.setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
@@ -95,7 +97,7 @@ public class AdminView
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_1.gridwidth = 2;
-		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_1.gridx = 1;
 		gbc_scrollPane_1.gridy = 1;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
@@ -162,6 +164,29 @@ public class AdminView
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		
+		JButton btnLogOut = new JButton("Log out");
+		btnLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.dispose();
+				mainFrame = new JFrame();
+				mainFrame.setResizable(false);
+				mainFrame.setTitle("Global Business Logistics");
+				mainFrame.setBounds(100, 100, 488, 329);
+				mainFrame.setLocationRelativeTo(null);
+				mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				mainFrame.getContentPane().setLayout(null);
+				mainFrame.setVisible(true);
+
+				LoginView loginView = new LoginView();
+				loginView.initializeLogin(mainFrame);
+			}
+		});
+		GridBagConstraints gbc_btnLogOut = new GridBagConstraints();
+		gbc_btnLogOut.insets = new Insets(0, 0, 0, 5);
+		gbc_btnLogOut.gridx = 0;
+		gbc_btnLogOut.gridy = 5;
+		contentPane.add(btnLogOut, gbc_btnLogOut);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);

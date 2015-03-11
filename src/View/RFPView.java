@@ -33,7 +33,7 @@ import Model.Database;
 import Model.QuestionAnswer;
 
 public class RFPView 
-				extends JFrame
+//				extends JFrame
 {
 
 	private JPanel contentPane;
