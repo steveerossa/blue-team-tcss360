@@ -78,10 +78,12 @@ public class LoginView {
 		userNameTF.setText("Username");
 		userNameTF.setBounds(316, 165, 86, 20);
 		userNameTF.setColumns(10);
+		userNameTF.setFocusable(true);
 
 		pinTF.setText("PIN");
 		pinTF.setBounds(316, 198, 86, 20);
 		pinTF.setColumns(10);
+		pinTF.setFocusable(true);
 		
 		btnLogin.setBounds(316, 236, 86, 20);
 
@@ -160,7 +162,15 @@ public class LoginView {
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
+				loginActionAttempted();
+			}
+		});
+		userNameTF.addKeyListener(new enterKeyLoginListener());
+		pinTF.addKeyListener(new enterKeyLoginListener());
+		
+	}
+	private void loginActionAttempted() {
+		temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
 				if(temp.loginAttempt() == true) {
 					if(chckAdmin.isSelected()) {
 						AdminView adminView = new AdminView();
@@ -171,29 +181,29 @@ public class LoginView {
 						rfpView.initialize(my_mainFrame);
 					}
 				};
-			}
-		});
-//		my_mainFrame.addKeyListener(new KeyListener() {
-//
-//			@Override
-//			public void keyPressed(KeyEvent arg0) {
-//				if(arg0.getKeyCode()KeyEvent.VK_ENTER) {
-//					System.out.println("you hit enter yay!");
-//				}
-//			}
-//
-//			@Override
-//			public void keyReleased(KeyEvent e) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void keyTyped(KeyEvent e) {
-//				
-//			}
-//			
-//		});
+	}
+	
+	private class enterKeyLoginListener implements KeyListener {
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+				loginActionAttempted();
+			}			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
