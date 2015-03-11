@@ -132,13 +132,11 @@ public class LoginView {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 		});
@@ -178,7 +176,6 @@ public class LoginView {
 					userNameTF.setText("Username");
 				}
 			}
-			
 		});
 
 		pinTF.addMouseListener(new MouseAdapter() {
@@ -246,15 +243,12 @@ public class LoginView {
 		@Override
 		public void keyReleased(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
 			// TODO Auto-generated method stub
-			
 		}
-		
 	}
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
