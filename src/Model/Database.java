@@ -62,7 +62,9 @@ public class Database {
 		ArrayList<QuestionAnswer> questions = new ArrayList<QuestionAnswer>();
 		for(QuestionAnswer curr : my_data)
 		{
-			if(curr.getAll().contains(the_phrase)){questions.add(curr);}
+			if(curr.getAll().toLowerCase().contains(the_phrase.toLowerCase())){
+				questions.add(curr);
+				}
 		}
 		return questions;
 	}
