@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -141,6 +142,8 @@ public class RFPView
 		searchTextField.setColumns(10);
 		
 		
+		
+		
 		final JList<QuestionAnswer> list = new JList<QuestionAnswer>(listModel);
 		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -163,7 +166,7 @@ public class RFPView
 			}			
 		});
 
-		JButton btnSearch = new JButton("");
+		final JButton btnSearch = new JButton("");
 		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
@@ -240,9 +243,31 @@ public class RFPView
 
 		my_mainFrame.repaint();
 		
+		searchTextField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					btnSearch.doClick();
+				}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER){
+					searchTextField.selectAll();
+				}
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}			
+		});
+		
 	}
 
-
+	
 	
 
 
