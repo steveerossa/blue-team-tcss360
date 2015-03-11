@@ -51,7 +51,6 @@ public class RFPView
 		mainFrame = my_mainFrame;
 		my_database = new Database();
 		listModel = new DefaultListModel<QuestionAnswer>();
-		//listModel.addElement(my_database.searchQuestionAnswers(" ").get(0));
 		mainFrame.setResizable(true);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -155,7 +154,6 @@ public class RFPView
 		gbc_list.gridx = 0;
 		gbc_list.gridy = 2;
 		contentPane.add(new JScrollPane(list), gbc_list);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -242,14 +240,6 @@ public class RFPView
 
 		my_mainFrame.repaint();
 		
-//		btnSearch.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				my_questionList.addAll(my_database.searchQuestionAnswers(textField.getText()));
-//				System.out.println(my_questionList);
-//				//scrollPane.getViewport().add(new JLabel("word"));
-//				//scrollPane.repaint();
-//			}
-//		});
 	}
 
 
