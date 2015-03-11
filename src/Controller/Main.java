@@ -74,4 +74,5 @@ public class Main {
 		loginView.initializeLogin(mainFrame);
 
 	}
+	
 }
