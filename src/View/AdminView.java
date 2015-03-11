@@ -1,9 +1,9 @@
 package View;
 
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,6 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+import java.awt.Component;
 
 public class AdminView 
 //extends JFrame 
@@ -26,9 +28,9 @@ public class AdminView
 	private JTextField textField_2;
 	private JFrame mainFrame;
 
-	/**
-	 * Launch the application.
-	 */
+//	/**
+//	 * Launch the application.
+//	 */
 //	public static void main(String[] args) {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
@@ -45,6 +47,7 @@ public class AdminView
 	
 	public AdminView() {
 		
+		
 	}
 	/**
 	 * Create the frame.
@@ -55,9 +58,12 @@ public class AdminView
 		
 		mainFrame.setResizable(true);
 		
+//		setResizable(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainFrame.setContentPane(contentPane);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
@@ -204,6 +210,10 @@ public class AdminView
 		gbc_btnCancel.gridx = 2;
 		gbc_btnCancel.gridy = 5;
 		contentPane.add(btnCancel, gbc_btnCancel);
+		
+		mainFrame.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]
+				{textPane, textPane_1, textField, textField_1, textField_2, btnLogOut, btnNewButton, btnCancel}));
+		
 		my_mainFrame.repaint();
 	}
 

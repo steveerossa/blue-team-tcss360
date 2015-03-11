@@ -4,6 +4,7 @@
  */
 package View;
 
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import Controller.Main;
 import Model.User;
@@ -73,6 +76,7 @@ public class LoginView {
 		
 		lblLogin.setBounds(316, 140, 46, 14);
 		chckAdmin.setBounds(360, 138, 20, 20);
+		chckAdmin.setFocusable(true);
 		lblchckAdmin.setBounds(380, 141, 46, 14);
 
 		userNameTF.setText("Username");
@@ -96,14 +100,53 @@ public class LoginView {
 		mainFrame.getContentPane().add(userNameTF);
 		mainFrame.getContentPane().add(btnLogin);
 		mainFrame.getContentPane().add(panel);	
+		mainFrame.setFocusTraversalPolicy(
+				new FocusTraversalOnArray(new Component[]{panel, chckAdmin, userNameTF, pinTF, btnLogin}));
 	}
 	
 	private void addListeners() {
+		chckAdmin.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				chckAdmin.setBorderPainted(true);
+			}
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				chckAdmin.setBorderPainted(false);
+			}
+		});
+		chckAdmin.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+					if(chckAdmin.isSelected()) {
+						chckAdmin.setSelected(false);
+					}
+					else {
+						chckAdmin.setSelected(true);
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		userNameTF.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				if(userNameTF.getText().isEmpty()) {
-					userNameTF.setText("UserName");
+					userNameTF.setText("Username");
 				}
 			}
 		});
@@ -121,13 +164,21 @@ public class LoginView {
 				}
 			}
 		});
-		pinTF.addFocusListener(new FocusAdapter() {
+		
+		userNameTF.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				userNameTF.setText("");
+			}
+
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(pinTF.getText().isEmpty()) {
-					pinTF.setText("PIN");
+				if(userNameTF.getText().isEmpty()) {
+					userNameTF.setText("Username");
 				}
 			}
+			
 		});
 
 		pinTF.addMouseListener(new MouseAdapter() {
@@ -153,7 +204,7 @@ public class LoginView {
 
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(pinTF.getText() == "") {
+				if(pinTF.getText().isEmpty()) {
 					pinTF.setText("PIN");
 				}
 			}
