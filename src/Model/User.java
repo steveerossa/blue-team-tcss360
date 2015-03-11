@@ -36,9 +36,7 @@ public class User {
 		userPin = pin;
 		isAdmin = admin;	
 	}
-	
-	
-	
+		
 	/**
 	 * Private method to initialize the list of users.
 	 * @author Chutiwat
