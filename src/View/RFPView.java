@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -40,13 +41,15 @@ public class RFPView
 	private JPanel contentPane;
 	private JTextField searchTextField;
 	private Database my_database;
-	private ListModel listModel;
+	private DefaultListModel<QuestionAnswer> listModel;
 	private JFrame mainFrame;
 
 
 	public void initialize(JFrame my_mainFrame) {
 		mainFrame = my_mainFrame;
 		my_database = new Database();
+		listModel = new DefaultListModel<QuestionAnswer>();
+		//listModel.addElement(my_database.searchQuestionAnswers(" ").get(0));
 		mainFrame.setResizable(true);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -124,7 +127,8 @@ public class RFPView
 		contentPane.add(searchTextField, gbc_textField);
 		searchTextField.setColumns(10);
 		
-		JList<QuestionAnswer> list = new JList<QuestionAnswer>();
+		
+		final JList<QuestionAnswer> list = new JList<QuestionAnswer>(listModel);
 		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -141,10 +145,9 @@ public class RFPView
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
-				listModel = new DefaultListModel<QuestionAnswer>();
-				for(QuestionAnswer q : searchResults) {
-					
-				}
+				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
+				searchResults.toArray(questionAnswerList);
+				list.setListData(questionAnswerList);
 			}			
 		});
 		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
@@ -153,8 +156,9 @@ public class RFPView
 		gbc_btnSearch.gridx = 1;
 		gbc_btnSearch.gridy = 0;
 		contentPane.add(btnSearch, gbc_btnSearch);
+		
 
-		JScrollPane scrollPane = new JScrollPane();
+		final JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridheight = 4;
@@ -225,10 +229,19 @@ public class RFPView
 		contentPane.add(btnAddToClip, gbc_btnAddToClip);
 
 		my_mainFrame.repaint();
+		
+//		btnSearch.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				my_questionList.addAll(my_database.searchQuestionAnswers(textField.getText()));
+//				System.out.println(my_questionList);
+//				//scrollPane.getViewport().add(new JLabel("word"));
+//				//scrollPane.repaint();
+//			}
+//		});
 	}
 
 
-
+	
 
 
 //

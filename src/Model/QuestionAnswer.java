@@ -42,11 +42,19 @@ public class QuestionAnswer {
 	{
 		return my_SampleQuestion;
 	}
+	/**
+	 * Returns all of the text fields in one string.
+	 * @return
+	 */
+	public String getAll()
+	{
+		return my_Category + " " + my_KeyPhrases + " " + my_SampleQuestion + " " + my_Answer + " " + my_EditLevel;
+	}
 	
 	@Override
 	public String toString()
 	{
-		return my_Category + " " + my_KeyPhrases + " " + my_SampleQuestion + " " + my_Answer + " " + my_EditLevel;
+		return my_SampleQuestion;
 		
 	}
 }

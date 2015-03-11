@@ -62,7 +62,7 @@ public class Database {
 		ArrayList<QuestionAnswer> questions = new ArrayList<QuestionAnswer>();
 		for(QuestionAnswer curr : my_data)
 		{
-			if(curr.toString().contains(the_phrase)){questions.add(curr);}
+			if(curr.getAll().contains(the_phrase)){questions.add(curr);}
 		}
 		return questions;
 	}
@@ -118,7 +118,7 @@ public class Database {
             QuestionAnswer remove = null;
             for(QuestionAnswer cur : my_data)
             {
-            	if(cur.toString().contains("KeyPhrase")){remove = cur;}
+            	if(cur.getKeyPhrases().contains("KeyPhrase")){remove = cur;}
             }
             my_data.remove(remove);
             ///////////////////////////////////////////////////
