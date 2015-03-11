@@ -10,6 +10,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,7 +38,7 @@ public class RFPView
 {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField searchTextField;
 	private Database my_database;
 	private ListModel listModel;
 	private JFrame mainFrame;
@@ -114,14 +115,14 @@ public class RFPView
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 
-		textField = new JTextField();
+		searchTextField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 0;
 		gbc_textField.gridy = 0;
-		contentPane.add(textField, gbc_textField);
-		textField.setColumns(10);
+		contentPane.add(searchTextField, gbc_textField);
+		searchTextField.setColumns(10);
 		
 		JList<QuestionAnswer> list = new JList<QuestionAnswer>();
 		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
@@ -139,9 +140,12 @@ public class RFPView
 		JButton btnSearch = new JButton("");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(textField.getText());
-				
-			}
+				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
+				listModel = new DefaultListModel<QuestionAnswer>();
+				for(QuestionAnswer q : searchResults) {
+					
+				}
+			}			
 		});
 		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
@@ -181,21 +185,22 @@ public class RFPView
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
 
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setLineWrap(true);
-		textArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		JTextArea answerTextArea = new JTextArea();
+		answerTextArea.setEditable(false);
+		answerTextArea.setLineWrap(true);
+		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
 		gbc_textArea.insets = new Insets(0, 0, 10, 5);
 		gbc_textArea.gridheight = 3;
 		gbc_textArea.fill = GridBagConstraints.BOTH;
 		gbc_textArea.gridx = 2;
 		gbc_textArea.gridy = 1;
-		contentPane.add(textArea, gbc_textArea);
+		contentPane.add(answerTextArea, gbc_textArea);
 
 		JButton btnAddQ = new JButton("");
 		btnAddQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
@@ -250,6 +255,9 @@ public class RFPView
 //	 */
 
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public RFPView() {
 
 //				setTitle("Global Business Logistics");
