@@ -139,7 +139,7 @@ public class RFPView
 		gbc_list.fill = GridBagConstraints.BOTH;
 		gbc_list.gridx = 0;
 		gbc_list.gridy = 2;
-		contentPane.add(list, gbc_list);
+		contentPane.add(new JScrollPane(list), gbc_list);
 
 		JButton btnSearch = new JButton("");
 		btnSearch.addActionListener(new ActionListener() {
