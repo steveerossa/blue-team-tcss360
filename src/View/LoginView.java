@@ -108,6 +108,7 @@ public class LoginView {
 		chckAdmin.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
+				
 				chckAdmin.setBorderPainted(true);
 			}
 			@Override
@@ -131,12 +132,12 @@ public class LoginView {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+				// Dont need it cause we smart
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+				// Dont need it cause we smart
 			}
 			
 		});
@@ -242,12 +243,12 @@ public class LoginView {
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
+			// Dont need it cause we smart
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
+			// Dont need it cause we smart
 		}
 	}
 	@SuppressWarnings("serial")
