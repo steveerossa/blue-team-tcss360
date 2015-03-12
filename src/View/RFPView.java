@@ -2,9 +2,11 @@ package View;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -53,11 +55,17 @@ public class RFPView
 
 	public void initialize(JFrame my_mainFrame) {
 		mainFrame = my_mainFrame;
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		my_database = new Database();
-		mainFrame.setResizable(true);
 
+		
+		/////////////////////////////////////////
+		//
+		//			MENU STUFF
+		//
+		/////////////////////////////////////////
 		JMenuBar menuBar = new JMenuBar();
-		mainFrame.setJMenuBar(menuBar);
 
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
@@ -77,22 +85,6 @@ public class RFPView
 		mnFile.add(mntmSaveAs);
 
 		JMenuItem mntmLogOut = new JMenuItem("Log out");
-		mntmLogOut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				mainFrame.dispose();
-				mainFrame = new JFrame();
-				mainFrame.setResizable(false);
-				mainFrame.setTitle("Global Business Logistics");
-				mainFrame.setBounds(100, 100, 488, 329);
-				mainFrame.setLocationRelativeTo(null);
-				mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				mainFrame.getContentPane().setLayout(null);
-				mainFrame.setVisible(true);
-
-				LoginView loginView = new LoginView();
-				loginView.initializeLogin(mainFrame);
-			}
-		});
 		mnFile.add(mntmLogOut);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
@@ -112,9 +104,12 @@ public class RFPView
 
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		my_mainFrame.setContentPane(contentPane);
+		
+		/////////////////////////////////////////////
+		//
+		//			APPLYING LAYOUT TO CONTENT PANE
+		//
+		/////////////////////////////////////////////
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{127, 0, 226, 66, 200, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
@@ -122,6 +117,58 @@ public class RFPView
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 
+		/////////////////////////////////////////////
+		//
+		//			QUESTION SEARCH AND LIST STUFF
+		//
+		/////////////////////////////////////////////
+		searchTextField = new JTextField();
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 0;
+		contentPane.add(searchTextField, gbc_textField);
+		searchTextField.setColumns(10);
+		
+		final JButton btnSearch = new JButton("");
+		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
+		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearch.gridx = 1;
+		gbc_btnSearch.gridy = 0;
+		contentPane.add(btnSearch, gbc_btnSearch);
+
+		String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
+		final JComboBox<String> comboBox = new JComboBox<String>(my_list);
+		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 2;
+		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBox.gridx = 0;
+		gbc_comboBox.gridy = 1;
+		contentPane.add(comboBox, gbc_comboBox);
+		
+		final JList<QuestionAnswer> list = new JList<QuestionAnswer>();
+		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setFixedCellWidth(400);
+		GridBagConstraints gbc_list = new GridBagConstraints();
+		gbc_list.gridwidth = 2;
+		gbc_list.gridheight = 2;
+		gbc_list.insets = new Insets(0, 0, 0, 5);
+		gbc_list.fill = GridBagConstraints.BOTH;
+		gbc_list.gridx = 0;
+		gbc_list.gridy = 2;
+		contentPane.add(new JScrollPane(list), gbc_list);
+
+
+		////////////////////////////////////////////
+		//
+		//			TEXT AREA TO DISPLAY ANSWERS
+		//
+		////////////////////////////////////////////
 		answerTextArea = new JTextArea();
 		answerTextArea.setEditable(false);
 		answerTextArea.setFocusable(true);
@@ -138,55 +185,12 @@ public class RFPView
 		gbc_textArea.gridy = 1;
 		contentPane.add(answerTextArea, gbc_textArea);
 
-		searchTextField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 0;
-		contentPane.add(searchTextField, gbc_textField);
-		searchTextField.setColumns(10);
-
-		final JList<QuestionAnswer> list = new JList<QuestionAnswer>();
-		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setFixedCellWidth(400);
-		GridBagConstraints gbc_list = new GridBagConstraints();
-		gbc_list.gridwidth = 2;
-		gbc_list.gridheight = 2;
-		gbc_list.insets = new Insets(0, 0, 0, 5);
-		gbc_list.fill = GridBagConstraints.BOTH;
-		gbc_list.gridx = 0;
-		gbc_list.gridy = 2;
-		contentPane.add(new JScrollPane(list), gbc_list);
-		list.addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent arg0) {
-				if(!list.isSelectionEmpty()){
-					answerTextArea.setText("");
-					answerTextArea.append(list.getSelectedValue().getAnswer());
-				}
-			}			
-		});
-
-		final JButton btnSearch = new JButton("");
-		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
-		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
-		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSearch.gridx = 1;
-		gbc_btnSearch.gridy = 0;
-		contentPane.add(btnSearch, gbc_btnSearch);
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
-				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
-				searchResults.toArray(questionAnswerList);
-				list.setListData(questionAnswerList);
-			}			
-		});
-
-
+		
+		///////////////////////////////////////////////
+		//
+		//			NOTES AND SELECTED QUESTIONS
+		//
+		///////////////////////////////////////////////
 		final JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
@@ -211,35 +215,13 @@ public class RFPView
 		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
 		tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
 
-
-		String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
-		final JComboBox<String> comboBox = new JComboBox<String>(my_list);
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.gridwidth = 2;
-		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 0;
-		gbc_comboBox.gridy = 1;
-		contentPane.add(comboBox, gbc_comboBox);
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				searchTextField.setText((String) comboBox.getSelectedItem());
-				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
-				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
-				searchResults.toArray(questionAnswerList);
-				list.setListData(questionAnswerList);
-			}			
-		});
-
+		
+		///////////////////////////////////////////////////////////
+		//
+		//			ADDING QUESTIONS AND COPYING TO CLIPBOARD
+		//
+		///////////////////////////////////////////////////////////
 		JButton btnAddQ = new JButton("");
-		btnAddQ.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				selectedQsList.add(list.getSelectedValue());
-				QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
-				selectedQsList.toArray(selectedTemp);
-				selectedQAsList.setListData(selectedTemp);
-			}
-		});
 		btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
 		GridBagConstraints gbc_btnAddQ = new GridBagConstraints();
 		gbc_btnAddQ.anchor = GridBagConstraints.SOUTH;
@@ -249,10 +231,6 @@ public class RFPView
 		contentPane.add(btnAddQ, gbc_btnAddQ);
 
 		JButton btnAddToClip = new JButton("");
-		btnAddToClip.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAddToClip.setIcon(new ImageIcon(RFPView.class.getResource("/files/copyToClipIcon.png")));
 		GridBagConstraints gbc_btnAddToClip = new GridBagConstraints();
 		gbc_btnAddToClip.anchor = GridBagConstraints.NORTH;
@@ -262,41 +240,93 @@ public class RFPView
 		contentPane.add(btnAddToClip, gbc_btnAddToClip);
 
 
-		/*
-		 * Popup menu stuff
-		 */
+		////////////////////////////////////////
+		//
+		//				POPUP MENU STUFF
+		//
+		////////////////////////////////////////
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem mntmSelectAll = new JMenuItem("Select all");
-		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
-		mntmSelectAll.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(popupMenu.getInvoker().equals(answerTextArea)) {
-					answerTextArea.requestFocus();
-					answerTextArea.selectAll();
-				}
-				if(popupMenu.getInvoker().equals(notesArea)) {
-					notesArea.requestFocus();
-					notesArea.selectAll();
-				}
-			}
-		});
-		popupMenu.add(mntmSelectAll);
 		JMenuItem mntmCopy = new JMenuItem("Copy");
+		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
-
+		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
 
 		addPopup(answerTextArea, popupMenu);
 		addPopup(notesArea, popupMenu);
 
-		/*
-		 * Tab order setting
-		 */
-		my_mainFrame.setFocusTraversalPolicy(
+		///////////////////////////////////////
+		//
+		//			FORMATTING THE FRAME
+		//
+		///////////////////////////////////////
+		mainFrame.setContentPane(contentPane);
+		mainFrame.setJMenuBar(menuBar);
+		mainFrame.setResizable(true);
+		mainFrame.setFocusTraversalPolicy(
 				new FocusTraversalOnArray(new Component[]{searchTextField, btnSearch, comboBox, btnAddQ, btnAddToClip}));
+		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		
+		
+		/*******************************************************************************
+		 * 
+		 * 
+		 * 							LISTENERS AND EVENTS
+		 * 
+		 * 
+		 *******************************************************************************/
+		
+		//Menu listeners and actions
+		mntmLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mainFrame.dispose();
+				mainFrame = new JFrame();
+				mainFrame.setResizable(false);
+				mainFrame.setTitle("Global Business Logistics");
+				mainFrame.setBounds(100, 100, 488, 329);
+				mainFrame.setLocationRelativeTo(null);
+				mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				mainFrame.getContentPane().setLayout(null);
+				mainFrame.setVisible(true);
 
-		my_mainFrame.repaint();
+				LoginView loginView = new LoginView();
+				loginView.initializeLogin(mainFrame);
+			}
+		});
+		
+		//RFP area listeners and actions
+		
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
+				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
+				searchResults.toArray(questionAnswerList);
+				list.setListData(questionAnswerList);
+			}			
+		});
+		
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				searchTextField.setText((String) comboBox.getSelectedItem());
+				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
+				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
+				searchResults.toArray(questionAnswerList);
+				list.setListData(questionAnswerList);
+			}			
+		});
+		
+		
+		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				if(!list.isSelectionEmpty()){
+					answerTextArea.setText("");
+					answerTextArea.append(list.getSelectedValue().getAnswer());
+				}
+			}			
+		});
 
 		searchTextField.addKeyListener(new KeyListener() {
 			@Override
@@ -323,7 +353,45 @@ public class RFPView
 			public void mouseClicked(MouseEvent arg0) {
 				searchTextField.selectAll();
 			}
-		});		
+		});
+		
+		btnAddQ.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				selectedQsList.add(list.getSelectedValue());
+				QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
+				selectedQsList.toArray(selectedTemp);
+				selectedQAsList.setListData(selectedTemp);
+			}
+		});
+		
+		btnAddToClip.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//TODO
+									/////////////////////////////////////////////ALEX FINISH THIS DUUUUDE!
+			}
+		});
+		
+		mntmSelectAll.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(popupMenu.getInvoker().equals(answerTextArea)) {
+					answerTextArea.requestFocus();
+					answerTextArea.selectAll();
+				}
+				if(popupMenu.getInvoker().equals(notesArea)) {
+					notesArea.requestFocus();
+					notesArea.selectAll();
+				}
+			}
+		});
+		
+		mntmCopy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TODO
+				////////////////////////////////////////////////////////ALEX FINISH THIS DUUUUUUUUUDE!
+			}
+		});
 	}
 
 
