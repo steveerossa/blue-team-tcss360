@@ -1,5 +1,6 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -214,29 +215,38 @@ public class RFPView
 		//			NOTES AND SELECTED QUESTIONS
 		//
 		///////////////////////////////////////////////
-		final JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridheight = 4;
-		gbc_scrollPane.gridx = 4;
-		gbc_scrollPane.gridy = 0;
-		contentPane.add(scrollPane, gbc_scrollPane);
+//		final JScrollPane scrollPane = new JScrollPane();
+//		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+//		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+//		gbc_scrollPane.gridheight = 4;
+//		gbc_scrollPane.gridx = 4;
+//		gbc_scrollPane.gridy = 0;
+//		contentPane.add(scrollPane, gbc_scrollPane);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(null);
-		scrollPane.setViewportView(tabbedPane);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-
+		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
+		gbc_tabbedPane.gridheight = 4;
+		gbc_tabbedPane.gridx = 4;
+		gbc_tabbedPane.gridy = 0;
+		
 		final JTextArea notesArea = new JTextArea();
 		notesArea.setFocusable(true);
 		notesArea.setRequestFocusEnabled(true);
 		notesArea.setLineWrap(true);
-		tabbedPane.addTab("Notes", null, notesArea, null);
-
-		final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
-		selectedQAsList.setFixedCellWidth(400);
+		tabbedPane.addTab("Notes", null, new JScrollPane(notesArea), null);
+		
 		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
-		tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
+		final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
+		selectedQAsList.setFixedCellWidth(tabbedPane.getWidth());
+		JPanel thisPanel = new JPanel();
+		thisPanel.setLayout(new BorderLayout());
+		thisPanel.add(new JScrollPane(selectedQAsList), BorderLayout.CENTER);
+		tabbedPane.addTab("Selected Q/A's", null, thisPanel, null);
+		
+		contentPane.add(tabbedPane, gbc_tabbedPane);
 
 
 		///////////////////////////////////////////////////////////
@@ -464,7 +474,7 @@ public class RFPView
 							result = (String)contents.getTransferData(DataFlavor.stringFlavor);
 							notesArea.insert(result, notesArea.getCaretPosition());
 						}
-						catch (UnsupportedFlavorException | IOException ex){
+						catch (UnsupportedFlavorException | IOException e1){
 							//do nothing cause we smart
 						}
 					}
