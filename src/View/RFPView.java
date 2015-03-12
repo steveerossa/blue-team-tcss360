@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -16,8 +15,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -51,14 +51,13 @@ public class RFPView
 //				extends JFrame
 {
 
-	private static final int UNDO_MEMORY_SIZE = 10;
 	private JPanel contentPane;
 	private JTextField searchTextField;
 	private JTextArea answerTextArea;
 	private Database my_database;
 	private JFrame mainFrame;
 	private Clipboard clipboard;
-	private LimitedQueue<String> undoQ;
+	private Stack undoStack;
 
 
 	public void initialize(JFrame my_mainFrame) {
@@ -66,7 +65,6 @@ public class RFPView
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		my_database = new Database();
-		undoQ = new LimitedQueue<String>(UNDO_MEMORY_SIZE);
 
 
 		/////////////////////////////////////////
@@ -163,6 +161,7 @@ public class RFPView
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFixedCellWidth(400);
+		list.setCellRenderer(new MyCellRenderer());
 		//		GridBagConstraints gbc_list = new GridBagConstraints();
 		//		gbc_list.gridwidth = 2;
 		//		gbc_list.gridheight = 2;
@@ -277,15 +276,9 @@ public class RFPView
 		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
 		popupMenu.add(mntmPaste);
-		
-		JPopupMenu notesPopupMenu = new JPopupMenu();
-		JMenuItem mntmUndo = new JMenuItem("Undo");
-		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
-		notesPopupMenu.add(mntmUndo);
-
 
 		addPopup(answerTextArea, popupMenu);
-		addPopup(notesArea, notesPopupMenu);
+		addPopup(notesArea, popupMenu);
 
 		///////////////////////////////////////
 		//
@@ -356,6 +349,18 @@ public class RFPView
 					answerTextArea.setText("");
 					answerTextArea.append(list.getSelectedValue().getAnswer());
 				}
+			}			
+		});
+		
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent arg0) {
+				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
+				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
+				searchResults.toArray(questionAnswerList);
+				list.setListData(questionAnswerList);
+				list.setBorder(new EmptyBorder(10,10, 10, 10));
 			}			
 		});
 
@@ -453,22 +458,6 @@ public class RFPView
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
-	}
-	
-	@SuppressWarnings("serial")
-	public class LimitedQueue<E> extends LinkedList<E> {
-	    private int limit;
-
-	    public LimitedQueue(int limit) {
-	        this.limit = limit;
-	    }
-
-	    @Override
-	    public boolean add(E o) {
-	        super.add(o);
-	        while (size() > limit) super.remove(); 
-	        return true;
-	    }
 	}
 
 	//	
