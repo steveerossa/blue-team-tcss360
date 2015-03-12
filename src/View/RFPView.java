@@ -153,6 +153,7 @@ public class RFPView
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFixedCellWidth(400);
+		list.setCellRenderer(new MyCellRenderer());
 //		GridBagConstraints gbc_list = new GridBagConstraints();
 //		gbc_list.gridwidth = 2;
 //		gbc_list.gridheight = 2;
@@ -339,6 +340,7 @@ public class RFPView
 				}
 			}			
 		});
+		
 
 		searchTextField.addKeyListener(new KeyListener() {
 			@Override
