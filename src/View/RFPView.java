@@ -5,19 +5,18 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,6 +54,8 @@ public class RFPView
 	private JTextArea answerTextArea;
 	private Database my_database;
 	private JFrame mainFrame;
+	private Clipboard clipboard;
+	private Stack undoStack;
 
 
 	public void initialize(JFrame my_mainFrame) {
@@ -63,7 +64,7 @@ public class RFPView
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		my_database = new Database();
 
-		
+
 		/////////////////////////////////////////
 		//
 		//			MENU STUFF
@@ -108,7 +109,7 @@ public class RFPView
 
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
-		
+
 		/////////////////////////////////////////////
 		//
 		//			APPLYING LAYOUT TO CONTENT PANE
@@ -134,7 +135,7 @@ public class RFPView
 		gbc_textField.gridy = 0;
 		contentPane.add(searchTextField, gbc_textField);
 		searchTextField.setColumns(10);
-		
+
 		final JButton btnSearch = new JButton("");
 		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
@@ -152,22 +153,21 @@ public class RFPView
 		gbc_comboBox.gridx = 0;
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
-		
+
 		final JList<QuestionAnswer> list = new JList<QuestionAnswer>();
 		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFixedCellWidth(400);
-		list.setCellRenderer(new MyCellRenderer());
-//		GridBagConstraints gbc_list = new GridBagConstraints();
-//		gbc_list.gridwidth = 2;
-//		gbc_list.gridheight = 2;
-//		gbc_list.insets = new Insets(0, 0, 0, 5);
-//		gbc_list.fill = GridBagConstraints.BOTH;
-//		gbc_list.gridx = 0;
-//		gbc_list.gridy = 2;
-//		contentPane.add(new JScrollPane(list), gbc_list);
-		
+		//		GridBagConstraints gbc_list = new GridBagConstraints();
+		//		gbc_list.gridwidth = 2;
+		//		gbc_list.gridheight = 2;
+		//		gbc_list.insets = new Insets(0, 0, 0, 5);
+		//		gbc_list.fill = GridBagConstraints.BOTH;
+		//		gbc_list.gridx = 0;
+		//		gbc_list.gridy = 2;
+		//		contentPane.add(new JScrollPane(list), gbc_list);
+
 		////////////////////////////////////////////
 		//
 		//			TEXT AREA TO DISPLAY ANSWERS
@@ -181,13 +181,13 @@ public class RFPView
 		answerTextArea.setWrapStyleWord(true);
 		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		answerTextArea.setInheritsPopupMenu(true);		
-//		GridBagConstraints gbc_textArea = new GridBagConstraints();
-//		gbc_textArea.insets = new Insets(0, 0, 10, 5);
-//		gbc_textArea.gridheight = 3;
-//		gbc_textArea.fill = GridBagConstraints.BOTH;
-//		gbc_textArea.gridx = 2;
-//		gbc_textArea.gridy = 1;
-//		contentPane.add(answerTextArea, gbc_textArea);
+		//		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		//		gbc_textArea.insets = new Insets(0, 0, 10, 5);
+		//		gbc_textArea.gridheight = 3;
+		//		gbc_textArea.fill = GridBagConstraints.BOTH;
+		//		gbc_textArea.gridx = 2;
+		//		gbc_textArea.gridy = 1;
+		//		contentPane.add(answerTextArea, gbc_textArea);
 
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -202,8 +202,8 @@ public class RFPView
 		gbc_splitPane.gridy = 2;
 		gbc_splitPane.fill = GridBagConstraints.BOTH;
 		contentPane.add(splitPane, gbc_splitPane);
-		
-		
+
+
 		///////////////////////////////////////////////
 		//
 		//			NOTES AND SELECTED QUESTIONS
@@ -233,7 +233,7 @@ public class RFPView
 		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
 		tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
 
-		
+
 		///////////////////////////////////////////////////////////
 		//
 		//			ADDING QUESTIONS AND COPYING TO CLIPBOARD
@@ -266,10 +266,13 @@ public class RFPView
 		final JPopupMenu popupMenu = new JPopupMenu();
 		JMenuItem mntmSelectAll = new JMenuItem("Select all");
 		JMenuItem mntmCopy = new JMenuItem("Copy");
+		JMenuItem mntmPaste = new JMenuItem("Paste...");
 		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
-		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
+		mntmCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
+		mntmPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
 		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
+		popupMenu.add(mntmPaste);
 
 		addPopup(answerTextArea, popupMenu);
 		addPopup(notesArea, popupMenu);
@@ -285,9 +288,9 @@ public class RFPView
 		mainFrame.setFocusTraversalPolicy(
 				new FocusTraversalOnArray(new Component[]{searchTextField, btnSearch, comboBox, btnAddQ, btnAddToClip}));
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
-		
-		
+
+
+
 		/*******************************************************************************
 		 * 
 		 * 
@@ -295,7 +298,7 @@ public class RFPView
 		 * 
 		 * 
 		 *******************************************************************************/
-		
+
 		//Menu listeners and actions
 		mntmLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -313,9 +316,9 @@ public class RFPView
 				loginView.initializeLogin(mainFrame);
 			}
 		});
-		
+
 		//RFP area listeners and actions
-		
+
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -324,7 +327,7 @@ public class RFPView
 				list.setListData(questionAnswerList);
 			}			
 		});
-		
+
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				searchTextField.setText((String) comboBox.getSelectedItem());
@@ -334,8 +337,8 @@ public class RFPView
 				list.setListData(questionAnswerList);
 			}			
 		});
-		
-		
+
+
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -345,19 +348,6 @@ public class RFPView
 				}
 			}			
 		});
-		
-		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-		
-			@Override
-			public void propertyChange(PropertyChangeEvent arg0) {
-				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
-				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
-				searchResults.toArray(questionAnswerList);
-				list.setListData(questionAnswerList);
-				
-			}			
-		});
-		
 
 		searchTextField.addKeyListener(new KeyListener() {
 			@Override
@@ -385,7 +375,7 @@ public class RFPView
 				searchTextField.selectAll();
 			}
 		});
-		
+
 		btnAddQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedQsList.add(list.getSelectedValue());
@@ -394,14 +384,14 @@ public class RFPView
 				selectedQAsList.setListData(selectedTemp);
 			}
 		});
-		
+
 		btnAddToClip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO
-									/////////////////////////////////////////////ALEX FINISH THIS DUUUUDE!
+				clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(new StringSelection(answerTextArea.getText()), null);
 			}
 		});
-		
+
 		mntmSelectAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -415,12 +405,23 @@ public class RFPView
 				}
 			}
 		});
-		
+
 		mntmCopy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO
-				////////////////////////////////////////////////////////ALEX FINISH THIS DUUUUUUUUUDE!
+				if(popupMenu.getInvoker().equals(answerTextArea)) {
+					clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(new StringSelection(answerTextArea.getSelectedText()), null);
+				}
+			}
+		});
+		
+		mntmPaste.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(notesArea.hasFocus()) {
+					notesArea.insert(clipboard.toString(), notesArea.getCaretPosition());
+				}
 			}
 		});
 	}
