@@ -1,11 +1,15 @@
 package View;
 
+import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -19,11 +23,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -48,6 +54,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
+import Controller.Main;
 import Model.Database;
 import Model.QuestionAnswer;
 
@@ -61,15 +68,15 @@ public class RFPView
 	private Database my_database;
 	private JFrame mainFrame;
 	private Clipboard clipboard;
+	private ImagePanel imagePanel;
 
 
 	public void initialize(JFrame my_mainFrame) {
 		mainFrame = my_mainFrame;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		my_database = new Database();
-
-
+		my_database = new Database();		
+		
 		/////////////////////////////////////////
 		//
 		//			MENU STUFF
@@ -165,14 +172,7 @@ public class RFPView
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFixedCellWidth(400);
 		list.setCellRenderer(new MyCellRenderer());
-		//		GridBagConstraints gbc_list = new GridBagConstraints();
-		//		gbc_list.gridwidth = 2;
-		//		gbc_list.gridheight = 2;
-		//		gbc_list.insets = new Insets(0, 0, 0, 5);
-		//		gbc_list.fill = GridBagConstraints.BOTH;
-		//		gbc_list.gridx = 0;
-		//		gbc_list.gridy = 2;
-		//		contentPane.add(new JScrollPane(list), gbc_list);
+
 
 		////////////////////////////////////////////
 		//
@@ -186,19 +186,18 @@ public class RFPView
 		answerTextArea.setLineWrap(true);
 		answerTextArea.setWrapStyleWord(true);
 		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		answerTextArea.setInheritsPopupMenu(true);		
-		//		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		//		gbc_textArea.insets = new Insets(0, 0, 10, 5);
-		//		gbc_textArea.gridheight = 3;
-		//		gbc_textArea.fill = GridBagConstraints.BOTH;
-		//		gbc_textArea.gridx = 2;
-		//		gbc_textArea.gridy = 1;
-		//		contentPane.add(answerTextArea, gbc_textArea);
-
-		JSplitPane splitPane = new JSplitPane();
+		answerTextArea.setInheritsPopupMenu(true);
+		answerTextArea.setOpaque(false);
+		imagePanel = new ImagePanel();
+		imagePanel.setLayout(new BorderLayout());
+		imagePanel.add(answerTextArea, BorderLayout.CENTER);
+		final JScrollPane answerScrollPane = new JScrollPane(imagePanel);
+		final JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+
 		splitPane.setLeftComponent(new JScrollPane(list));
-		splitPane.setRightComponent(new JScrollPane(answerTextArea));
+		splitPane.setRightComponent(answerScrollPane);
+
 		splitPane.setDividerLocation(0.45);
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
 		gbc_splitPane.insets = new Insets(0, 0 , 10, 10);
@@ -215,13 +214,6 @@ public class RFPView
 		//			NOTES AND SELECTED QUESTIONS
 		//
 		///////////////////////////////////////////////
-//		final JScrollPane scrollPane = new JScrollPane();
-//		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-//		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-//		gbc_scrollPane.gridheight = 4;
-//		gbc_scrollPane.gridx = 4;
-//		gbc_scrollPane.gridy = 0;
-//		contentPane.add(scrollPane, gbc_scrollPane);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(null);
@@ -231,21 +223,23 @@ public class RFPView
 		gbc_tabbedPane.gridheight = 4;
 		gbc_tabbedPane.gridx = 4;
 		gbc_tabbedPane.gridy = 0;
-		
+
 		final JTextArea notesArea = new JTextArea();
 		notesArea.setFocusable(true);
 		notesArea.setRequestFocusEnabled(true);
 		notesArea.setLineWrap(true);
+		notesArea.setWrapStyleWord(true);
 		tabbedPane.addTab("Notes", null, new JScrollPane(notesArea), null);
-		
-		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
+
+		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>(); //for storing selected questions to populate the list model
 		final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
 		selectedQAsList.setFixedCellWidth(tabbedPane.getWidth());
+		selectedQAsList.setCellRenderer(new MyCellRenderer());
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new BorderLayout());
 		thisPanel.add(new JScrollPane(selectedQAsList), BorderLayout.CENTER);
 		tabbedPane.addTab("Selected Q/A's", null, thisPanel, null);
-		
+
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 
 
@@ -305,12 +299,14 @@ public class RFPView
 		//			FORMATTING THE FRAME
 		//
 		///////////////////////////////////////
+
 		mainFrame.setContentPane(contentPane);
 		mainFrame.setJMenuBar(menuBar);
 		mainFrame.setResizable(true);
 		mainFrame.setFocusTraversalPolicy(
 				new FocusTraversalOnArray(new Component[]{searchTextField, btnSearch, comboBox, btnAddQ, btnAddToClip}));
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
 
 
 
@@ -366,8 +362,10 @@ public class RFPView
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(!list.isSelectionEmpty()){
+					selectedQAsList.clearSelection();
 					answerTextArea.setText("");
-					answerTextArea.append(list.getSelectedValue().getAnswer());
+					answerTextArea.setText(list.getSelectedValue().getAnswer());
+					mainFrame.repaint();
 				}
 			}			
 		});
@@ -380,7 +378,8 @@ public class RFPView
 				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
 				searchResults.toArray(questionAnswerList);
 				list.setListData(questionAnswerList);
-				list.setBorder(new EmptyBorder(10,10, 10, 10));
+				list.setBorder(new EmptyBorder(4, 4, 4, 4));
+				mainFrame.repaint();
 			}			
 		});
 
@@ -389,12 +388,14 @@ public class RFPView
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
 					btnSearch.doClick();
+					mainFrame.repaint();
 				}
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
 					searchTextField.selectAll();
+					mainFrame.repaint();
 				}
 			}
 
@@ -408,6 +409,7 @@ public class RFPView
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				searchTextField.selectAll();
+				mainFrame.repaint();
 			}
 		});
 
@@ -417,7 +419,20 @@ public class RFPView
 				QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
 				selectedQsList.toArray(selectedTemp);
 				selectedQAsList.setListData(selectedTemp);
+				mainFrame.repaint();
 			}
+		});
+		
+		selectedQAsList.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				if(!selectedQAsList.isSelectionEmpty()){
+					list.clearSelection();
+					answerTextArea.setText("");
+					answerTextArea.setText(selectedQAsList.getSelectedValue().getAnswer());
+					mainFrame.repaint();
+				}
+			}			
 		});
 
 		btnAddToClip.addActionListener(new ActionListener() {
@@ -431,6 +446,7 @@ public class RFPView
 				else {
 					clipboard.setContents(new StringSelection(answerTextArea.getSelectedText()), null);
 				}
+//				mainFrame.repaint();
 			}
 		});
 
@@ -445,6 +461,7 @@ public class RFPView
 					notesArea.requestFocus();
 					notesArea.selectAll();
 				}
+				mainFrame.repaint();
 			}
 		});
 
@@ -455,6 +472,7 @@ public class RFPView
 					clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					clipboard.setContents(new StringSelection(answerTextArea.getSelectedText()), null);
 				}
+				mainFrame.repaint();
 			}
 		});
 
@@ -466,9 +484,7 @@ public class RFPView
 					clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 					Transferable contents = clipboard.getContents(null);
 					boolean hasTransferableText =
-							(contents != null) &&
-							contents.isDataFlavorSupported(DataFlavor.stringFlavor)
-							;
+							(contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor);
 					if (hasTransferableText) {
 						try {
 							result = (String)contents.getTransferData(DataFlavor.stringFlavor);
@@ -479,6 +495,7 @@ public class RFPView
 						}
 					}
 				}
+				mainFrame.repaint();
 			}
 		});
 
@@ -499,222 +516,48 @@ public class RFPView
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
+				mainFrame.repaint();
 			}
 			public void mouseReleased(MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
+				mainFrame.repaint();
 			}
 			private void showMenu(MouseEvent e) {
 				popup.show(e.getComponent(), e.getX(), e.getY());
+				mainFrame.repaint();
 			}
 		});
 	}
 
-	//	
-	//			/**
-	//			 * Launch the application.
-	//			 */
-	//			public static void main(String[] args) {
-	//				EventQueue.invokeLater(new Runnable() {
-	//					public void run() {
-	//						try {
-	//							UIManager.setLookAndFeel(
-	//						            UIManager.getSystemLookAndFeelClassName());
-	//							RFPView frame = new RFPView();
-	//							frame.setVisible(true);
-	//						} catch (Exception e) {
-	//							e.printStackTrace();
-	//						}
-	//					}
-	//				});
-	//			}
-	//	
-	//		/**
-	//		 * Create the frame.
-	//		 */
+	@SuppressWarnings("serial")
+	private class ImagePanel extends JPanel{
 
+		private BufferedImage image;
+		public ImagePanel() {
+			try {                
+				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
+			} catch (IOException ex) {
+				//just toss it cause we smart
+			}
+		}
 
-
-	public RFPView() {
-
-		//						setTitle("Global Business Logistics");
-		//						setIconImage(Toolkit.getDefaultToolkit().getImage(RFPView.class.getResource("/files/title_bar_icon.png")));
-		//						setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//						setBounds(100, 100, 706, 468);
-		//						setResizable(true);
-		//						
-		//						JMenuBar menuBar = new JMenuBar();
-		//						setJMenuBar(menuBar);
-		//						
-		//						JMenu mnFile = new JMenu("File");
-		//						menuBar.add(mnFile);
-		//						
-		//						JMenuItem mntmNew = new JMenuItem("New");
-		//						mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
-		//						mnFile.add(mntmNew);
-		//						
-		//						JMenuItem mntmOpen = new JMenuItem("Open...");
-		//						mnFile.add(mntmOpen);
-		//						
-		//						JMenuItem mntmSave = new JMenuItem("Save");
-		//						mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
-		//						mnFile.add(mntmSave);
-		//						
-		//						JMenuItem mntmSaveAs = new JMenuItem("Save As...");
-		//						mnFile.add(mntmSaveAs);
-		//						
-		//						JMenuItem mntmExit = new JMenuItem("Exit");
-		//						mntmExit.addActionListener(new ActionListener() {
-		//							public void actionPerformed(ActionEvent arg0) {
-		//								System.exit(0);
-		//							}
-		//						});
-		//						
-		//						JMenuItem mntmLogOut = new JMenuItem("Log out");
-		//						mntmLogOut.addActionListener(new ActionListener() {
-		//							public void actionPerformed(ActionEvent e) {
-		//								LoginView loginView = new LoginView();
-		////								loginView.initializeLogin(my_mainframe);
-		//							}
-		//						});
-		//						mnFile.add(mntmLogOut);
-		//						mnFile.add(mntmExit);
-		//						
-		//						JMenu mnEdit = new JMenu("Edit");
-		//						menuBar.add(mnEdit);
-		//						
-		//						JMenu mnView = new JMenu("View");
-		//						menuBar.add(mnView);
-		//						
-		//						JMenu mnHelp = new JMenu("Help");
-		//						menuBar.add(mnHelp);
-		//						
-		//						JMenuItem mntmHelp = new JMenuItem("Help...");
-		//						mnHelp.add(mntmHelp);
-		//						
-		//						JMenuItem mntmAbout = new JMenuItem("About");
-		//						mnHelp.add(mntmAbout);
-		//						contentPane = new JPanel();
-		//						contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		//						setContentPane(contentPane);
-		//						GridBagLayout gbl_contentPane = new GridBagLayout();
-		//						gbl_contentPane.columnWidths = new int[]{127, 0, 226, 66, 200, 0};
-		//						gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0};
-		//						gbl_contentPane.columnWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		//						gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
-		//						contentPane.setLayout(gbl_contentPane);
-		//						
-		////						textField = new JTextField();
-		////						GridBagConstraints gbc_textField = new GridBagConstraints();
-		////						gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		////						gbc_textField.insets = new Insets(0, 0, 5, 5);
-		////						gbc_textField.gridx = 0;
-		////						gbc_textField.gridy = 0;
-		////						contentPane.add(textField, gbc_textField);
-		////						textField.setColumns(10);
-		//						
-		//						JButton btnSearch = new JButton("");
-		//						btnSearch.addActionListener(new ActionListener() {
-		//							public void actionPerformed(ActionEvent arg0) {
-		//								
-		//							}
-		//						});
-		//						btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
-		//						GridBagConstraints gbc_btnSearch = new GridBagConstraints();
-		//						gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
-		//						gbc_btnSearch.gridx = 1;
-		//						gbc_btnSearch.gridy = 0;
-		//						contentPane.add(btnSearch, gbc_btnSearch);
-		//						
-		//						JScrollPane scrollPane = new JScrollPane();
-		//						GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		//						gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		//						gbc_scrollPane.gridheight = 4;
-		//						gbc_scrollPane.gridx = 4;
-		//						gbc_scrollPane.gridy = 0;
-		//						contentPane.add(scrollPane, gbc_scrollPane);
-		//						
-		//						JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		//						tabbedPane.setBorder(null);
-		//						scrollPane.setViewportView(tabbedPane);
-		//						tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		//						
-		//						JTextArea notesArea = new JTextArea();
-		//						tabbedPane.addTab("Notes", null, notesArea, null);
-		//						
-		//						JList selectedQAsList = new JList();
-		//						tabbedPane.addTab("Selected Q/A's", null, selectedQAsList, null);
-		//						
-		//						JComboBox comboBox = new JComboBox();
-		//						GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		//						gbc_comboBox.gridwidth = 2;
-		//						gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-		//						gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		//						gbc_comboBox.gridx = 0;
-		//						gbc_comboBox.gridy = 1;
-		//						contentPane.add(comboBox, gbc_comboBox);
-		//						
-		//						JTextArea textArea = new JTextArea();
-		//						textArea.setInheritsPopupMenu(true);
-		//						textArea.setEditable(false);
-		//						textArea.setLineWrap(true);
-		//						textArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		//						
-		//						JPopupMenu popupMenu = new JPopupMenu();
-		//						addPopup(textArea, popupMenu);
-		//						
-		//						JMenuItem mntmSelectAll = new JMenuItem("Select all");
-		//						popupMenu.add(mntmSelectAll);
-		//						
-		//						JMenuItem mntmCopy = new JMenuItem("Copy");
-		//						popupMenu.add(mntmCopy);
-		//						GridBagConstraints gbc_textArea = new GridBagConstraints();
-		//						gbc_textArea.insets = new Insets(0, 0, 0, 5);
-		//						gbc_textArea.gridheight = 3;
-		//						gbc_textArea.fill = GridBagConstraints.BOTH;
-		//						gbc_textArea.gridx = 2;
-		//						gbc_textArea.gridy = 1;
-		//						contentPane.add(textArea, gbc_textArea);
-		//						
-		//						JList list = new JList();
-		//						list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		//						list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		//						GridBagConstraints gbc_list = new GridBagConstraints();
-		//						gbc_list.gridwidth = 2;
-		//						gbc_list.gridheight = 2;
-		//						gbc_list.insets = new Insets(0, 0, 0, 5);
-		//						gbc_list.fill = GridBagConstraints.BOTH;
-		//						gbc_list.gridx = 0;
-		//						gbc_list.gridy = 2;
-		//						contentPane.add(list, gbc_list);
-		//						
-		//						JButton btnAddQ = new JButton("");
-		//						btnAddQ.addActionListener(new ActionListener() {
-		//							public void actionPerformed(ActionEvent e) {
-		//							}
-		//						});
-		//						btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
-		//						GridBagConstraints gbc_btnAddQ = new GridBagConstraints();
-		//						gbc_btnAddQ.anchor = GridBagConstraints.SOUTH;
-		//						gbc_btnAddQ.insets = new Insets(0, 0, 5, 5);
-		//						gbc_btnAddQ.gridx = 3;
-		//						gbc_btnAddQ.gridy = 2;
-		//						contentPane.add(btnAddQ, gbc_btnAddQ);
-		//						
-		//						JButton btnAddToClip = new JButton("");
-		//						btnAddToClip.addActionListener(new ActionListener() {
-		//							public void actionPerformed(ActionEvent e) {
-		//							}
-		//						});
-		//						btnAddToClip.setIcon(new ImageIcon(RFPView.class.getResource("/files/copyToClipIcon.png")));
-		//						GridBagConstraints gbc_btnAddToClip = new GridBagConstraints();
-		//						gbc_btnAddToClip.anchor = GridBagConstraints.NORTH;
-		//						gbc_btnAddToClip.insets = new Insets(0, 0, 0, 5);
-		//						gbc_btnAddToClip.gridx = 3;
-		//						gbc_btnAddToClip.gridy = 3;
-		//						contentPane.add(btnAddToClip, gbc_btnAddToClip);
-		//	}
+		@Override
+		protected void paintComponent(Graphics g) {		
+			
+	        final Graphics2D g2d = (Graphics2D) g;
+	        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+	                             RenderingHints.VALUE_ANTIALIAS_ON);
+	        
+			final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+			g2d.setComposite(ac);
+			super.paintComponent(g2d);
+			g2d.drawImage(image, this.getWidth()/2 - image.getWidth()/2, this.getHeight()/2 - image.getHeight()/2, null);  
+			final AlphaComposite ac2 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+			g2d.setComposite(ac2);
+			mainFrame.repaint();
+		}
 
 
 	}

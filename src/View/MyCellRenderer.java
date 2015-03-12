@@ -12,10 +12,11 @@ import javax.swing.ListCellRenderer;
 
 import Model.QuestionAnswer;
 
+@SuppressWarnings("serial")
 public class MyCellRenderer extends JLabel implements ListCellRenderer<QuestionAnswer> {
 
     private JPanel p;
-    private JLabel l;
+//    private JLabel l;
     private JTextArea ta;
 
     public MyCellRenderer() {
@@ -54,7 +55,7 @@ public class MyCellRenderer extends JLabel implements ListCellRenderer<QuestionA
 
         // check if this cell is selected
         } else if (isSelected) {
-        	background = Color.BLUE;
+        	background = new Color(51, 153, 255);
             foreground = Color.WHITE;
             
 
