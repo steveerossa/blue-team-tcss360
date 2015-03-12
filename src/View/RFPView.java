@@ -2,11 +2,9 @@ package View;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -27,6 +25,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -154,16 +153,15 @@ public class RFPView
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setFixedCellWidth(400);
-		GridBagConstraints gbc_list = new GridBagConstraints();
-		gbc_list.gridwidth = 2;
-		gbc_list.gridheight = 2;
-		gbc_list.insets = new Insets(0, 0, 0, 5);
-		gbc_list.fill = GridBagConstraints.BOTH;
-		gbc_list.gridx = 0;
-		gbc_list.gridy = 2;
-		contentPane.add(new JScrollPane(list), gbc_list);
-
-
+//		GridBagConstraints gbc_list = new GridBagConstraints();
+//		gbc_list.gridwidth = 2;
+//		gbc_list.gridheight = 2;
+//		gbc_list.insets = new Insets(0, 0, 0, 5);
+//		gbc_list.fill = GridBagConstraints.BOTH;
+//		gbc_list.gridx = 0;
+//		gbc_list.gridy = 2;
+//		contentPane.add(new JScrollPane(list), gbc_list);
+		
 		////////////////////////////////////////////
 		//
 		//			TEXT AREA TO DISPLAY ANSWERS
@@ -177,14 +175,28 @@ public class RFPView
 		answerTextArea.setWrapStyleWord(true);
 		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		answerTextArea.setInheritsPopupMenu(true);		
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.insets = new Insets(0, 0, 10, 5);
-		gbc_textArea.gridheight = 3;
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 2;
-		gbc_textArea.gridy = 1;
-		contentPane.add(answerTextArea, gbc_textArea);
+//		GridBagConstraints gbc_textArea = new GridBagConstraints();
+//		gbc_textArea.insets = new Insets(0, 0, 10, 5);
+//		gbc_textArea.gridheight = 3;
+//		gbc_textArea.fill = GridBagConstraints.BOTH;
+//		gbc_textArea.gridx = 2;
+//		gbc_textArea.gridy = 1;
+//		contentPane.add(answerTextArea, gbc_textArea);
 
+		JSplitPane splitPane = new JSplitPane();
+		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setLeftComponent(new JScrollPane(list));
+		splitPane.setRightComponent(new JScrollPane(answerTextArea));
+		splitPane.setDividerLocation(0.45);
+		GridBagConstraints gbc_splitPane = new GridBagConstraints();
+		gbc_splitPane.insets = new Insets(0, 0 , 10, 10);
+		gbc_splitPane.gridheight = 3;
+		gbc_splitPane.gridwidth = 3;
+		gbc_splitPane.gridx = 0;
+		gbc_splitPane.gridy = 2;
+		gbc_splitPane.fill = GridBagConstraints.BOTH;
+		contentPane.add(splitPane, gbc_splitPane);
+		
 		
 		///////////////////////////////////////////////
 		//
