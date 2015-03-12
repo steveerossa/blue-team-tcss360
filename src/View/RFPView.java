@@ -266,16 +266,24 @@ public class RFPView
 		//				POPUP MENU STUFF
 		//
 		////////////////////////////////////////
+		//new popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
+		// menu items
 		JMenuItem mntmSelectAll = new JMenuItem("Select all");
 		JMenuItem mntmCopy = new JMenuItem("Copy");
 		JMenuItem mntmPaste = new JMenuItem("Paste...");
+		JMenuItem mntmUndo = new JMenuItem("Undo");
+		//keyboard shortcuts
 		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
 		mntmPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
+		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+		//populate menu
 		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
 		popupMenu.add(mntmPaste);
+		popupMenu.add(mntmUndo);
+		//add popup menu to proper components with helper method that adds mouse listeners respectively
 
 		addPopup(answerTextArea, popupMenu);
 		addPopup(notesArea, popupMenu);
@@ -436,6 +444,15 @@ public class RFPView
 			public void actionPerformed(ActionEvent e) {
 				if(notesArea.hasFocus()) {
 					notesArea.insert(clipboard.toString(), notesArea.getCaretPosition());
+				}
+			}
+		});
+		
+		mntmUndo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(notesArea.hasFocus()) {
+					
 				}
 			}
 		});
