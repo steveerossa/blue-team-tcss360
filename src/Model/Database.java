@@ -77,7 +77,9 @@ public class Database {
 	private void populateData() {
 		try
         {
-            FileInputStream file = new FileInputStream(new File("src/files/Answers.xlsx"));
+			final String dir = System.getProperty("user.dir");
+            FileInputStream file = new FileInputStream(new File(dir + "/Answers.xlsx"));
+            
             
             //Create Workbook instance holding reference to .xlsx file
             XSSFWorkbook workbook = new XSSFWorkbook(file);
