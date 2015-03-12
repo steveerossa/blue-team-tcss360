@@ -7,7 +7,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -17,8 +20,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -57,7 +60,6 @@ public class RFPView
 	private Database my_database;
 	private JFrame mainFrame;
 	private Clipboard clipboard;
-	private Stack undoStack;
 
 
 	public void initialize(JFrame my_mainFrame) {
@@ -359,9 +361,9 @@ public class RFPView
 				}
 			}			
 		});
-		
+
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-			
+
 			@Override
 			public void propertyChange(PropertyChangeEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -411,7 +413,14 @@ public class RFPView
 		btnAddToClip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(new StringSelection(answerTextArea.getText()), null);
+
+				if(answerTextArea.getSelectedText() == null) {
+					answerTextArea.selectAll();
+					clipboard.setContents(new StringSelection(answerTextArea.getSelectedText()), null);
+				}
+				else {
+					clipboard.setContents(new StringSelection(answerTextArea.getSelectedText()), null);
+				}
 			}
 		});
 
@@ -438,21 +447,36 @@ public class RFPView
 				}
 			}
 		});
-		
+
 		mntmPaste.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(notesArea.hasFocus()) {
-					notesArea.insert(clipboard.toString(), notesArea.getCaretPosition());
+				if(popupMenu.getInvoker().equals(notesArea)) {
+					String result = "";
+					clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					Transferable contents = clipboard.getContents(null);
+					boolean hasTransferableText =
+							(contents != null) &&
+							contents.isDataFlavorSupported(DataFlavor.stringFlavor)
+							;
+					if (hasTransferableText) {
+						try {
+							result = (String)contents.getTransferData(DataFlavor.stringFlavor);
+							notesArea.insert(result, notesArea.getCaretPosition());
+						}
+						catch (UnsupportedFlavorException | IOException ex){
+							//do nothing cause we smart
+						}
+					}
 				}
 			}
 		});
-		
+
 		mntmUndo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(notesArea.hasFocus()) {
-					
+
 				}
 			}
 		});
