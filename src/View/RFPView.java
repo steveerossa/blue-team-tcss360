@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.PopupMenu;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -16,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -49,13 +51,14 @@ public class RFPView
 //				extends JFrame
 {
 
+	private static final int UNDO_MEMORY_SIZE = 10;
 	private JPanel contentPane;
 	private JTextField searchTextField;
 	private JTextArea answerTextArea;
 	private Database my_database;
 	private JFrame mainFrame;
 	private Clipboard clipboard;
-	private Stack undoStack;
+	private LimitedQueue<String> undoQ;
 
 
 	public void initialize(JFrame my_mainFrame) {
@@ -63,6 +66,7 @@ public class RFPView
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		my_database = new Database();
+		undoQ = new LimitedQueue<String>(UNDO_MEMORY_SIZE);
 
 
 		/////////////////////////////////////////
@@ -273,9 +277,15 @@ public class RFPView
 		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
 		popupMenu.add(mntmPaste);
+		
+		JPopupMenu notesPopupMenu = new JPopupMenu();
+		JMenuItem mntmUndo = new JMenuItem("Undo");
+		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+		notesPopupMenu.add(mntmUndo);
+
 
 		addPopup(answerTextArea, popupMenu);
-		addPopup(notesArea, popupMenu);
+		addPopup(notesArea, notesPopupMenu);
 
 		///////////////////////////////////////
 		//
@@ -443,6 +453,22 @@ public class RFPView
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+	}
+	
+	@SuppressWarnings("serial")
+	public class LimitedQueue<E> extends LinkedList<E> {
+	    private int limit;
+
+	    public LimitedQueue(int limit) {
+	        this.limit = limit;
+	    }
+
+	    @Override
+	    public boolean add(E o) {
+	        super.add(o);
+	        while (size() > limit) super.remove(); 
+	        return true;
+	    }
 	}
 
 	//	
