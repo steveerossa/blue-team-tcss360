@@ -42,6 +42,10 @@ public class QuestionAnswer {
 	{
 		return my_SampleQuestion;
 	}
+	public int getEditLvl()
+	{
+		return my_EditLevel;
+	}
 	/**
 	 * Returns all of the text fields in one string.
 	 * @return
