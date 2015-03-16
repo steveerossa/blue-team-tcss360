@@ -153,13 +153,14 @@ public class LoginView {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(userNameTF.getText().equalsIgnoreCase("Username")) {
-					userNameTF.setText("");
+					userNameTF.selectAll();
 				}
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if(userNameTF.getText().isEmpty()) {
 					userNameTF.setText("Username");
+					userNameTF.selectAll();
 				}
 			}
 		});
@@ -184,12 +185,14 @@ public class LoginView {
 			public void mouseClicked(MouseEvent arg0) {
 				if(pinTF.getText().toString().equalsIgnoreCase("PIN")) {
 					pinTF.setText("");
+					pinTF.selectAll();
 				}
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if(pinTF.getText().isEmpty()) {
 					pinTF.setText("PIN");
+					pinTF.selectAll();
 				}
 			}
 		});
