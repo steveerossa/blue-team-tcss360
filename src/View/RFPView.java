@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.net.*;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -40,6 +42,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -347,6 +350,7 @@ public class RFPView
 				loginView.initializeLogin(mainFrame);
 			}
 		});
+			
 
 		//RFP area listeners and actions
 
@@ -519,8 +523,51 @@ public class RFPView
 				}
 			}
 		});
+		
+		//Help menu to show that user can email us for assistant
+		mntmHelp.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent H) {				
+				
+				JOptionPane.showMessageDialog(null, 
+						"For assistant: Please contact blueteamtcss360@gmail.com", 
+						"Help",
+						JOptionPane.PLAIN_MESSAGE);				
+			}
+		});
+		
+		//Show our site for about us and allow the user to click to open the site
+		mntmAbout.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent A) {
+				Object[] options = {"Open Webpage",
+									"Cancel"};
+				
+				int n = JOptionPane.showOptionDialog(null, 
+						"We are BlueTeam\n" 
+						+ "For more information please visit our website\n" 
+						+ "http://site.google.com/site/blueteamtcss360/", 
+						"About",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.INFORMATION_MESSAGE,
+						null,
+						options,
+						options[0]);	
+				if (n == JOptionPane.YES_OPTION){
+					try{
+						Desktop desktop = java.awt.Desktop.getDesktop();
+						URI oURL = new URI("http://site.google.com/site/blueteamtcss360/");
+						desktop.browse(oURL);
+					
+					}
+					catch(Exception e){
+						e.printStackTrace();
+					}					
+				}else{					
+				}
+			}
+		});		
 	}
-
 
 	private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
@@ -573,4 +620,5 @@ public class RFPView
 
 
 	}
+	
 }
