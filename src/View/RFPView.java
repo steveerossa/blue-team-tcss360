@@ -246,7 +246,6 @@ public class RFPView
 
 		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>(); //for storing selected questions to populate the list model
 		final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
-		selectedQAsList.setFixedCellWidth(tabbedPane.getWidth());
 		selectedQAsList.setCellRenderer(new MyCellRenderer());
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new BorderLayout());
