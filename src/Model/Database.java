@@ -78,7 +78,8 @@ public class Database {
 		try
         {
 			final String dir = System.getProperty("user.dir");
-            FileInputStream file = new FileInputStream(new File(dir + "/Answers.xlsx"));
+            FileInputStream file = new FileInputStream(new File("src/files/Answers.xlsx"));
+            //FileInputStream file = new FileInputStream(new File(dir + "/Answers.xlsx"));
             
             
             //Create Workbook instance holding reference to .xlsx file
