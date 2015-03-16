@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -47,6 +49,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -185,18 +188,27 @@ public class RFPView
 		answerTextArea.setRequestFocusEnabled(true);
 		answerTextArea.setLineWrap(true);
 		answerTextArea.setWrapStyleWord(true);
-		answerTextArea.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		answerTextArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		answerTextArea.setInheritsPopupMenu(true);
 		answerTextArea.setOpaque(false);
 		imagePanel = new ImagePanel();
 		imagePanel.setLayout(new BorderLayout());
+		imagePanel.setMinimumSize(new Dimension(0,0));
 		imagePanel.add(answerTextArea, BorderLayout.CENTER);
+
 		final JScrollPane answerScrollPane = new JScrollPane(imagePanel);
+		answerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		final JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
 		splitPane.setLeftComponent(new JScrollPane(list));
-		splitPane.setRightComponent(answerScrollPane);
+		
+		/*Playing with these two lines below, the scroll pane breaks the centering of the logo and makes
+		 * the formatting a bit awkward where you can't read the answer very well because the scroll pane
+		 * centers the contents so you can't see the first word. Bypassed by just adding the imagePanel directly*/
+		
+		//splitPane.setRightComponent(answerScrollPane);
+		splitPane.setRightComponent(imagePanel);
 
 		splitPane.setDividerLocation(0.45);
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
