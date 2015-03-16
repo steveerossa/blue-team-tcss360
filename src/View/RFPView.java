@@ -161,6 +161,7 @@ public class RFPView
 
 		String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
 		final JComboBox<String> comboBox = new JComboBox<String>(my_list);
+		comboBox.setMaximumRowCount(30);
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.gridwidth = 2;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
