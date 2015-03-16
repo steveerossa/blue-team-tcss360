@@ -4,8 +4,11 @@
 //Class Author Jeremiah
 package Model;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -78,12 +81,12 @@ public class Database {
 		try
         {
 			final String dir = System.getProperty("user.dir");
-            FileInputStream file = new FileInputStream(new File("src/files/Answers.xlsx"));
+            //FileInputStream file = new FileInputStream(new File("src/files/Answers.xlsx"));
             //FileInputStream file = new FileInputStream(new File(dir + "/Answers.xlsx"));
-            
+            InputStream test = this.getClass().getResourceAsStream("/Answers.xlsx");
             
             //Create Workbook instance holding reference to .xlsx file
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            XSSFWorkbook workbook = new XSSFWorkbook(test);
  
             //Get first/desired sheet from the workbook
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -118,7 +121,8 @@ public class Database {
                 my_data.add(new QuestionAnswer(rowContents[0],rowContents[1],rowContents[2],rowContents[3],editLevel));
             }
             workbook.close();
-            file.close();
+            //file.close();
+            test.close();
             //Bit to get rid of the first header line read in
             QuestionAnswer remove = null;
             for(QuestionAnswer cur : my_data)
