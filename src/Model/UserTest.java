@@ -9,96 +9,132 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
+/**Class tests User class.
  * @author Steve Onyango
  * @version Mar 16, 2015
  */
-public class UserTest {
+public class UserTest 
+{
+	/**The User Object to be tested.*/
+	private User my_user;
+	/**The pin number of User.*/
+	private final String my_pin = "5678";
+	/**The username of User.*/
+	private final String my_username = "steve";
+	/**The Administrative status of User.*/
+	private final boolean my_admin_status = true;
+	
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception 
+	{
+		my_user = new User(my_username,my_pin,my_admin_status );
 	}
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception 
+	{
+		System.out.println("End testing.");
 	}
 
 	/**
 	 * Test method for {@link Model.User#User()}.
 	 */
 	@Test
-	public void testUser() {
-		fail("Not yet implemented"); // TODO
+	public void testUser()
+	{
+		// Nothing to test in default constructor
 	}
 
-	/**
+	/**Tests parameterized User constructor.
 	 * Test method for {@link Model.User#User(java.lang.String, java.lang.String, boolean)}.
 	 */
 	@Test
-	public void testUserStringStringBoolean() {
-		fail("Not yet implemented"); // TODO
+	public void testUserStringStringBoolean() 
+	{
+		assertEquals("The username do not match.", my_username, my_user.getName());
+		assertEquals("The pin numbers do not match.", my_pin, my_user.getPin());
+		assertEquals("The Administrative status do not match.", my_admin_status, my_user.getAdminStatus());
 	}
 
 	/**
 	 * Test method for {@link Model.User#loginAttempt()}.
 	 */
 	@Test
-	public void testLoginAttempt() {
-		fail("Not yet implemented"); // TODO
+	public void testLoginAttempt()
+	{
+		 
+		assertFalse("Login succesful", my_user.loginAttempt());
+		assertTrue("Login failed", new User("todd", "0001", false).loginAttempt());
 	}
 
 	/**
 	 * Test method for {@link Model.User#getName()}.
 	 */
 	@Test
-	public void testGetName() {
-		fail("Not yet implemented"); // TODO
+	public void testGetName()
+	{
+		// already tested above
+		assertEquals("The username do not match.", my_username, my_user.getName());
+		 
 	}
 
 	/**
 	 * Test method for {@link Model.User#getPin()}.
 	 */
 	@Test
-	public void testGetPin() {
-		fail("Not yet implemented"); // TODO
+	public void testGetPin() 
+	{
+		assertEquals("The pin numbers do not match.", my_pin, my_user.getPin()); // a retest
 	}
 
 	/**
 	 * Test method for {@link Model.User#getAdminStatus()}.
 	 */
 	@Test
-	public void testGetAdminStatus() {
-		fail("Not yet implemented"); // TODO
+	public void testGetAdminStatus() 
+	{
+		assertEquals("The Administrative status do not match.", my_admin_status, my_user.getAdminStatus());
 	}
 
 	/**
 	 * Test method for {@link Model.User#setName(java.lang.String)}.
 	 */
 	@Test
-	public void testSetName() {
-		fail("Not yet implemented"); // TODO
+	public void testSetName()
+	{
+		User user = new User("mike", "0111",false);
+		user.setName("fred");
+		assertEquals("Userames not same", "fred", user.getName());
 	}
 
 	/**
 	 * Test method for {@link Model.User#setPin(java.lang.String)}.
 	 */
 	@Test
-	public void testSetPin() {
-		fail("Not yet implemented"); // TODO
+	public void testSetPin() 
+	{
+		my_user.setPin("0911");
+		assertEquals("Pin numbers do not match", "0911", my_user.getPin());
 	}
 
 	/**
 	 * Test method for {@link Model.User#setAdministrator(boolean)}.
 	 */
 	@Test
-	public void testSetAdministrator() {
-		fail("Not yet implemented"); // TODO
+	public void testSetAdministrator() 
+	{
+		my_user.setAdministrator(false);
+		assertFalse("Admin status is TRUE", my_user.getAdminStatus());
+		my_user.setAdministrator(true);
+		assertTrue("Admin status is FALSE", my_user.getAdminStatus());
+		 
 	}
 
 }
