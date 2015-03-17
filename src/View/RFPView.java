@@ -54,6 +54,8 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -232,13 +234,16 @@ public class RFPView
 		//
 		///////////////////////////////////////////////
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(null);
 		//tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		tabbedPane.setTabLayoutPolicy(JTabbedPane.CENTER);
+		tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+		
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
+		gbc_tabbedPane.weightx = 0.1;
 		gbc_tabbedPane.gridheight = 4;
+		gbc_tabbedPane.gridwidth = 1;
+		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
 		gbc_tabbedPane.gridx = 4;
 		gbc_tabbedPane.gridy = 0;
 
@@ -247,17 +252,21 @@ public class RFPView
 		notesArea.setRequestFocusEnabled(true);
 		notesArea.setLineWrap(true);
 		notesArea.setWrapStyleWord(true);
+		notesArea.setPreferredSize(new Dimension(10,10));
 		tabbedPane.addTab("Notes", null, new JScrollPane(notesArea), null);
-
+		
 		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>(); //for storing selected questions to populate the list model
 		final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
 		selectedQAsList.setCellRenderer(new MyCellRenderer());
+		
+		selectedQAsList.setPreferredSize(new Dimension(10,10));
 		JPanel thisPanel = new JPanel();
 		thisPanel.setLayout(new BorderLayout());
 		thisPanel.add(new JScrollPane(selectedQAsList), BorderLayout.CENTER);
 		tabbedPane.addTab("Selected Q/A's", null, thisPanel, null);
-
-
+		
+		
+		
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 
 
@@ -469,6 +478,16 @@ public class RFPView
 			}
 		});
 
+		tabbedPane.addChangeListener(new ChangeListener(){
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				tabbedPane.repaint();
+				tabbedPane.revalidate();
+				tabbedPane.validate();
+			}
+		});
+		
 		mntmSelectAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
