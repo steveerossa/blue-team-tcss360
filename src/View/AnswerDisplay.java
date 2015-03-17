@@ -16,7 +16,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 //import javax.swing.JToggleButton;
 
-/**Class AnswerDisplay is a JPanel that displays the questions and answers.*/
+/**Class AnswerDisplay is a JPanel that displays the questions and answers.
+ * @author Steve Onyango*/
 public class AnswerDisplay extends JPanel 
 {
 	/**Serial Version ID. */
@@ -105,13 +106,13 @@ public class AnswerDisplay extends JPanel
 	public static void main(String... arguments)
 	{
 
-		System.out.println("Working");
+		/*System.out.println("Working");
 		//new AnswerDisplay();
 		JFrame frame  = new JFrame("Frame Here");
 		frame.setVisible(true);
 		frame.setSize(400, 400);
 		frame.add(new AnswerDisplay());
-		frame.setVisible(true);
+		frame.setVisible(true);*/
 
 	}
 	

@@ -32,9 +32,11 @@ public class User {
 	 * @author Alex
 	 */
 	public User(String name, String pin, boolean admin) {		
-		userName = name;
-		userPin = pin;
-		isAdmin = admin;	
+		setName(name); // changed to setMethods
+		setPin(pin);
+		setAdministrator(admin);
+			
+		
 	}
 		
 	/**
@@ -68,22 +70,22 @@ public class User {
 	 * 			If they didn't, they are granted access to the analyst page.
 	 * 		If the pin or user name does not match what is in the user list, no access is granted and
 	 * 		the user is warned that the info was not correct or that there is no such user registered, respectively.
-	 * 
+	 *  Steve Onyango changed userPin, userName, and isAdmin to getName, getPin, and getAdminStatus
 	 * @author Alex
 	 */
 	public boolean loginAttempt() {
 		userList();
 		boolean result = false;
 		
-		String loginName = this.userName.toString();
+		String loginName = this.getName().toString();
 		
 		if(userList.containsKey(loginName)) {
-			User temp = userList.get(this.userName);
-			if(this.userPin.compareTo(temp.userPin) == 0) {
-				if(this.isAdmin && temp.isAdmin) {
+			User temp = userList.get(this.getName());
+			if(this.getPin().compareTo(temp.getPin()) == 0) {
+				if(this.getAdminStatus() && temp.getAdminStatus()) {
 					result = true;
 				}
-				else if(this.isAdmin && !temp.isAdmin) {
+				else if(this.getAdminStatus() && !temp.getAdminStatus()) {
 					JOptionPane.showMessageDialog(null, "You do not have admin privileges.");
 				}
 				else {
@@ -99,4 +101,57 @@ public class User {
 		}
 		return result;
 	}
+	
+	/**Class returns user name.
+	 * @author Steve Onyango
+	 * @return userName the user name*/
+	public final String getName()
+	{
+		return userName;
+		
+	} // getName
+	
+	/**Class returns user pin number.
+	 * @author Steve Onyango
+	 * @return userPin the user pin number*/
+	public final String getPin()
+	{
+		return userPin;
+		
+	}
+	/**Class gets the administative status.
+	 * @author Steve Onyango
+	 * @return isAdmin*/
+	public boolean getAdminStatus()
+	{
+		return isAdmin;
+		
+	} // end isAdministrator
+	
+	
+	/**Class sets user name.
+	 * @author Steve Onyango
+	 * @param the_name the user name
+	 */
+	public final void setName(final String the_name)
+	{
+		userName = the_name;
+		
+	} // end setName
+	/**Class returns user name.
+	 * @author Steve Onyango
+	 * @param the_pin the pin number
+	 * */
+	public final void setPin(final String the_pin)
+	{
+		userPin = the_pin;
+		
+	} // end setPin
+	/**Class sets the administrative status.
+	 * @author Steve Onyango
+	 * @param the_admin_status the administrative status*/
+	public void setAdministrator(final boolean the_admin_status)
+	{
+		isAdmin = the_admin_status;
+	} //end setAdministrator
 }
