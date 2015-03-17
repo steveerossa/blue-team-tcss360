@@ -3,6 +3,7 @@ package View;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -36,11 +37,11 @@ public class MyCellRenderer extends JLabel implements ListCellRenderer<QuestionA
 		
 		ta.setText("-" + value.toString());
         int width = list.getParent().getWidth();
-        ta.setSize(width, 1);
       
         // this is just to lure the ta's internal sizing mechanism into action
-        if (width > 0)
-            ta.setSize(width, Short.MAX_VALUE);
+        ta.setSize(width, Short.MAX_VALUE);
+  
+        ta.getHeight();
         Color background;
         Color foreground;
 
@@ -68,7 +69,7 @@ public class MyCellRenderer extends JLabel implements ListCellRenderer<QuestionA
         
         ta.setBackground(background);
         ta.setForeground(foreground);
-        
+        ta.revalidate();
         return p;
 		
 	}
