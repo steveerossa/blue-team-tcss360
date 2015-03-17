@@ -76,7 +76,7 @@ public class Database {
 	private void populateData() {
 		try
         {
-			final String dir = System.getProperty("user.dir");
+			//final String dir = System.getProperty("user.dir");
             //FileInputStream file = new FileInputStream(new File("src/files/Answers.xlsx"));
             //FileInputStream file = new FileInputStream(new File(dir + "/Answers.xlsx"));
             InputStream test = this.getClass().getResourceAsStream("/Answers.xlsx");
