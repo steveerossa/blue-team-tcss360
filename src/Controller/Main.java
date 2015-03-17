@@ -61,7 +61,8 @@ public class Main {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() 
+	{
 		mainFrame = new JFrame();
 		mainFrame.setResizable(false);
 		mainFrame.setTitle("Global Business Logistics");

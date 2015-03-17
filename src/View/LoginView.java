@@ -143,8 +143,10 @@ public class LoginView {
 		});
 		userNameTF.addFocusListener(new FocusAdapter() {
 			@Override
-			public void focusLost(FocusEvent arg0) {
-				if(userNameTF.getText().isEmpty()) {
+			public void focusLost(FocusEvent arg0) 
+			{
+				if(userNameTF.getText().isEmpty())
+				{
 					userNameTF.setText("Username");
 				}
 			}
