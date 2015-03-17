@@ -28,15 +28,19 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -76,9 +80,16 @@ public class RFPView
 	private JFrame mainFrame;
 	private Clipboard clipboard;
 	private ImagePanel imagePanel;
-
+	private JFileChooser myJFC;
+	private boolean fileSelected;
+	private JTextArea notesArea = new JTextArea();
+	private ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
+	private JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
+	
 
 	public void initialize(JFrame my_mainFrame) {
+		fileSelected = false;
+		myJFC = new JFileChooser();
 		mainFrame = my_mainFrame;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -247,7 +258,7 @@ public class RFPView
 		gbc_tabbedPane.gridx = 4;
 		gbc_tabbedPane.gridy = 0;
 
-		final JTextArea notesArea = new JTextArea();
+		//final JTextArea notesArea = new JTextArea();
 		notesArea.setFocusable(true);
 		notesArea.setRequestFocusEnabled(true);
 		notesArea.setLineWrap(true);
@@ -255,8 +266,8 @@ public class RFPView
 		notesArea.setPreferredSize(new Dimension(10,10));
 		tabbedPane.addTab("Notes", null, new JScrollPane(notesArea), null);
 		
-		final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>(); //for storing selected questions to populate the list model
-		final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
+		//final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>(); //for storing selected questions to populate the list model
+		//final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
 		selectedQAsList.setCellRenderer(new MyCellRenderer());
 		
 		selectedQAsList.setPreferredSize(new Dimension(10,10));
@@ -278,7 +289,7 @@ public class RFPView
 		JButton btnAddQ = new JButton("");
 		btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
 		GridBagConstraints gbc_btnAddQ = new GridBagConstraints();
-		gbc_btnAddQ.anchor = GridBagConstraints.SOUTH;
+		gbc_btnAddQ.anchor = GridBagConstraints.SOUTH;	
 		gbc_btnAddQ.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAddQ.gridx = 3;
 		gbc_btnAddQ.gridy = 2;
@@ -362,7 +373,27 @@ public class RFPView
 				loginView.initializeLogin(mainFrame);
 			}
 		});
+		
+		mntmSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				save();
+			}
 			
+		});
+		mntmSaveAs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				saveAs();
+			}
+			
+		});
+		mntmOpen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				load();
+			}
+		});
 
 		//RFP area listeners and actions
 
@@ -591,6 +622,99 @@ public class RFPView
 		});		
 	}
 
+	private void save() {
+		if(fileSelected) {
+			StringBuilder sb = new StringBuilder();
+			try {
+				PrintStream out = new PrintStream(myJFC.getSelectedFile());
+				sb.append(selectedQsList.size());
+				sb.append("\n");
+				for(int i=0; i < selectedQsList.size(); i++) {
+					sb.append(selectedQsList.get(i).getCategory());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getKeyPhrases());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getQuestion());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getAnswer());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getEditLvl());
+					sb.append("\n");
+				}
+				sb.append(notesArea.getText());
+				out.print(sb.toString());
+			} catch (FileNotFoundException e) {
+				saveAs();
+			}
+		} else {
+			saveAs();
+		}
+	}
+	
+	private void saveAs() {
+		int completed;
+		do {
+			completed = myJFC.showSaveDialog(null);
+		} while (completed != JFileChooser.APPROVE_OPTION);
+		fileSelected = true;
+		save();
+	}
+	
+	private void load() {
+		int completed;
+		do {
+			completed = myJFC.showOpenDialog(null);
+		} while (completed != JFileChooser.APPROVE_OPTION);
+		try {
+			Scanner in = new Scanner(myJFC.getSelectedFile());
+			int count = in.nextInt();
+			ArrayList<QuestionAnswer> QAlist = new ArrayList<QuestionAnswer>();
+			for(int i = 0; i < count; i++) {
+				String[] QA = {"", "", "", ""};
+				String last = "";
+				int edit;
+				last = in.nextLine();
+				while(!last.contains("=====")) {
+					QA[0] += last + "\n";
+					last = in.nextLine();
+				}
+				last = in.nextLine();
+				while(!last.contains("=====")) {
+					QA[1] += last+ "\n";
+					last = in.nextLine();
+				}
+				last = in.nextLine();
+				while(!last.contains("=====")) {
+					QA[2] += last+ "\n";
+					last = in.nextLine();
+				}
+				last = in.nextLine();
+				while(!last.contains("=====")) {
+					QA[3] += last+ "\n";
+					last = in.nextLine();
+				}
+				edit = in.nextInt();
+				QAlist.add(new QuestionAnswer(QA[0], QA[1], QA[2], QA[3], edit));
+			}
+			StringBuilder sb = new StringBuilder();
+			while(in.hasNextLine()) {
+				sb.append(in.nextLine());
+			}
+			selectedQsList = QAlist;
+			QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
+			selectedQsList.toArray(selectedTemp);
+			selectedQAsList.setListData(selectedTemp);
+			notesArea.setText(sb.toString());
+			mainFrame.repaint();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "invalid file");
+			load();
+		}
+		fileSelected = true;
+			
+		
+	}
+	
 	private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
