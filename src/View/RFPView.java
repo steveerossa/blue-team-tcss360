@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.*;
+import java.net.URI;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -52,7 +52,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -197,7 +196,7 @@ public class RFPView
 		answerTextArea.setOpaque(false);
 		imagePanel = new ImagePanel();
 		imagePanel.setLayout(new BorderLayout());
-		imagePanel.setMinimumSize(new Dimension(0,0));
+		imagePanel.setMinimumSize(new Dimension(100,0));
 		imagePanel.add(answerTextArea, BorderLayout.CENTER);
 
 		final JScrollPane answerScrollPane = new JScrollPane(imagePanel);
@@ -546,7 +545,7 @@ public class RFPView
 				int n = JOptionPane.showOptionDialog(null, 
 						"We are BlueTeam\n" 
 						+ "For more information please visit our website\n" 
-						+ "http://site.google.com/site/blueteamtcss360/", 
+						+ "https://sites.google.com/site/blueteamtcss360/", 
 						"About",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.INFORMATION_MESSAGE,
@@ -556,7 +555,7 @@ public class RFPView
 				if (n == JOptionPane.YES_OPTION){
 					try{
 						Desktop desktop = java.awt.Desktop.getDesktop();
-						URI oURL = new URI("http://site.google.com/site/blueteamtcss360/");
+						URI oURL = new URI("https://sites.google.com/site/blueteamtcss360/");
 						desktop.browse(oURL);
 					
 					}
