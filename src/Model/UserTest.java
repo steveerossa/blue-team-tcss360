@@ -70,10 +70,16 @@ public class UserTest
 	public void testLoginAttempt()
 	{
 		 
-		assertFalse("Login succesful", my_user.loginAttempt());
+		assertFalse("Login succesful", my_user.loginAttempt()); 
+		assertFalse("Login failed", new User("todd", "0091", false).loginAttempt());
 		assertTrue("Login failed", new User("todd", "0001", false).loginAttempt());
+		assertFalse("Login failed", new User("todd", "0001", true).loginAttempt());
+		assertTrue("Login failed", new User("admin", "1234", true).loginAttempt()); 
+		assertTrue("Login failed", new User("karlene", "0002", false).loginAttempt()); 
+		assertTrue("Login failed", new User("admin", "1234", false).loginAttempt()); 
+		
 	}
-
+ 
 	/**
 	 * Test method for {@link Model.User#getName()}.
 	 */

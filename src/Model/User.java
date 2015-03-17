@@ -96,7 +96,7 @@ public class User {
 				JOptionPane.showMessageDialog(null, "Incorrect User Name or PIN, Please Try Again.");
 			}
 		}
-		else {
+		else { 
 			JOptionPane.showMessageDialog(null, "No such user exists, please contact administration to register.");
 		}
 		return result;
