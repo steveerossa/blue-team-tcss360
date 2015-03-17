@@ -46,7 +46,7 @@ public class Database {
 				keyPhrases.add(next.trim());
 			}
 			
-		}
+		}  
 		return keyPhrases;
 	}
 	
@@ -111,7 +111,7 @@ public class Database {
                         case Cell.CELL_TYPE_STRING:
                         	rowContents[i] = cell.getStringCellValue(); 
                         	i++;
-                            break;
+                            break;  
                     }
                 }
                 my_data.add(new QuestionAnswer(rowContents[0],rowContents[1],rowContents[2],rowContents[3],editLevel));

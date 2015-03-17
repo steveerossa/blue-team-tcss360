@@ -102,7 +102,7 @@ public class QuestionAnswerTest
 		assertEquals("GetAll method failed.",string, my_question_answer.getAll());
 		
 	}
-
+ 
 	/**
 	 * Test method for {@link Model.QuestionAnswer#toString()}.
 	 */
