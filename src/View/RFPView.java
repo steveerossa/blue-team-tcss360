@@ -40,7 +40,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar; 
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -199,8 +199,9 @@ public class RFPView
 		imagePanel.setMinimumSize(new Dimension(100,0));
 		imagePanel.add(answerTextArea, BorderLayout.CENTER);
 
-		final JScrollPane answerScrollPane = new JScrollPane(imagePanel);
-		answerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		final JScrollPane answerScrollPane = new JScrollPane(imagePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+	            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		final JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
@@ -212,6 +213,7 @@ public class RFPView
 		
 		//splitPane.setRightComponent(answerScrollPane);
 		splitPane.setRightComponent(imagePanel);
+		splitPane.setContinuousLayout(true);
 
 		splitPane.setDividerLocation(0.45);
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
@@ -253,6 +255,7 @@ public class RFPView
 		thisPanel.setLayout(new BorderLayout());
 		thisPanel.add(new JScrollPane(selectedQAsList), BorderLayout.CENTER);
 		tabbedPane.addTab("Selected Q/A's", null, thisPanel, null);
+
 
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 
@@ -621,5 +624,3 @@ public class RFPView
 	}
 	
 }
-
-
