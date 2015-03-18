@@ -66,7 +66,6 @@ public class MyCellRenderer extends JLabel implements ListCellRenderer<QuestionA
             foreground = Color.BLACK;
         };
 
-        
         ta.setBackground(background);
         ta.setForeground(foreground);
         ta.revalidate();

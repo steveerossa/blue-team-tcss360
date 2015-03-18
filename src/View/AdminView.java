@@ -18,52 +18,35 @@ import javax.swing.border.EmptyBorder;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
-public class AdminView 
-//extends JFrame 
-{
+/**
+ * User interface for the administration to add new approved question/answer pairs.
+ * 
+ * @author Alex
+ *
+ */
+public class AdminView {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JFrame mainFrame;
-
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AdminView frame = new AdminView();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	
 	public AdminView() {
-		
-		
+		//empty just because? can't remember why, should be fixed probably....maybe 
 	}
 	/**
-	 * Create the frame.
-	 * @return 
+	 * Create the frame. 
 	 */
 	public void initializeAdminView(JFrame my_mainFrame) {
 		mainFrame = my_mainFrame;
 		
 		mainFrame.setResizable(true);
 		
-//		setResizable(true);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainFrame.setContentPane(contentPane);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
