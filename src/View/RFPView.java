@@ -435,6 +435,7 @@ public class RFPView
 				}
 			}			
 		});
+		
 
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 
@@ -488,6 +489,20 @@ public class RFPView
 				mainFrame.repaint();
 			}
 		});
+		
+		//this is an action listener for a button that removes a QA from selected list.
+		/*
+		btnRemoveQ.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!selectedQAsList.isSelectionEmpty()) {
+					int i = selectedQAsList.getSelectedIndex();
+					selectedQsList.remove(i);
+					selectedQAsList.remove(i);
+					mainFrame.repaint();
+				}
+			}
+		});
+		 */
 		
 		selectedQAsList.addListSelectionListener(new ListSelectionListener() {
 			@Override
