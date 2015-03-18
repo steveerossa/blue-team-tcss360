@@ -394,6 +394,13 @@ public class RFPView
 				load();
 			}
 		});
+		
+		mntmNew.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				newRFP();
+			}
+		});
 
 		//RFP area listeners and actions
 
@@ -653,66 +660,74 @@ public class RFPView
 	
 	private void saveAs() {
 		int completed;
-		do {
-			completed = myJFC.showSaveDialog(null);
-		} while (completed != JFileChooser.APPROVE_OPTION);
-		fileSelected = true;
-		save();
+		completed = myJFC.showOpenDialog(null);
+		if (completed == JFileChooser.APPROVE_OPTION) {
+			fileSelected = true;
+			save();
+		}
 	}
 	
 	private void load() {
 		int completed;
-		do {
-			completed = myJFC.showOpenDialog(null);
-		} while (completed != JFileChooser.APPROVE_OPTION);
-		try {
-			Scanner in = new Scanner(myJFC.getSelectedFile());
-			int count = in.nextInt();
-			ArrayList<QuestionAnswer> QAlist = new ArrayList<QuestionAnswer>();
-			for(int i = 0; i < count; i++) {
-				String[] QA = {"", "", "", ""};
-				String last = "";
-				int edit;
-				last = in.nextLine();
-				while(!last.contains("=====")) {
-					QA[0] += last + "\n";
+		completed = myJFC.showOpenDialog(null);
+		if (completed == JFileChooser.APPROVE_OPTION) {
+			try {
+				Scanner in = new Scanner(myJFC.getSelectedFile());
+				int count = in.nextInt();
+				ArrayList<QuestionAnswer> QAlist = new ArrayList<QuestionAnswer>();
+				for(int i = 0; i < count; i++) {
+					String[] QA = {"", "", "", ""};
+					String last = "";
+					int edit;
 					last = in.nextLine();
-				}
-				last = in.nextLine();
-				while(!last.contains("=====")) {
-					QA[1] += last+ "\n";
+					while(!last.contains("=====")) {
+						QA[0] += last + "\n";
+						last = in.nextLine();
+					}
 					last = in.nextLine();
-				}
-				last = in.nextLine();
-				while(!last.contains("=====")) {
-					QA[2] += last+ "\n";
+					while(!last.contains("=====")) {
+						QA[1] += last+ "\n";
+						last = in.nextLine();
+					}
 					last = in.nextLine();
-				}
-				last = in.nextLine();
-				while(!last.contains("=====")) {
-					QA[3] += last+ "\n";
+					while(!last.contains("=====")) {
+						QA[2] += last+ "\n";
+						last = in.nextLine();
+					}
 					last = in.nextLine();
+					while(!last.contains("=====")) {
+						QA[3] += last+ "\n";
+						last = in.nextLine();
+					}
+					edit = in.nextInt();
+					QAlist.add(new QuestionAnswer(QA[0], QA[1], QA[2], QA[3], edit));
 				}
-				edit = in.nextInt();
-				QAlist.add(new QuestionAnswer(QA[0], QA[1], QA[2], QA[3], edit));
+				StringBuilder sb = new StringBuilder();
+				while(in.hasNextLine()) {
+					sb.append(in.nextLine());
+				}
+				selectedQsList = QAlist;
+				QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
+				selectedQsList.toArray(selectedTemp);
+				selectedQAsList.setListData(selectedTemp);
+				notesArea.setText(sb.toString());
+				mainFrame.repaint();
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(null, "invalid file");
+				load();
 			}
-			StringBuilder sb = new StringBuilder();
-			while(in.hasNextLine()) {
-				sb.append(in.nextLine());
-			}
-			selectedQsList = QAlist;
-			QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
-			selectedQsList.toArray(selectedTemp);
-			selectedQAsList.setListData(selectedTemp);
-			notesArea.setText(sb.toString());
-			mainFrame.repaint();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "invalid file");
-			load();
+			fileSelected = true;
 		}
-		fileSelected = true;
 			
-		
+	}
+	
+	private void newRFP() {
+		fileSelected = false;
+		selectedQsList = new ArrayList<QuestionAnswer>();
+		QuestionAnswer[] selectedTemp = {};
+		selectedQAsList.setListData(selectedTemp);
+		notesArea.setText("");
+		mainFrame.repaint();
 	}
 	
 	private void addPopup(Component component, final JPopupMenu popup) {
