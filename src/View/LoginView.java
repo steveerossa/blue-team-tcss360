@@ -40,11 +40,6 @@ import Model.User;
  */
 public class LoginView {
 	
-	/*Added this JFrame field "my_mainFrame" to access elsewhere in the class
-	Will need to pass control of the mainframe somehow to update to the RFP screen
-	If not here somewhere else*/
-	private JFrame my_mainFrame;
-	
 	private JLabel lblLogin;
 	private JLabel lblchckAdmin;
 	private JTextField userNameTF;
@@ -53,8 +48,11 @@ public class LoginView {
 	private JButton btnLogin;
 	private JCheckBox chckAdmin;
 	private User temp;
+	private JFrame my_mainFrame;
 	
-	
+	/*
+	 * Default constructor to initialize locals
+	 */
 	public LoginView() {
 		
 		lblLogin = new JLabel("Login:");
@@ -67,6 +65,11 @@ public class LoginView {
 		temp = new User();
 	}
 
+	/**
+	 * Initializes the contents of the login view and adds it to the application frame.
+	 * @param mainFrame The frame to add the view to.
+	 * @author Alex
+	 */
 	public void initializeLogin(JFrame mainFrame) {
 		
 		my_mainFrame = mainFrame;
@@ -104,6 +107,10 @@ public class LoginView {
 				new FocusTraversalOnArray(new Component[]{panel, chckAdmin, userNameTF, pinTF, btnLogin}));
 	}
 	
+	/**
+	 * Helper method to add listeners to components.
+	 * @author Alex
+	 */
 	private void addListeners() {
 		chckAdmin.addFocusListener(new FocusAdapter() {
 			@Override
@@ -132,12 +139,12 @@ public class LoginView {
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
-				// Dont need it cause we smart
+				// Do nothing cause we smart
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				// Dont need it cause we smart
+				// Do nothing cause we smart
 			}
 			
 		});
@@ -223,6 +230,11 @@ public class LoginView {
 		pinTF.addKeyListener(new enterKeyLoginListener());
 		
 	}
+	
+	/**
+	 * Helper method to assist in the login process.
+	 * @author Alex
+	 */
 	private void loginActionAttempted() {
 		temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
 				if(temp.loginAttempt() == true) {
@@ -236,7 +248,11 @@ public class LoginView {
 					}
 				};
 	}
-	
+	/**
+	 * Key listener class for streamlining login user experience.//not sure why its its own class?
+	 * @author Alex
+	 *
+	 */
 	private class enterKeyLoginListener implements KeyListener {
 
 		@Override
@@ -248,14 +264,20 @@ public class LoginView {
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			// Dont need it cause we smart
+			// Do nothing cause we smart
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			// Dont need it cause we smart
+			// Do nothing cause we smart
 		}
 	}
+	
+	/**
+	 * Custom JPanel to make things pretty.
+	 * @author Alex
+	 *
+	 */
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
 

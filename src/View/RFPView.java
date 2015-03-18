@@ -69,9 +69,13 @@ import Controller.Main;
 import Model.Database;
 import Model.QuestionAnswer;
 
-public class RFPView 
-//				extends JFrame
-{
+/**
+ * Main draft construction user interface class where approved question/answer pairs
+ * can be selected and manipulated.
+ * @author Alex
+ *
+ */
+public class RFPView {
 
 	private JPanel contentPane;
 	private JTextField searchTextField;
@@ -218,6 +222,8 @@ public class RFPView
 		final JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
+		answerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		answerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		splitPane.setLeftComponent(new JScrollPane(list));
 		
 		/*Playing with these two lines below, the scroll pane breaks the centering of the logo and makes
@@ -247,7 +253,6 @@ public class RFPView
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(null);
-		//tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 		
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
@@ -258,26 +263,15 @@ public class RFPView
 		gbc_tabbedPane.gridx = 4;
 		gbc_tabbedPane.gridy = 0;
 
-		//final JTextArea notesArea = new JTextArea();
 		notesArea.setFocusable(true);
 		notesArea.setRequestFocusEnabled(true);
 		notesArea.setLineWrap(true);
 		notesArea.setWrapStyleWord(true);
-		notesArea.setPreferredSize(new Dimension(10,10));
 		tabbedPane.addTab("Notes", null, new JScrollPane(notesArea), null);
 		
-		//final ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>(); //for storing selected questions to populate the list model
-		//final JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
+		
 		selectedQAsList.setCellRenderer(new MyCellRenderer());
-		
-		selectedQAsList.setPreferredSize(new Dimension(10,10));
-		JPanel thisPanel = new JPanel();
-		thisPanel.setLayout(new BorderLayout());
-		thisPanel.add(new JScrollPane(selectedQAsList), BorderLayout.CENTER);
-		tabbedPane.addTab("Selected Q/A's", null, thisPanel, null);
-		
-		
-		
+		tabbedPane.addTab("Selected Q/A's", null, new JScrollPane(selectedQAsList), null);
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 
 
@@ -310,25 +304,29 @@ public class RFPView
 		//				POPUP MENU STUFF
 		//
 		////////////////////////////////////////
+		
 		//new popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
+		
 		// menu items
 		JMenuItem mntmSelectAll = new JMenuItem("Select all");
 		JMenuItem mntmCopy = new JMenuItem("Copy");
 		JMenuItem mntmPaste = new JMenuItem("Paste...");
 		JMenuItem mntmUndo = new JMenuItem("Undo");
+		
 		//keyboard shortcuts
 		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
 		mntmPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
 		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
+		
 		//populate menu
 		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
 		popupMenu.add(mntmPaste);
 		popupMenu.add(mntmUndo);
+		
 		//add popup menu to proper components with helper method that adds mouse listeners respectively
-
 		addPopup(answerTextArea, popupMenu);
 		addPopup(notesArea, popupMenu);
 
@@ -345,8 +343,6 @@ public class RFPView
 				new FocusTraversalOnArray(new Component[]{searchTextField, btnSearch, comboBox, btnAddQ, btnAddToClip}));
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		
-
-
 
 		/*******************************************************************************
 		 * 
@@ -403,7 +399,6 @@ public class RFPView
 		});
 
 		//RFP area listeners and actions
-
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -423,7 +418,6 @@ public class RFPView
 			}			
 		});
 
-
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -438,7 +432,6 @@ public class RFPView
 		
 
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
 			@Override
 			public void propertyChange(PropertyChangeEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -480,6 +473,7 @@ public class RFPView
 			}
 		});
 
+		//QuestionAnswer manipulation and view listeners
 		btnAddQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedQsList.add(list.getSelectedValue());
@@ -527,20 +521,22 @@ public class RFPView
 				else {
 					clipboard.setContents(new StringSelection(answerTextArea.getSelectedText()), null);
 				}
-//				mainFrame.repaint();
 			}
 		});
+
+
+		//popup menu listeners
 
 		tabbedPane.addChangeListener(new ChangeListener(){
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				tabbedPane.repaint();
-				tabbedPane.revalidate();
+//				tabbedPane.repaint();
+//				tabbedPane.revalidate();
 				tabbedPane.validate();
 			}
 		});
-		
+
 		mntmSelectAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -594,7 +590,8 @@ public class RFPView
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(notesArea.hasFocus()) {
-
+					//TODO
+					//////////////////////////////////////////////ALEX FINISH THIS! maybe?
 				}
 			}
 		});
@@ -621,7 +618,9 @@ public class RFPView
 				int n = JOptionPane.showOptionDialog(null, 
 						"We are BlueTeam\n" 
 						+ "For more information please visit our website\n" 
+
 						+ "https://sites.google.com/site/blueteamtcss360/", 
+
 						"About",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.INFORMATION_MESSAGE,
@@ -631,7 +630,9 @@ public class RFPView
 				if (n == JOptionPane.YES_OPTION){
 					try{
 						Desktop desktop = java.awt.Desktop.getDesktop();
+
 						URI oURL = new URI("https://sites.google.com/site/blueteamtcss360/");
+
 						desktop.browse(oURL);
 					
 					}
@@ -643,6 +644,11 @@ public class RFPView
 			}
 		});		
 	}
+
+
+	/*
+	 * Private helper method to add the popup menu to specific components in the view.
+	 */
 
 	private void save() {
 		if(fileSelected) {
@@ -665,6 +671,7 @@ public class RFPView
 				}
 				sb.append(notesArea.getText());
 				out.print(sb.toString());
+				out.close();
 			} catch (FileNotFoundException e) {
 				saveAs();
 			}
@@ -727,6 +734,7 @@ public class RFPView
 				selectedQAsList.setListData(selectedTemp);
 				notesArea.setText(sb.toString());
 				mainFrame.repaint();
+				in.close();
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(null, "invalid file");
 				load();
@@ -745,6 +753,7 @@ public class RFPView
 		mainFrame.repaint();
 	}
 	
+
 	private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -766,6 +775,7 @@ public class RFPView
 		});
 	}
 
+	//Custom jpanel to make things pretty
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
 
@@ -782,10 +792,9 @@ public class RFPView
 		protected void paintComponent(Graphics g) {		
 			
 	        final Graphics2D g2d = (Graphics2D) g;
-	        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-	                             RenderingHints.VALUE_ANTIALIAS_ON);
+	        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	        
-			final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
+			final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f);
 			g2d.setComposite(ac);
 			super.paintComponent(g2d);
 			g2d.drawImage(image, this.getWidth()/2 - image.getWidth()/2, this.getHeight()/2 - image.getHeight()/2, null);  
@@ -793,8 +802,6 @@ public class RFPView
 			g2d.setComposite(ac2);
 			mainFrame.repaint();
 		}
-
-
 	}
 	
 }
