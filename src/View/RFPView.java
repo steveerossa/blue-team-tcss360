@@ -476,11 +476,15 @@ public class RFPView {
 		//QuestionAnswer manipulation and view listeners
 		btnAddQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedQsList.add(list.getSelectedValue());
-				QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
-				selectedQsList.toArray(selectedTemp);
-				selectedQAsList.setListData(selectedTemp);
-				mainFrame.repaint();
+				if(list.getSelectedValue() != null)
+				{
+					selectedQsList.add(list.getSelectedValue());
+					QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
+					selectedQsList.toArray(selectedTemp);
+					selectedQAsList.setListData(selectedTemp);
+					mainFrame.repaint();
+				}
+				
 			}
 		});
 		
