@@ -163,12 +163,14 @@ public class AdminView {
 		
 		JButton btnNewButton = new JButton("Save Question");
 		btnNewButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
 		JButton btnLogOut = new JButton("Log out");
 		btnLogOut.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.dispose();
 				mainFrame = new JFrame();
@@ -198,6 +200,7 @@ public class AdminView {
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});

@@ -46,6 +46,49 @@ import Model.User;
  */
 public class LoginView {
 	
+	/**
+	 * Key listener class for streamlining login user experience.//not sure why its its own class?
+	 * @author Alex
+	 *
+	 */
+	private class enterKeyLoginListener implements KeyListener {
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+				loginActionAttempted();
+			}			
+		}
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// Do nothing cause we smart
+		}
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// Do nothing cause we smart
+		}
+	}
+	/**
+	 * Custom JPanel to make things pretty.
+	 * @author Alex
+	 *
+	 */
+	@SuppressWarnings("serial")
+	private class ImagePanel extends JPanel{
+		private BufferedImage image;
+		public ImagePanel() {
+			try {                
+				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
+			} catch (IOException ex) {
+				//just toss it cause we smart
+			}
+			repaint();
+		}
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.drawImage(image, 0, 0, null);         
+		}
+	}
 	private JLabel lblLogin;
 	private JLabel lblchckAdmin;
 	private JTextField userNameTF;
@@ -53,7 +96,9 @@ public class LoginView {
 	private JPanel panel;
 	private JButton btnLogin;
 	private JCheckBox chckAdmin;
+	
 	private User temp;
+
 	private JFrame my_mainFrame;
 	
 	/**
@@ -68,47 +113,6 @@ public class LoginView {
 		btnLogin = new JButton("Login");
 		chckAdmin = new JCheckBox();
 		temp = new User();
-	}
-
-	/**
-	 * Initializes the contents of the login view and adds it to the application frame.
-	 * @param mainFrame The frame to add the view to.
-	 * @author Alex
-	 */
-	public void initializeLogin(JFrame mainFrame) {
-		
-		my_mainFrame = mainFrame;
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/files/title_bar_icon.png")));
-		addListeners();
-		
-		lblLogin.setBounds(316, 140, 46, 14);
-		chckAdmin.setBounds(360, 138, 20, 20);
-		chckAdmin.setFocusable(true);
-		lblchckAdmin.setBounds(380, 141, 46, 14);
-
-		userNameTF.setText("Username");
-		userNameTF.setBounds(316, 165, 86, 20);
-		userNameTF.setColumns(10);
-		userNameTF.setFocusable(true);
-
-		pinTF.setText("PIN");
-		pinTF.setBounds(316, 198, 86, 20);
-		pinTF.setColumns(10);
-		pinTF.setFocusable(true);
-		
-		btnLogin.setBounds(316, 236, 86, 20);
-
-		panel.setBounds(0, 0, 332, 285);
-		
-		mainFrame.getContentPane().add(lblLogin);
-		mainFrame.getContentPane().add(chckAdmin);
-		mainFrame.getContentPane().add(lblchckAdmin);
-		mainFrame.getContentPane().add(pinTF);
-		mainFrame.getContentPane().add(userNameTF);
-		mainFrame.getContentPane().add(btnLogin);
-		mainFrame.getContentPane().add(panel);	
-		mainFrame.setFocusTraversalPolicy(
-				new FocusTraversalOnArray(new Component[]{panel, chckAdmin, userNameTF, pinTF, btnLogin}));
 	}
 	
 	/**
@@ -228,6 +232,46 @@ public class LoginView {
 		userNameTF.addKeyListener(new enterKeyLoginListener());
 		pinTF.addKeyListener(new enterKeyLoginListener());
 	}
+	/**
+	 * Initializes the contents of the login view and adds it to the application frame.
+	 * @param mainFrame The frame to add the view to.
+	 * @author Alex
+	 */
+	public void initializeLogin(JFrame mainFrame) {
+		
+		my_mainFrame = mainFrame;
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/files/title_bar_icon.png")));
+		addListeners();
+		
+		lblLogin.setBounds(316, 140, 46, 14);
+		chckAdmin.setBounds(360, 138, 20, 20);
+		chckAdmin.setFocusable(true);
+		lblchckAdmin.setBounds(380, 141, 46, 14);
+
+		userNameTF.setText("Username");
+		userNameTF.setBounds(316, 165, 86, 20);
+		userNameTF.setColumns(10);
+		userNameTF.setFocusable(true);
+
+		pinTF.setText("PIN");
+		pinTF.setBounds(316, 198, 86, 20);
+		pinTF.setColumns(10);
+		pinTF.setFocusable(true);
+		
+		btnLogin.setBounds(316, 236, 86, 20);
+
+		panel.setBounds(0, 0, 332, 285);
+		
+		mainFrame.getContentPane().add(lblLogin);
+		mainFrame.getContentPane().add(chckAdmin);
+		mainFrame.getContentPane().add(lblchckAdmin);
+		mainFrame.getContentPane().add(pinTF);
+		mainFrame.getContentPane().add(userNameTF);
+		mainFrame.getContentPane().add(btnLogin);
+		mainFrame.getContentPane().add(panel);	
+		mainFrame.setFocusTraversalPolicy(
+				new FocusTraversalOnArray(new Component[]{panel, chckAdmin, userNameTF, pinTF, btnLogin}));
+	}
 	
 	/*
 	 * Helper method to assist in the login process.
@@ -245,49 +289,5 @@ public class LoginView {
 						rfpView.initialize(my_mainFrame);
 					}
 				};
-	}
-	/**
-	 * Key listener class for streamlining login user experience.//not sure why its its own class?
-	 * @author Alex
-	 *
-	 */
-	private class enterKeyLoginListener implements KeyListener {
-		@Override
-		public void keyPressed(KeyEvent arg0) {
-			if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-				loginActionAttempted();
-			}			
-		}
-		@Override
-		public void keyReleased(KeyEvent arg0) {
-			// Do nothing cause we smart
-		}
-		@Override
-		public void keyTyped(KeyEvent arg0) {
-			// Do nothing cause we smart
-		}
-	}
-	
-	/**
-	 * Custom JPanel to make things pretty.
-	 * @author Alex
-	 *
-	 */
-	@SuppressWarnings("serial")
-	private class ImagePanel extends JPanel{
-		private BufferedImage image;
-		public ImagePanel() {
-			try {                
-				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
-			} catch (IOException ex) {
-				//just toss it cause we smart
-			}
-			repaint();
-		}
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(image, 0, 0, null);         
-		}
 	}
 }

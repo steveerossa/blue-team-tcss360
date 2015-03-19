@@ -28,15 +28,12 @@ import View.LoginView;
  */
 public class Main {
 
-	private JFrame mainFrame;
-	public LoginView loginView;
-
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(
@@ -50,6 +47,10 @@ public class Main {
 			}
 		});
 	}
+	private JFrame mainFrame;
+
+
+	public LoginView loginView;
 
 	/**
 	 * Create the application.

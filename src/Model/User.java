@@ -61,25 +61,34 @@ public class User {
 	}
 
 	/**
-	 * Private method to initialize the list of users.
-	 * @author Chutiwat
+	 * Gets the administrative status.
+	 * @author Steve Onyango
+	 * @return isAdmin
 	 */
-	private void userList(){
-		userList = new HashMap<String, User>();
-		userList.put("todd", new User("todd", "0001", false));
-		userList.put("karlene", new User("karlene", "0002", false));
-		userList.put("scott", new User("scott", "0003", false));
-		userList.put("cheryl", new User("cheryl", "0004", false));
-		userList.put("terry", new User("terry", "0005", false));
-		userList.put("martin", new User("martin", "0006", false));
-		userList.put("bobby", new User("bobby", "0007", false));
-		userList.put("brian", new User("brian", "0008", false));
-		userList.put("lisa", new User("lisa", "0009", false));
-		userList.put("daniel", new User("daniel", "0010", false));
-		userList.put("steve", new User("steve", "0011", false));
-		userList.put("john", new User("john", "0012", false));
-		userList.put("admin", new User("admin", "1234", true));
+	public boolean getAdminStatus()
+	{
+		return isAdmin;
 	}
+
+	/**
+	 * Returns user name.
+	 * @author Steve Onyango
+	 * @return userName the user name
+	 */
+	public final String getName()
+	{
+		return userName;
+	}
+
+	/**
+	 * Returns user pin number.
+	 * @author Steve Onyango
+	 * @return userPin the user pin number
+	 */
+	public final String getPin()
+	{
+		return userPin;
+	} 
 
 	/**
 	 * Method to handle an attempted login by a user.
@@ -126,34 +135,14 @@ public class User {
 		}
 		return result;
 	}
-
 	/**
-	 * Returns user name.
+	 * Class sets the administrative status.
 	 * @author Steve Onyango
-	 * @return userName the user name
+	 * @param the_admin_status the administrative status
 	 */
-	public final String getName()
+	public void setAdministrator(final boolean the_admin_status)
 	{
-		return userName;
-	} 
-
-	/**
-	 * Returns user pin number.
-	 * @author Steve Onyango
-	 * @return userPin the user pin number
-	 */
-	public final String getPin()
-	{
-		return userPin;
-	}
-	/**
-	 * Gets the administrative status.
-	 * @author Steve Onyango
-	 * @return isAdmin
-	 */
-	public boolean getAdminStatus()
-	{
-		return isAdmin;
+		isAdmin = the_admin_status;
 	}	
 
 	/**
@@ -175,12 +164,23 @@ public class User {
 		userPin = the_pin;
 	}
 	/**
-	 * Class sets the administrative status.
-	 * @author Steve Onyango
-	 * @param the_admin_status the administrative status
+	 * Private method to initialize the list of users.
+	 * @author Chutiwat
 	 */
-	public void setAdministrator(final boolean the_admin_status)
-	{
-		isAdmin = the_admin_status;
+	private void userList(){
+		userList = new HashMap<String, User>();
+		userList.put("todd", new User("todd", "0001", false));
+		userList.put("karlene", new User("karlene", "0002", false));
+		userList.put("scott", new User("scott", "0003", false));
+		userList.put("cheryl", new User("cheryl", "0004", false));
+		userList.put("terry", new User("terry", "0005", false));
+		userList.put("martin", new User("martin", "0006", false));
+		userList.put("bobby", new User("bobby", "0007", false));
+		userList.put("brian", new User("brian", "0008", false));
+		userList.put("lisa", new User("lisa", "0009", false));
+		userList.put("daniel", new User("daniel", "0010", false));
+		userList.put("steve", new User("steve", "0011", false));
+		userList.put("john", new User("john", "0012", false));
+		userList.put("admin", new User("admin", "1234", true));
 	}
 }

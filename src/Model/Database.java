@@ -62,24 +62,6 @@ public class Database {
 	}
 	
 	/**
-	 * Method to search for any words that might appear in the question answer object. All FIELDS!!!
-	 * This includes the category, question, and the answer itself.
-	 * @param the_phrase The phrase you want to search for
-	 * @return Returns the list of objects that match the phrase searched.
-	 */
-	public ArrayList<QuestionAnswer> searchQuestionAnswers(String the_phrase)
-	{
-		ArrayList<QuestionAnswer> questions = new ArrayList<QuestionAnswer>();
-		for(QuestionAnswer curr : my_data)
-		{
-			if(curr.getAll().toLowerCase().contains(the_phrase.toLowerCase())){
-				questions.add(curr);
-				}
-		}
-		return questions;
-	}
-	
-	/**
 	 * Method to populate the database with the associated Excel spreadsheet. At current the spreadsheet
 	 * must be named "Answers.xlsx" in order to run properly. May need to include a prompt to user to select
 	 * data base file in next iteration.
@@ -149,6 +131,24 @@ public class Database {
             e.printStackTrace();
         }
 		
+	}
+	
+	/**
+	 * Method to search for any words that might appear in the question answer object. All FIELDS!!!
+	 * This includes the category, question, and the answer itself.
+	 * @param the_phrase The phrase you want to search for
+	 * @return Returns the list of objects that match the phrase searched.
+	 */
+	public ArrayList<QuestionAnswer> searchQuestionAnswers(String the_phrase)
+	{
+		ArrayList<QuestionAnswer> questions = new ArrayList<QuestionAnswer>();
+		for(QuestionAnswer curr : my_data)
+		{
+			if(curr.getAll().toLowerCase().contains(the_phrase.toLowerCase())){
+				questions.add(curr);
+				}
+		}
+		return questions;
 	}
 	
 

@@ -60,21 +60,25 @@ public class QuestionAnswerTest
 	}
 
 	/**
-	 * Test method for {@link Model.QuestionAnswer#QuestionAnswer(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)}.
+	 * Test method for {@link Model.QuestionAnswer#getEditLvl()}.
 	 */
 	@Test
-	public void testQuestionAnswer()
+	public void testEditLvl()
 	{
-		System.out.println("Already Implemented above.");
+		assertEquals("Edit levels not same.", my_edit_level, my_question_answer.getEditLvl());
+		
 	}
 
 	/**
-	 * Test method for {@link Model.QuestionAnswer#getKeyPhrases()}.
+	 * Test method for {@link Model.QuestionAnswer#getAll()}.
 	 */
 	@Test
-	public void testGetKeyPhrases() 
+	public void testGetAll()
 	{
-		assertEquals("Phrases not equal.",my_key_phrases, my_question_answer.getKeyPhrases());
+		final String string = my_category + " " + my_key_phrases + " " + 
+							my_sample_question + " " + my_answer + " " + my_edit_level;
+		assertEquals("GetAll method failed.",string, my_question_answer.getAll());
+		
 	}
 
 	/**
@@ -96,6 +100,15 @@ public class QuestionAnswerTest
 	}
 
 	/**
+	 * Test method for {@link Model.QuestionAnswer#getKeyPhrases()}.
+	 */
+	@Test
+	public void testGetKeyPhrases() 
+	{
+		assertEquals("Phrases not equal.",my_key_phrases, my_question_answer.getKeyPhrases());
+	}
+
+	/**
 	 * Test method for {@link Model.QuestionAnswer#getQuestion()}.
 	 */
 	@Test
@@ -103,19 +116,15 @@ public class QuestionAnswerTest
 	{
 		assertEquals("Questions not same.",my_sample_question, my_question_answer.getQuestion());
 	}
-
+ 
 	/**
-	 * Test method for {@link Model.QuestionAnswer#getAll()}.
+	 * Test method for {@link Model.QuestionAnswer#QuestionAnswer(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)}.
 	 */
 	@Test
-	public void testGetAll()
+	public void testQuestionAnswer()
 	{
-		final String string = my_category + " " + my_key_phrases + " " + 
-							my_sample_question + " " + my_answer + " " + my_edit_level;
-		assertEquals("GetAll method failed.",string, my_question_answer.getAll());
-		
+		System.out.println("Already Implemented above.");
 	}
- 
 	/**
 	 * Test method for {@link Model.QuestionAnswer#toString()}.
 	 */
@@ -124,15 +133,6 @@ public class QuestionAnswerTest
 	{
 		// same as above
 		assertEquals("toString method failed.",my_sample_question, my_question_answer.toString());
-	}
-	/**
-	 * Test method for {@link Model.QuestionAnswer#getEditLvl()}.
-	 */
-	@Test
-	public void testEditLvl()
-	{
-		assertEquals("Edit levels not same.", my_edit_level, my_question_answer.getEditLvl());
-		
 	}
 	
 
