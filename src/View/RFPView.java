@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -70,6 +71,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -89,6 +91,37 @@ import Model.QuestionAnswer;
  */
 public class RFPView {
 
+	/*
+	 * Custom JPanel to make things pretty.
+	 * @author Alex
+	 */
+	@SuppressWarnings("serial")
+	private class ImagePanel extends JPanel{
+
+		private BufferedImage image;
+		public ImagePanel() {
+			try {                
+				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
+			} catch (IOException ex) {
+				//just toss it cause we smart
+			}
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {		
+
+			final Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f);
+			g2d.setComposite(ac);
+			super.paintComponent(g2d);
+			g2d.drawImage(image, this.getWidth()/2 - image.getWidth()/2, this.getHeight()/2 - image.getHeight()/2, null);  
+			final AlphaComposite ac2 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+			g2d.setComposite(ac2);
+			mainFrame.repaint();
+		}
+	}
 	private JPanel contentPane;
 	private JTextField searchTextField;
 	private JTextArea answerTextArea;
@@ -100,8 +133,36 @@ public class RFPView {
 	private boolean fileSelected;
 	private JTextArea notesArea = new JTextArea();
 	private ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
+
+
 	private JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
 
+
+	/*
+	 * @author Alex
+	 */
+	private void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+				mainFrame.repaint();
+			}
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+				mainFrame.repaint();
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+				mainFrame.repaint();
+			}
+		});
+	}
 
 	public void initialize(JFrame my_mainFrame) {
 
@@ -280,7 +341,7 @@ public class RFPView {
 		//
 		///////////////////////////////////////////////
 
-		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.setBorder(null);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -324,7 +385,7 @@ public class RFPView {
 
 		//Toolbar to contain the 3 buttons above to improve formatting and reduce code size
 		JToolBar toolBar = new JToolBar();
-		toolBar.setOrientation(JToolBar.VERTICAL);
+		toolBar.setOrientation(SwingConstants.VERTICAL);
 		toolBar.setFloatable(false);
 		toolBar.add(btnAddQ);
 		toolBar.add(btnRemoveQ);
@@ -381,7 +442,7 @@ public class RFPView {
 		mainFrame.setResizable(true);
 		mainFrame.setFocusTraversalPolicy(
 				new FocusTraversalOnArray(new Component[]{searchTextField, btnSearch, comboBox, btnAddQ, btnAddToClip}));
-		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		mainFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
 
 		/*******************************************************************************
@@ -397,6 +458,7 @@ public class RFPView {
 		 * @author Alex
 		 */
 		mntmLogOut.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.dispose();
 				mainFrame = new JFrame();
@@ -458,6 +520,7 @@ public class RFPView {
 		 * @author Jeremiah
 		 */
 		btnSearch.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
 				QuestionAnswer[] questionAnswerList = new QuestionAnswer[searchResults.size()];
@@ -470,6 +533,7 @@ public class RFPView {
 		 * @author Jeremiah
 		 */
 		comboBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				searchTextField.setText((String) comboBox.getSelectedItem());
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -549,6 +613,7 @@ public class RFPView {
 		 * @author Jeremiah
 		 */
 		btnAddQ.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!list.isSelectionEmpty()) {
 					selectedQsList.add(list.getSelectedValue());
@@ -565,6 +630,7 @@ public class RFPView {
 		 * edits by Alex 
 		 */
 		btnRemoveQ.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!selectedQAsList.isSelectionEmpty()) {
 					int i = selectedQAsList.getSelectedIndex();
@@ -596,6 +662,7 @@ public class RFPView {
 		 * @author Alex
 		 */
 		btnAddToClip.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
@@ -690,6 +757,7 @@ public class RFPView {
 		 */
 		mntmHelp.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent H) {				
 
 				JOptionPane.showMessageDialog(null, 
@@ -705,6 +773,7 @@ public class RFPView {
 		 */
 		mntmAbout.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent A) {
 				Object[] options = {"Open Webpage", "Cancel"};
 
@@ -730,55 +799,6 @@ public class RFPView {
 				}
 			}
 		});		
-	}
-
-
-	/*
-	 * Private helper method to add the popup menu to specific components in the view.
-	 * @author Stuart
-	 */
-	private void save() {
-		if(fileSelected) {
-			StringBuilder sb = new StringBuilder();
-			try {
-				PrintStream out = new PrintStream(myJFC.getSelectedFile());
-				sb.append(selectedQsList.size());
-				sb.append("\n");
-				for(int i=0; i < selectedQsList.size(); i++) {
-					sb.append(selectedQsList.get(i).getCategory());
-					sb.append("\n=====\n");
-					sb.append(selectedQsList.get(i).getKeyPhrases());
-					sb.append("\n=====\n");
-					sb.append(selectedQsList.get(i).getQuestion());
-					sb.append("\n=====\n");
-					sb.append(selectedQsList.get(i).getAnswer());
-					sb.append("\n=====\n");
-					sb.append(selectedQsList.get(i).getEditLvl());
-					sb.append("\n");
-				}
-				sb.append(notesArea.getText());
-				out.print(sb.toString());
-				out.close();
-			} catch (FileNotFoundException e) {
-				saveAs();
-			}
-		} else {
-			saveAs();
-		}
-	}
-
-	/*
-	 * Private helper method to save the selected questions and
-	 * notes made about a specific RFP.
-	 * @author Stuart
-	 */
-	private void saveAs() {
-		int completed;
-		completed = myJFC.showOpenDialog(null);
-		if (completed == JFileChooser.APPROVE_OPTION) {
-			fileSelected = true;
-			save();
-		}
 	}
 
 	/*
@@ -855,58 +875,50 @@ public class RFPView {
 
 
 	/*
-	 * @author Alex
+	 * Private helper method to add the popup menu to specific components in the view.
+	 * @author Stuart
 	 */
-	private void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
+	private void save() {
+		if(fileSelected) {
+			StringBuilder sb = new StringBuilder();
+			try {
+				PrintStream out = new PrintStream(myJFC.getSelectedFile());
+				sb.append(selectedQsList.size());
+				sb.append("\n");
+				for(int i=0; i < selectedQsList.size(); i++) {
+					sb.append(selectedQsList.get(i).getCategory());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getKeyPhrases());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getQuestion());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getAnswer());
+					sb.append("\n=====\n");
+					sb.append(selectedQsList.get(i).getEditLvl());
+					sb.append("\n");
 				}
-				mainFrame.repaint();
+				sb.append(notesArea.getText());
+				out.print(sb.toString());
+				out.close();
+			} catch (FileNotFoundException e) {
+				saveAs();
 			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-				mainFrame.repaint();
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-				mainFrame.repaint();
-			}
-		});
+		} else {
+			saveAs();
+		}
 	}
 
 	/*
-	 * Custom JPanel to make things pretty.
-	 * @author Alex
+	 * Private helper method to save the selected questions and
+	 * notes made about a specific RFP.
+	 * @author Stuart
 	 */
-	@SuppressWarnings("serial")
-	private class ImagePanel extends JPanel{
-
-		private BufferedImage image;
-		public ImagePanel() {
-			try {                
-				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
-			} catch (IOException ex) {
-				//just toss it cause we smart
-			}
-		}
-
-		@Override
-		protected void paintComponent(Graphics g) {		
-
-			final Graphics2D g2d = (Graphics2D) g;
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-			final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f);
-			g2d.setComposite(ac);
-			super.paintComponent(g2d);
-			g2d.drawImage(image, this.getWidth()/2 - image.getWidth()/2, this.getHeight()/2 - image.getHeight()/2, null);  
-			final AlphaComposite ac2 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
-			g2d.setComposite(ac2);
-			mainFrame.repaint();
+	private void saveAs() {
+		int completed;
+		completed = myJFC.showOpenDialog(null);
+		if (completed == JFileChooser.APPROVE_OPTION) {
+			fileSelected = true;
+			save();
 		}
 	}
 

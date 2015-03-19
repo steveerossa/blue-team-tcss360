@@ -37,9 +37,13 @@ public class QuestionAnswer {
 		my_EditLevel = the_level;
 	}
 	
-	public String getKeyPhrases()
+	/**
+	 * Returns all of the text fields in one string.
+	 * @return
+	 */
+	public String getAll()
 	{
-		return my_KeyPhrases;
+		return my_Category + " " + my_KeyPhrases + " " + my_SampleQuestion + " " + my_Answer + " " + my_EditLevel;
 	}
 	
 	public String getAnswer()
@@ -52,21 +56,17 @@ public class QuestionAnswer {
 		return my_Category;
 	}
 	
-	public String getQuestion()
-	{
-		return my_SampleQuestion;
-	}
 	public int getEditLvl()
 	{
 		return my_EditLevel;
 	}
-	/**
-	 * Returns all of the text fields in one string.
-	 * @return
-	 */
-	public String getAll()
+	public String getKeyPhrases()
 	{
-		return my_Category + " " + my_KeyPhrases + " " + my_SampleQuestion + " " + my_Answer + " " + my_EditLevel;
+		return my_KeyPhrases;
+	}
+	public String getQuestion()
+	{
+		return my_SampleQuestion;
 	}
 	
 	@Override

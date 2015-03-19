@@ -57,42 +57,14 @@ public class UserTest
 	}
 
 	/**
-	 * Test method for {@link Model.User#User()}.
+	 * Test method for {@link Model.User#getAdminStatus()}.
 	 */
 	@Test
-	public void testUser()
+	public void testGetAdminStatus() 
 	{
-		// Nothing to test in default constructor
-	}
-
-	/**Tests parameterized User constructor.
-	 * Test method for {@link Model.User#User(java.lang.String, java.lang.String, boolean)}.
-	 */
-	@Test
-	public void testUserStringStringBoolean() 
-	{
-		assertEquals("The username do not match.", my_username, my_user.getName());
-		assertEquals("The pin numbers do not match.", my_pin, my_user.getPin());
 		assertEquals("The Administrative status do not match.", my_admin_status, my_user.getAdminStatus());
 	}
 
-	/**
-	 * Test method for {@link Model.User#loginAttempt()}.
-	 */
-	@Test
-	public void testLoginAttempt()
-	{
-		 
-		assertFalse("Login succesful", my_user.loginAttempt()); 
-		assertFalse("Login failed", new User("todd", "0091", false).loginAttempt());
-		assertTrue("Login failed", new User("todd", "0001", false).loginAttempt());
-		assertFalse("Login failed", new User("todd", "0001", true).loginAttempt());
-		assertTrue("Login failed", new User("admin", "1234", true).loginAttempt()); 
-		assertTrue("Login failed", new User("karlene", "0002", false).loginAttempt()); 
-		assertTrue("Login failed", new User("admin", "1234", false).loginAttempt()); 
-		
-	}
- 
 	/**
 	 * Test method for {@link Model.User#getName()}.
 	 */
@@ -112,14 +84,35 @@ public class UserTest
 	{
 		assertEquals("The pin numbers do not match.", my_pin, my_user.getPin()); // a retest
 	}
-
+ 
 	/**
-	 * Test method for {@link Model.User#getAdminStatus()}.
+	 * Test method for {@link Model.User#loginAttempt()}.
 	 */
 	@Test
-	public void testGetAdminStatus() 
+	public void testLoginAttempt()
 	{
-		assertEquals("The Administrative status do not match.", my_admin_status, my_user.getAdminStatus());
+		 
+		assertFalse("Login succesful", my_user.loginAttempt()); 
+		assertFalse("Login failed", new User("todd", "0091", false).loginAttempt());
+		assertTrue("Login failed", new User("todd", "0001", false).loginAttempt());
+		assertFalse("Login failed", new User("todd", "0001", true).loginAttempt());
+		assertTrue("Login failed", new User("admin", "1234", true).loginAttempt()); 
+		assertTrue("Login failed", new User("karlene", "0002", false).loginAttempt()); 
+		assertTrue("Login failed", new User("admin", "1234", false).loginAttempt()); 
+		
+	}
+
+	/**
+	 * Test method for {@link Model.User#setAdministrator(boolean)}.
+	 */
+	@Test
+	public void testSetAdministrator() 
+	{
+		my_user.setAdministrator(false);
+		assertFalse("Admin status is TRUE", my_user.getAdminStatus());
+		my_user.setAdministrator(true);
+		assertTrue("Admin status is FALSE", my_user.getAdminStatus());
+		 
 	}
 
 	/**
@@ -144,16 +137,23 @@ public class UserTest
 	}
 
 	/**
-	 * Test method for {@link Model.User#setAdministrator(boolean)}.
+	 * Test method for {@link Model.User#User()}.
 	 */
 	@Test
-	public void testSetAdministrator() 
+	public void testUser()
 	{
-		my_user.setAdministrator(false);
-		assertFalse("Admin status is TRUE", my_user.getAdminStatus());
-		my_user.setAdministrator(true);
-		assertTrue("Admin status is FALSE", my_user.getAdminStatus());
-		 
+		// Nothing to test in default constructor
+	}
+
+	/**Tests parameterized User constructor.
+	 * Test method for {@link Model.User#User(java.lang.String, java.lang.String, boolean)}.
+	 */
+	@Test
+	public void testUserStringStringBoolean() 
+	{
+		assertEquals("The username do not match.", my_username, my_user.getName());
+		assertEquals("The pin numbers do not match.", my_pin, my_user.getPin());
+		assertEquals("The Administrative status do not match.", my_admin_status, my_user.getAdminStatus());
 	}
 
 }
