@@ -784,7 +784,6 @@ public class RFPView {
 		 * @author Chutiwat
 		 */
 		mntmAbout.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent A) {
 				Object[] options = {"Open Webpage", "Cancel"};
@@ -870,7 +869,6 @@ public class RFPView {
 			}
 			fileSelected = true;
 		}
-
 	}
 
 	/*
@@ -933,5 +931,4 @@ public class RFPView {
 			save();
 		}
 	}
-
 }
