@@ -69,7 +69,7 @@ public class Main {
 		mainFrame.setTitle("Global Business Logistics");
 		mainFrame.setBounds(100, 100, 488, 329);
 		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
 
 		loginView = new LoginView();

@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
+import Model.Database;
 import Model.FocusTraversalOnArray;
 
 /**
@@ -44,16 +45,16 @@ public class AdminView {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JFrame mainFrame;
-	
+	private Database database;
 	public AdminView() {
 		//empty just because? can't remember why, should be fixed probably....maybe 
 	}
 	/**
 	 * Create the frame. 
 	 */
-	public void initializeAdminView(JFrame my_mainFrame) {
+	public void initializeAdminView(JFrame my_mainFrame, Database my_database) {
 		mainFrame = my_mainFrame;
-		
+		database = my_database;
 		mainFrame.setResizable(true);
 		
 		contentPane = new JPanel();

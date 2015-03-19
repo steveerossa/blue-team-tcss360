@@ -166,7 +166,7 @@ public class RFPView {
 	/*
 	 * @author Alex
 	 */
-	public void initialize(JFrame my_mainFrame) {
+	public void initialize(JFrame my_mainFrame, Database database) {
 
 		/*
 		 * Initialize variables
@@ -176,7 +176,7 @@ public class RFPView {
 		mainFrame = my_mainFrame;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		my_database = new Database();		
+		my_database = database;		
 
 		/////////////////////////////////////////
 		//
