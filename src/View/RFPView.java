@@ -1,3 +1,16 @@
+/* TCSS 360 Winter 2015
+ * 
+ * Blue Team Group Project
+ * 
+ * Authors: Alex Day, Jeremiah Stowe, Stuart Hamm, Steve Onyango, Chutiwat Thammasiri
+ * 
+ * Project Description:
+ * 	This is the final product of our project for Global Business Logistics.
+ * 	We focused on logging in to the program as specified with the option of logging in
+ * 	as an analyst or as an administrator.  Out other main focus was the main window
+ * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
+ */
+
 package View;
 
 import java.awt.AlphaComposite;
@@ -54,12 +67,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -89,16 +101,20 @@ public class RFPView {
 	private JTextArea notesArea = new JTextArea();
 	private ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
 	private JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
-	
+
 
 	public void initialize(JFrame my_mainFrame) {
+
+		/*
+		 * Initialize variables
+		 */
 		fileSelected = false;
 		myJFC = new JFileChooser();
 		mainFrame = my_mainFrame;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		my_database = new Database();		
-		
+
 		/////////////////////////////////////////
 		//
 		//			MENU STUFF
@@ -161,6 +177,8 @@ public class RFPView {
 		//			QUESTION SEARCH AND LIST STUFF
 		//
 		/////////////////////////////////////////////
+
+		//search text field
 		searchTextField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
@@ -170,6 +188,7 @@ public class RFPView {
 		contentPane.add(searchTextField, gbc_textField);
 		searchTextField.setColumns(10);
 
+		//search button
 		final JButton btnSearch = new JButton("");
 		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
@@ -178,6 +197,7 @@ public class RFPView {
 		gbc_btnSearch.gridy = 0;
 		contentPane.add(btnSearch, gbc_btnSearch);
 
+		//drop down list
 		String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
 		final JComboBox<String> comboBox = new JComboBox<String>(my_list);
 		comboBox.setMaximumRowCount(30);
@@ -189,6 +209,7 @@ public class RFPView {
 		gbc_comboBox.gridy = 1;
 		contentPane.add(comboBox, gbc_comboBox);
 
+		//list to selected QAs from
 		final JList<QuestionAnswer> list = new JList<QuestionAnswer>();
 		list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -211,32 +232,40 @@ public class RFPView {
 		answerTextArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		answerTextArea.setInheritsPopupMenu(true);
 		answerTextArea.setOpaque(false);
+		answerTextArea.setMinimumSize(new Dimension(225, 0));
+		answerTextArea.setPreferredSize(new Dimension(400, 0));
+		
 		imagePanel = new ImagePanel();
 		imagePanel.setLayout(new BorderLayout());
-		imagePanel.setMinimumSize(new Dimension(100,0));
+		imagePanel.setMinimumSize(answerTextArea.getMinimumSize());
+		imagePanel.setPreferredSize(answerTextArea.getPreferredSize());
 		imagePanel.add(answerTextArea, BorderLayout.CENTER);
 
-		final JScrollPane answerScrollPane = new JScrollPane(imagePanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-	            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
 		final JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-
-		answerScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		answerScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		splitPane.setLeftComponent(new JScrollPane(list));
-		
+
 		/*Playing with these two lines below, the scroll pane breaks the centering of the logo and makes
 		 * the formatting a bit awkward where you can't read the answer very well because the scroll pane
 		 * centers the contents so you can't see the first word. Bypassed by just adding the imagePanel directly*/
 		
-		//splitPane.setRightComponent(answerScrollPane);
+		/*Revision has been made and unnecessary components have been removed. As of 3/18/15, components should
+		 * resize, scale, and behave as expected now. 
+		 * 
+		 * I believe a scroll pane could be implemented in case of longer answers in the future. It looks
+		 * like the main issue was some components having preferred sizes set while others used default
+		 * sizes.  Now that some of the components have reasonable preferred sizes set and other related
+		 * components are now dependent on each other, things appear to behave properly. I also added weight
+		 * to the split panes grid bag constraints, but am unsure the effect this really has. I have yet to 
+		 * test on anything other than Windows 7, though. --Alex
+		 */
 		splitPane.setRightComponent(imagePanel);
 		splitPane.setContinuousLayout(true);
 
 		splitPane.setDividerLocation(0.45);
 		GridBagConstraints gbc_splitPane = new GridBagConstraints();
 		gbc_splitPane.insets = new Insets(0, 0 , 10, 10);
+		gbc_splitPane.weightx = 1;
 		gbc_splitPane.gridheight = 3;
 		gbc_splitPane.gridwidth = 3;
 		gbc_splitPane.gridx = 0;
@@ -253,8 +282,8 @@ public class RFPView {
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(null);
-		tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
-		
+		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
 		gbc_tabbedPane.weightx = 0.1;
 		gbc_tabbedPane.gridheight = 4;
@@ -268,8 +297,8 @@ public class RFPView {
 		notesArea.setLineWrap(true);
 		notesArea.setWrapStyleWord(true);
 		tabbedPane.addTab("Notes", null, new JScrollPane(notesArea), null);
-		
-		
+
+
 		selectedQAsList.setCellRenderer(new MyCellRenderer());
 		tabbedPane.addTab("Selected Q/A's", null, new JScrollPane(selectedQAsList), null);
 		contentPane.add(tabbedPane, gbc_tabbedPane);
@@ -280,52 +309,63 @@ public class RFPView {
 		//			ADDING QUESTIONS AND COPYING TO CLIPBOARD
 		//
 		///////////////////////////////////////////////////////////
+
+		//Button to add currently selected question to analyst's list
 		JButton btnAddQ = new JButton("");
 		btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
-		GridBagConstraints gbc_btnAddQ = new GridBagConstraints();
-		gbc_btnAddQ.anchor = GridBagConstraints.SOUTH;	
-		gbc_btnAddQ.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAddQ.gridx = 3;
-		gbc_btnAddQ.gridy = 2;
-		contentPane.add(btnAddQ, gbc_btnAddQ);
 
+		//Button to remove currently selected question from analyst's list
+		JButton btnRemoveQ = new JButton("");
+		btnRemoveQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/removeQ.png")));
+
+		//Button to copy the contents of the answer display area to the system's clip board 
 		JButton btnAddToClip = new JButton("");
 		btnAddToClip.setIcon(new ImageIcon(RFPView.class.getResource("/files/copyToClipIcon.png")));
-		GridBagConstraints gbc_btnAddToClip = new GridBagConstraints();
-		gbc_btnAddToClip.anchor = GridBagConstraints.NORTH;
-		gbc_btnAddToClip.insets = new Insets(0, 0, 0, 5);
-		gbc_btnAddToClip.gridx = 3;
-		gbc_btnAddToClip.gridy = 3;
-		contentPane.add(btnAddToClip, gbc_btnAddToClip);
 
+		//Toolbar to contain the 3 buttons above to improve formatting and reduce code size
+		JToolBar toolBar = new JToolBar();
+		toolBar.setOrientation(JToolBar.VERTICAL);
+		toolBar.setFloatable(false);
+		toolBar.add(btnAddQ);
+		toolBar.add(btnRemoveQ);
+		toolBar.add(btnAddToClip);
+
+		//Now only 1 GridBagConstraints needs to be defined with the use of the tool bar
+		GridBagConstraints gbc_toolbar = new  GridBagConstraints();
+		gbc_toolbar.anchor = GridBagConstraints.SOUTH;
+		gbc_toolbar.gridx = 3;
+		gbc_toolbar.gridy = 2;
+
+		//add toolbar with its buttons to the content pane according to the grid bag constraints.
+		contentPane.add(toolBar, gbc_toolbar);
 
 		////////////////////////////////////////
 		//
 		//				POPUP MENU STUFF
 		//
 		////////////////////////////////////////
-		
+
 		//new popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
-		
+
 		// menu items
 		JMenuItem mntmSelectAll = new JMenuItem("Select all");
 		JMenuItem mntmCopy = new JMenuItem("Copy");
 		JMenuItem mntmPaste = new JMenuItem("Paste...");
 		JMenuItem mntmUndo = new JMenuItem("Undo");
-		
+
 		//keyboard shortcuts
 		mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
 		mntmCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
 		mntmPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
 		mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_MASK));
-		
+
 		//populate menu
 		popupMenu.add(mntmSelectAll);	
 		popupMenu.add(mntmCopy);
 		popupMenu.add(mntmPaste);
 		popupMenu.add(mntmUndo);
-		
+
 		//add popup menu to proper components with helper method that adds mouse listeners respectively
 		addPopup(answerTextArea, popupMenu);
 		addPopup(notesArea, popupMenu);
@@ -342,7 +382,7 @@ public class RFPView {
 		mainFrame.setFocusTraversalPolicy(
 				new FocusTraversalOnArray(new Component[]{searchTextField, btnSearch, comboBox, btnAddQ, btnAddToClip}));
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
+
 
 		/*******************************************************************************
 		 * 
@@ -369,20 +409,20 @@ public class RFPView {
 				loginView.initializeLogin(mainFrame);
 			}
 		});
-		
+
 		mntmSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				save();
 			}
-			
+
 		});
 		mntmSaveAs.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveAs();
 			}
-			
+
 		});
 		mntmOpen.addActionListener(new ActionListener() {
 			@Override
@@ -390,7 +430,7 @@ public class RFPView {
 				load();
 			}
 		});
-		
+
 		mntmNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -429,7 +469,7 @@ public class RFPView {
 				}
 			}			
 		});
-		
+
 
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
@@ -476,32 +516,31 @@ public class RFPView {
 		//QuestionAnswer manipulation and view listeners
 		btnAddQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(list.getSelectedValue() != null)
-				{
+				if(!list.isSelectionEmpty()) {
 					selectedQsList.add(list.getSelectedValue());
 					QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
 					selectedQsList.toArray(selectedTemp);
 					selectedQAsList.setListData(selectedTemp);
 					mainFrame.repaint();
 				}
-				
 			}
 		});
+
 		
-		//this is an action listener for a button that removes a QA from selected list.
-		/*
 		btnRemoveQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!selectedQAsList.isSelectionEmpty()) {
 					int i = selectedQAsList.getSelectedIndex();
 					selectedQsList.remove(i);
-					selectedQAsList.remove(i);
+					QuestionAnswer[] selectedTemp = new QuestionAnswer[selectedQsList.size()];
+					selectedQsList.toArray(selectedTemp);
+					selectedQAsList.setListData(selectedTemp);
 					mainFrame.repaint();
 				}
 			}
 		});
-		 */
-		
+
+
 		selectedQAsList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -531,16 +570,10 @@ public class RFPView {
 
 		//popup menu listeners
 
-		tabbedPane.addChangeListener(new ChangeListener(){
-
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-//				tabbedPane.repaint();
-//				tabbedPane.revalidate();
-				tabbedPane.validate();
-			}
-		});
-
+		/**
+		 * Action listener for the select all menu item in the pop up menu.
+		 * @author Alex
+		 */
 		mntmSelectAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -556,6 +589,10 @@ public class RFPView {
 			}
 		});
 
+		/**
+		 * Action listener for the copy menu item in the pop up menu.
+		 * @author Alex
+		 */
 		mntmCopy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -567,6 +604,10 @@ public class RFPView {
 			}
 		});
 
+		/**
+		 * Action listener for the paste menu item in the pop up menu.
+		 * @author Alex
+		 */
 		mntmPaste.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -599,32 +640,35 @@ public class RFPView {
 				}
 			}
 		});
-		
-		//Help menu to show that user can email us for assistant
+
+		/**
+		 * Help menu to show that user can email us for assistance.
+		 * @author Chutiwat
+		 */
 		mntmHelp.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent H) {				
-				
+
 				JOptionPane.showMessageDialog(null, 
 						"For assistant: Please contact blueteamtcss360@gmail.com", 
 						"Help",
 						JOptionPane.PLAIN_MESSAGE);				
 			}
 		});
-		
-		//Show our site for about us and allow the user to click to open the site
+
+		/**
+		 * Show our site for about us and allow the user to click to open the site
+		 * @author Chutiwat
+		 */
 		mntmAbout.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent A) {
-				Object[] options = {"Open Webpage",
-									"Cancel"};
-				
+				Object[] options = {"Open Webpage", "Cancel"};
+
 				int n = JOptionPane.showOptionDialog(null, 
 						"We are BlueTeam\n" 
 						+ "For more information please visit our website\n" 
-
 						+ "https://sites.google.com/site/blueteamtcss360/", 
-
 						"About",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.INFORMATION_MESSAGE,
@@ -634,16 +678,12 @@ public class RFPView {
 				if (n == JOptionPane.YES_OPTION){
 					try{
 						Desktop desktop = java.awt.Desktop.getDesktop();
-
 						URI oURL = new URI("https://sites.google.com/site/blueteamtcss360/");
-
 						desktop.browse(oURL);
-					
 					}
 					catch(Exception e){
 						e.printStackTrace();
 					}					
-				}else{					
 				}
 			}
 		});		
@@ -683,7 +723,7 @@ public class RFPView {
 			saveAs();
 		}
 	}
-	
+
 	private void saveAs() {
 		int completed;
 		completed = myJFC.showOpenDialog(null);
@@ -692,7 +732,7 @@ public class RFPView {
 			save();
 		}
 	}
-	
+
 	private void load() {
 		int completed;
 		completed = myJFC.showOpenDialog(null);
@@ -745,9 +785,9 @@ public class RFPView {
 			}
 			fileSelected = true;
 		}
-			
+
 	}
-	
+
 	private void newRFP() {
 		fileSelected = false;
 		selectedQsList = new ArrayList<QuestionAnswer>();
@@ -756,8 +796,9 @@ public class RFPView {
 		notesArea.setText("");
 		mainFrame.repaint();
 	}
-	
 
+
+	//Author - Alex
 	private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -780,6 +821,7 @@ public class RFPView {
 	}
 
 	//Custom jpanel to make things pretty
+	//Author - Alex
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
 
@@ -794,10 +836,10 @@ public class RFPView {
 
 		@Override
 		protected void paintComponent(Graphics g) {		
-			
-	        final Graphics2D g2d = (Graphics2D) g;
-	        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	        
+
+			final Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 			final AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f);
 			g2d.setComposite(ac);
 			super.paintComponent(g2d);
@@ -807,5 +849,5 @@ public class RFPView {
 			mainFrame.repaint();
 		}
 	}
-	
+
 }

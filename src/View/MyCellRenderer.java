@@ -1,9 +1,21 @@
+/* TCSS 360 Winter 2015
+ * 
+ * Blue Team Group Project
+ * 
+ * Authors: Alex Day, Jeremiah Stowe, Stuart Hamm, Steve Onyango, Chutiwat Thammasiri
+ * 
+ * Project Description:
+ * 	This is the final product of our project for Global Business Logistics.
+ * 	We focused on logging in to the program as specified with the option of logging in
+ * 	as an analyst or as an administrator.  Out other main focus was the main window
+ * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
+ */
+
 package View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -13,6 +25,15 @@ import javax.swing.ListCellRenderer;
 
 import Model.QuestionAnswer;
 
+/**
+ * Cell renderer class is used to customize the items that show up in the lists we use
+ * in the RFPView.java class.  It allows us to specify many things including cell size,
+ * highlighting colors, borders, etc.
+ * 
+ * @author Jeremiah
+ * very minor changes by Alex
+ *
+ */
 @SuppressWarnings("serial")
 public class MyCellRenderer extends JLabel implements ListCellRenderer<QuestionAnswer> {
 

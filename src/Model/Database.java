@@ -1,7 +1,16 @@
-//Portions of this code borrowed and modified from:
-//http://howtodoinjava.com/2013/06/19/readingwriting-excel-files-in-java-poi-tutorial/
-//For the use of basic Excel file parsing
-//Class Author Jeremiah
+/* TCSS 360 Winter 2015
+ * 
+ * Blue Team Group Project
+ * 
+ * Authors: Alex Day, Jeremiah Stowe, Stuart Hamm, Steve Onyango, Chutiwat Thammasiri
+ * 
+ * Project Description:
+ * 	This is the final product of our project for Global Business Logistics.
+ * 	We focused on logging in to the program as specified with the option of logging in
+ * 	as an analyst or as an administrator.  Out other main focus was the main window
+ * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
+ */
+
 package Model;
 
 import java.io.InputStream;
@@ -16,7 +25,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- * 
+ * Portions of this code borrowed and modified from:
+ * http://howtodoinjava.com/2013/06/19/readingwriting-excel-files-in-java-poi-tutorial/
+ * For the use of basic Excel file parsing
  * @author Jeremiah
  *
  */
