@@ -31,7 +31,7 @@ import Model.QuestionAnswer;
  * highlighting colors, borders, etc.
  * 
  * @author Jeremiah
- * very minor changes by Alex
+ * very minor edits by Alex
  *
  */
 @SuppressWarnings("serial")

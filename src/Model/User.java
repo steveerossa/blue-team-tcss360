@@ -166,6 +166,7 @@ public class User {
 	/**
 	 * Private method to initialize the list of users.
 	 * @author Chutiwat
+	 * Edits by Alex
 	 */
 	private void userList(){
 		userList = new HashMap<String, User>();
