@@ -84,7 +84,7 @@ public class AdminView {
 		gbc_scrollPane.gridy = 0;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
-		JTextPane textPane = new JTextPane();
+		final JTextPane textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		
 		JLabel lblApprovedAnswer = new JLabel("Approved Answer:");
@@ -104,7 +104,7 @@ public class AdminView {
 		gbc_scrollPane_1.gridy = 1;
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 		
-		JTextPane textPane_1 = new JTextPane();
+		final JTextPane textPane_1 = new JTextPane();
 		scrollPane_1.setViewportView(textPane_1);
 		
 		JLabel lblCatagory = new JLabel("Catagory:");
@@ -162,13 +162,16 @@ public class AdminView {
 		textField_2.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Save Question");
+		btnNewButton.setToolTipText("Save new question to the database file.");
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//TODO
 			}
 		});
 		
 		JButton btnLogOut = new JButton("Log out");
+		btnLogOut.setToolTipText("Return to login page.");
 		btnLogOut.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -191,6 +194,7 @@ public class AdminView {
 		gbc_btnLogOut.gridx = 0;
 		gbc_btnLogOut.gridy = 5;
 		contentPane.add(btnLogOut, gbc_btnLogOut);
+		
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.EAST;
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
@@ -199,9 +203,15 @@ public class AdminView {
 		contentPane.add(btnNewButton, gbc_btnNewButton); // 
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setToolTipText("Clear new question fields.");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				textPane.setText("");
+				textPane_1.setText("");
+				textField.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
 			}
 		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();

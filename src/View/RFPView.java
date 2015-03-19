@@ -132,9 +132,8 @@ public class RFPView {
 	private JFileChooser myJFC;
 	private boolean fileSelected;
 	private JTextArea notesArea = new JTextArea();
+	
 	private ArrayList<QuestionAnswer> selectedQsList = new ArrayList<QuestionAnswer>();
-
-
 	private JList<QuestionAnswer> selectedQAsList = new JList<QuestionAnswer>();
 
 
@@ -164,6 +163,9 @@ public class RFPView {
 		});
 	}
 
+	/*
+	 * @author Alex
+	 */
 	public void initialize(JFrame my_mainFrame) {
 
 		/*
@@ -188,22 +190,27 @@ public class RFPView {
 
 		JMenuItem mntmNew = new JMenuItem("New");
 		mntmNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
+		mntmNew.setToolTipText("Create a new RFP response.");
 		mnFile.add(mntmNew);
 
 		JMenuItem mntmOpen = new JMenuItem("Open...");
+		mntmOpen.setToolTipText("Open a previously saved response.");
 		mnFile.add(mntmOpen);
 
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+		mntmSave.setToolTipText("Save current response progress.");
 		mnFile.add(mntmSave);
 
 		JMenuItem mntmSaveAs = new JMenuItem("Save As...");
 		mnFile.add(mntmSaveAs);
 
 		JMenuItem mntmLogOut = new JMenuItem("Log out");
+		mntmLogOut.setToolTipText("Return to login page.");
 		mnFile.add(mntmLogOut);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.setToolTipText("Exit the program.");
 		mnFile.add(mntmExit);
 
 		JMenu mnEdit = new JMenu("Edit");
@@ -251,6 +258,7 @@ public class RFPView {
 
 		//search button
 		final JButton btnSearch = new JButton("");
+		btnSearch.setToolTipText("Search by any key word.");
 		btnSearch.setIcon(new ImageIcon(RFPView.class.getResource("/files/searchIcon.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
@@ -262,6 +270,7 @@ public class RFPView {
 		String[] my_list = my_database.getKeyPhrases().toArray(new String[my_database.getKeyPhrases().size()]);
 		final JComboBox<String> comboBox = new JComboBox<String>(my_list);
 		comboBox.setMaximumRowCount(30);
+		comboBox.setToolTipText("Select a catagory.");
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.gridwidth = 2;
 		gbc_comboBox.insets = new Insets(0, 0, 5, 5);
@@ -373,14 +382,17 @@ public class RFPView {
 
 		//Button to add currently selected question to analyst's list
 		JButton btnAddQ = new JButton("");
+		btnAddQ.setToolTipText("Add current Q/A to your response list.");
 		btnAddQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/addQuestionIcon.png")));
 
 		//Button to remove currently selected question from analyst's list
 		JButton btnRemoveQ = new JButton("");
+		btnRemoveQ.setToolTipText("Remove currently selected Q/A from your list.");
 		btnRemoveQ.setIcon(new ImageIcon(RFPView.class.getResource("/files/removeQ.png")));
 
 		//Button to copy the contents of the answer display area to the system's clip board 
 		JButton btnAddToClip = new JButton("");
+		btnAddToClip.setToolTipText("Copy answer text to clip board.");
 		btnAddToClip.setIcon(new ImageIcon(RFPView.class.getResource("/files/copyToClipIcon.png")));
 
 		//Toolbar to contain the 3 buttons above to improve formatting and reduce code size

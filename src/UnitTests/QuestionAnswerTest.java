@@ -66,7 +66,6 @@ public class QuestionAnswerTest
 	public void testEditLvl()
 	{
 		assertEquals("Edit levels not same.", my_edit_level, my_question_answer.getEditLvl());
-		
 	}
 
 	/**
@@ -134,6 +133,4 @@ public class QuestionAnswerTest
 		// same as above
 		assertEquals("toString method failed.",my_sample_question, my_question_answer.toString());
 	}
-	
-
 }
