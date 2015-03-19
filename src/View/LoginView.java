@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Controller.Main;
+import Model.Database;
 import Model.FocusTraversalOnArray;
 import Model.User;
 
@@ -98,6 +99,7 @@ public class LoginView {
 	private JCheckBox chckAdmin;
 	
 	private User temp;
+	private Database database;
 
 	private JFrame my_mainFrame;
 	
@@ -113,6 +115,7 @@ public class LoginView {
 		btnLogin = new JButton("Login");
 		chckAdmin = new JCheckBox();
 		temp = new User();
+		
 	}
 	
 	/**
@@ -278,15 +281,16 @@ public class LoginView {
 	 * @author Alex
 	 */
 	private void loginActionAttempted() {
+		database = new Database();
 		temp = new User(userNameTF.getText(), pinTF.getText(), chckAdmin.isSelected());
 				if(temp.loginAttempt() == true) {
 					if(chckAdmin.isSelected()) {
 						AdminView adminView = new AdminView();
-						adminView.initializeAdminView(my_mainFrame);
+						adminView.initializeAdminView(my_mainFrame, database);
 					}
 					else {
 						RFPView rfpView = new RFPView();
-						rfpView.initialize(my_mainFrame);
+						rfpView.initialize(my_mainFrame, database);
 					}
 				};
 	}
