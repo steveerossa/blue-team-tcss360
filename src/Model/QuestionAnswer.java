@@ -1,9 +1,23 @@
+/* TCSS 360 Winter 2015
+ * 
+ * Blue Team Group Project
+ * 
+ * Authors: Alex Day, Jeremiah Stowe, Stuart Hamm, Steve Onyango, Chutiwat Thammasiri
+ * 
+ * Project Description:
+ * 	This is the final product of our project for Global Business Logistics.
+ * 	We focused on logging in to the program as specified with the option of logging in
+ * 	as an analyst or as an administrator.  Out other main focus was the main window
+ * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
+ */
+
 package Model;
 
 /**
  * This class is the element that is to be stored in the database for the program. Each individual element is produced
  * from an excel spread sheet specified by the layout provided from the instructor. The data base is responsible for reading
  * in the excel spread sheet element and populating the database.
+ * 
  * @author Jeremiah Stowe
  *
  */

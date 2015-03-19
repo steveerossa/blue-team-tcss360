@@ -1,6 +1,14 @@
 /* TCSS 360 Winter 2015
- * GBL project
- * This class sets up the login view for the program.
+ * 
+ * Blue Team Group Project
+ * 
+ * Authors: Alex Day, Jeremiah Stowe, Stuart Hamm, Steve Onyango, Chutiwat Thammasiri
+ * 
+ * Project Description:
+ * 	This is the final product of our project for Global Business Logistics.
+ * 	We focused on logging in to the program as specified with the option of logging in
+ * 	as an analyst or as an administrator.  Out other main focus was the main window
+ * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
  */
 package View;
 
@@ -31,7 +39,6 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 
 import Controller.Main;
 import Model.User;
-//import Model.User;
 
 /**
  * Login view class to initialize the login page.
@@ -50,8 +57,8 @@ public class LoginView {
 	private User temp;
 	private JFrame my_mainFrame;
 	
-	/*
-	 * Default constructor to initialize locals
+	/**
+	 * No arg constructor to initialize vars and objects
 	 */
 	public LoginView() {
 		
@@ -173,7 +180,6 @@ public class LoginView {
 				}
 			}
 		});
-		
 		userNameTF.addFocusListener(new FocusListener() {
 
 			@Override
@@ -188,7 +194,6 @@ public class LoginView {
 				}
 			}
 		});
-
 		pinTF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -226,12 +231,13 @@ public class LoginView {
 				loginActionAttempted();
 			}
 		});
+		
 		userNameTF.addKeyListener(new enterKeyLoginListener());
 		pinTF.addKeyListener(new enterKeyLoginListener());
 		
 	}
 	
-	/**
+	/*
 	 * Helper method to assist in the login process.
 	 * @author Alex
 	 */

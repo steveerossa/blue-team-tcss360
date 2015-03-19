@@ -1,20 +1,43 @@
-//sun & alex
-
-
+/* TCSS 360 Winter 2015
+ * 
+ * Blue Team Group Project
+ * 
+ * Authors: Alex Day, Jeremiah Stowe, Stuart Hamm, Steve Onyango, Chutiwat Thammasiri
+ * 
+ * Project Description:
+ * 	This is the final product of our project for Global Business Logistics.
+ * 	We focused on logging in to the program as specified with the option of logging in
+ * 	as an analyst or as an administrator.  Out other main focus was the main window
+ * 	that the analyst uses to select the pre-approved answers when responding to an RFP.
+ */
 package Model;
 
 import java.util.*;
 
 import javax.swing.JOptionPane;
 
+/**
+ * The user class defines user objects that store the necessary info about
+ * each user, as well as contains the method used for handling a login attempt
+ * and the other methods necessary for unit testing.
+ * @author Alex
+ *
+ */
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//		Though the program still works as expected, having this many public getters and setters is not good
+//		coding practice and should be returned to it's previous version which was much more secure.
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class User {
-	
+
 	private String userName;
 	private String userPin;
 	private boolean isAdmin;
 	private Map<String, User> userList;
-	
-	
+
+
 	/**
 	 * Empty constructor to initialize the user class and
 	 * populate the list of currently registered users.
@@ -23,7 +46,7 @@ public class User {
 	public User() {
 		userList();
 	}
-	
+
 	/**
 	 * Overloaded constructor to create user objects with their related info.
 	 * @param name  The user's user name.
@@ -35,10 +58,8 @@ public class User {
 		setName(name); // changed to setMethods
 		setPin(pin);
 		setAdministrator(admin);
-			
-		
 	}
-		
+
 	/**
 	 * Private method to initialize the list of users.
 	 * @author Chutiwat
@@ -59,7 +80,7 @@ public class User {
 		userList.put("john", new User("john", "0012", false));
 		userList.put("admin", new User("admin", "1234", true));
 	}
-	
+
 	/**
 	 * Method to handle an attempted login by a user.
 	 * 
@@ -70,15 +91,19 @@ public class User {
 	 * 			If they didn't, they are granted access to the analyst page.
 	 * 		If the pin or user name does not match what is in the user list, no access is granted and
 	 * 		the user is warned that the info was not correct or that there is no such user registered, respectively.
-	 *  Steve Onyango changed userPin, userName, and isAdmin to getName, getPin, and getAdminStatus
+	 *  
 	 * @author Alex
+	 * 
+	 * Edited by Steve Onyango. Changed userPin, userName, and isAdmin to getName, getPin, and getAdminStatus.
+	 *
 	 */
+
 	public boolean loginAttempt() {
 		userList();
 		boolean result = false;
-		
+
 		String loginName = this.getName().toString();
-		
+
 		if(userList.containsKey(loginName)) {
 			User temp = userList.get(this.getName());
 			if(this.getPin().compareTo(temp.getPin()) == 0) {
@@ -101,57 +126,66 @@ public class User {
 		}
 		return result;
 	}
-	
-	/**Class returns user name.
+
+	/**
+	 * Returns user name.
 	 * @author Steve Onyango
-	 * @return userName the user name*/
+	 * @return userName the user name
+	 */
 	public final String getName()
 	{
 		return userName;
-		
-	} // getName
-	
-	/**Class returns user pin number.
+
+	} 
+
+	/**
+	 * Returns user pin number.
 	 * @author Steve Onyango
-	 * @return userPin the user pin number*/
+	 * @return userPin the user pin number
+	 */
 	public final String getPin()
 	{
 		return userPin;
-		
+
 	}
-	/**Class gets the administative status.
+	/**
+	 * Gets the administrative status.
 	 * @author Steve Onyango
-	 * @return isAdmin*/
+	 * @return isAdmin
+	 */
 	public boolean getAdminStatus()
 	{
 		return isAdmin;
-		
-	} // end isAdministrator
-	
-	
-	/**Class sets user name.
+
+	}	
+
+	/**
+	 * Sets user name.
 	 * @author Steve Onyango
 	 * @param the_name the user name
 	 */
 	public final void setName(final String the_name)
 	{
 		userName = the_name;
-		
-	} // end setName
-	/**Class returns user name.
+
+	} 
+	/**
+	 * Sets user pin.
 	 * @author Steve Onyango
 	 * @param the_pin the pin number
-	 * */
+	 */
 	public final void setPin(final String the_pin)
 	{
 		userPin = the_pin;
-		
-	} // end setPin
-	/**Class sets the administrative status.
+
+	}
+	/**
+	 * Class sets the administrative status.
 	 * @author Steve Onyango
-	 * @param the_admin_status the administrative status*/
+	 * @param the_admin_status the administrative status
+	 */
 	public void setAdministrator(final boolean the_admin_status)
 	{
 		isAdmin = the_admin_status;
-	} //end setAdministrator
+	}
 }
