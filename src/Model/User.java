@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+//													NOTE:
 //		Though the program still works as expected, having this many public getters and setters is not good
 //		coding practice and should be returned to it's previous version which was much more secure.
 //
@@ -36,7 +37,6 @@ public class User {
 	private String userPin;
 	private boolean isAdmin;
 	private Map<String, User> userList;
-
 
 	/**
 	 * Empty constructor to initialize the user class and
@@ -135,7 +135,6 @@ public class User {
 	public final String getName()
 	{
 		return userName;
-
 	} 
 
 	/**
@@ -146,7 +145,6 @@ public class User {
 	public final String getPin()
 	{
 		return userPin;
-
 	}
 	/**
 	 * Gets the administrative status.
@@ -156,7 +154,6 @@ public class User {
 	public boolean getAdminStatus()
 	{
 		return isAdmin;
-
 	}	
 
 	/**
@@ -167,7 +164,6 @@ public class User {
 	public final void setName(final String the_name)
 	{
 		userName = the_name;
-
 	} 
 	/**
 	 * Sets user pin.
@@ -177,7 +173,6 @@ public class User {
 	public final void setPin(final String the_pin)
 	{
 		userPin = the_pin;
-
 	}
 	/**
 	 * Class sets the administrative status.

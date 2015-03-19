@@ -29,6 +29,7 @@ import Model.QuestionAnswer;
  */
 public class DatabaseTest
 {
+	@SuppressWarnings("unused")
 	private QuestionAnswer my_question_answer;
 	/**The category.*/
 	private final String my_category = "Category 1.";
@@ -40,7 +41,6 @@ public class DatabaseTest
 	private final String my_answer = "This answer is not good enough.";
 	/**The edit level.*/
 	private final int my_edit_level = 2;
-	
 	/**The Database to be tested.*/
 	private Database my_data_base;
 
@@ -90,7 +90,6 @@ public class DatabaseTest
 	@Test
 	public void testSearchQuestionAnswers()
 	{   // doesnt work if Objects are not same.
-		
 		assertEquals("searchQuestionAnswers failed.",my_data_base.searchQuestionAnswers("legal"),
 				my_data_base.searchQuestionAnswers("legal"));
 		assertEquals("searchQuestionAnswers failed.",my_data_base.searchQuestionAnswers("woman"),
@@ -98,7 +97,5 @@ public class DatabaseTest
 		Database base = new Database();;
 		assertNotSame(my_data_base.searchQuestionAnswers("woman"),
 				base .searchQuestionAnswers("woman"));
-		
 	}
-
 }

@@ -35,9 +35,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import Controller.Main;
+import Model.FocusTraversalOnArray;
 import Model.User;
 
 /**
@@ -61,7 +60,6 @@ public class LoginView {
 	 * No arg constructor to initialize vars and objects
 	 */
 	public LoginView() {
-		
 		lblLogin = new JLabel("Login:");
 		lblchckAdmin = new JLabel("Admin?");
 		userNameTF = new JTextField();
@@ -80,8 +78,7 @@ public class LoginView {
 	public void initializeLogin(JFrame mainFrame) {
 		
 		my_mainFrame = mainFrame;
-		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(
-				this.getClass().getResource("/files/title_bar_icon.png")));
+		mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("/files/title_bar_icon.png")));
 		addListeners();
 		
 		lblLogin.setBounds(316, 140, 46, 14);
@@ -131,7 +128,6 @@ public class LoginView {
 			}
 		});
 		chckAdmin.addKeyListener(new KeyListener() {
-
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -143,17 +139,14 @@ public class LoginView {
 					}
 				}
 			}
-
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// Do nothing cause we smart
 			}
-
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// Do nothing cause we smart
 			}
-			
 		});
 		userNameTF.addFocusListener(new FocusAdapter() {
 			@Override
@@ -234,7 +227,6 @@ public class LoginView {
 		
 		userNameTF.addKeyListener(new enterKeyLoginListener());
 		pinTF.addKeyListener(new enterKeyLoginListener());
-		
 	}
 	
 	/*
@@ -260,19 +252,16 @@ public class LoginView {
 	 *
 	 */
 	private class enterKeyLoginListener implements KeyListener {
-
 		@Override
 		public void keyPressed(KeyEvent arg0) {
 			if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
 				loginActionAttempted();
 			}			
 		}
-
 		@Override
 		public void keyReleased(KeyEvent arg0) {
 			// Do nothing cause we smart
 		}
-
 		@Override
 		public void keyTyped(KeyEvent arg0) {
 			// Do nothing cause we smart
@@ -286,9 +275,7 @@ public class LoginView {
 	 */
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
-
 		private BufferedImage image;
-
 		public ImagePanel() {
 			try {                
 				image = ImageIO.read(Main.class.getResource("/files/smaller.png"));
@@ -297,7 +284,6 @@ public class LoginView {
 			}
 			repaint();
 		}
-
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
