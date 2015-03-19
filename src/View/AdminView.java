@@ -29,7 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
+import Model.FocusTraversalOnArray;
 
 /**
  * User interface for the administration to add new approved question/answer pairs.

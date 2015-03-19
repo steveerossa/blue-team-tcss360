@@ -75,16 +75,16 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
 import Controller.Main;
 import Model.Database;
+import Model.FocusTraversalOnArray;
 import Model.QuestionAnswer;
 
 /**
  * Main draft construction user interface class where approved question/answer pairs
  * can be selected and manipulated.
  * @author Alex
+ * Additions and edits made by Jeremiah, Chutiwat, and Stuart
  *
  */
 public class RFPView {
@@ -393,6 +393,9 @@ public class RFPView {
 		 *******************************************************************************/
 
 		//Menu listeners and actions
+		/*
+		 * @author Alex
+		 */
 		mntmLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				mainFrame.dispose();
@@ -410,20 +413,29 @@ public class RFPView {
 			}
 		});
 
+		/*
+		 * @author Stuart
+		 */
 		mntmSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				save();
 			}
-
 		});
+		
+		/*
+		 * @author Stuart
+		 */
 		mntmSaveAs.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				saveAs();
 			}
-
 		});
+		
+		/*
+		 * @author Stuart
+		 */
 		mntmOpen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -431,6 +443,9 @@ public class RFPView {
 			}
 		});
 
+		/*
+		 * @author Stuart
+		 */
 		mntmNew.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -439,6 +454,9 @@ public class RFPView {
 		});
 
 		//RFP area listeners and actions
+		/*
+		 * @author Jeremiah
+		 */
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<QuestionAnswer> searchResults = my_database.searchQuestionAnswers(searchTextField.getText());
@@ -448,6 +466,9 @@ public class RFPView {
 			}			
 		});
 
+		/*
+		 * @author Jeremiah
+		 */
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				searchTextField.setText((String) comboBox.getSelectedItem());
@@ -458,6 +479,9 @@ public class RFPView {
 			}			
 		});
 
+		/*
+		 * @author Jeremiah
+		 */
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -470,7 +494,9 @@ public class RFPView {
 			}			
 		});
 
-
+		/*
+		 * @author Jeremiah
+		 */
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent arg0) {
@@ -483,6 +509,9 @@ public class RFPView {
 			}			
 		});
 
+		/*
+		 * @author Jeremiah
+		 */
 		searchTextField.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -498,13 +527,15 @@ public class RFPView {
 					mainFrame.repaint();
 				}
 			}
-
 			@Override
 			public void keyTyped(KeyEvent e) {
 				//do nothing cause we smart
 			}			
 		});
 
+		/*
+		 * @author Jeremiah
+		 */
 		searchTextField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -514,6 +545,9 @@ public class RFPView {
 		});
 
 		//QuestionAnswer manipulation and view listeners
+		/*
+		 * @author Jeremiah
+		 */
 		btnAddQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!list.isSelectionEmpty()) {
@@ -526,7 +560,10 @@ public class RFPView {
 			}
 		});
 
-		
+		/*
+		 * @author Stuart
+		 * edits by Alex 
+		 */
 		btnRemoveQ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!selectedQAsList.isSelectionEmpty()) {
@@ -540,7 +577,9 @@ public class RFPView {
 			}
 		});
 
-
+		/*
+		 * @author Alex
+		 */
 		selectedQAsList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -553,6 +592,9 @@ public class RFPView {
 			}			
 		});
 
+		/*
+		 * @author Alex
+		 */
 		btnAddToClip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -567,10 +609,8 @@ public class RFPView {
 			}
 		});
 
-
 		//popup menu listeners
-
-		/**
+		/*
 		 * Action listener for the select all menu item in the pop up menu.
 		 * @author Alex
 		 */
@@ -589,7 +629,7 @@ public class RFPView {
 			}
 		});
 
-		/**
+		/*
 		 * Action listener for the copy menu item in the pop up menu.
 		 * @author Alex
 		 */
@@ -604,7 +644,7 @@ public class RFPView {
 			}
 		});
 
-		/**
+		/*
 		 * Action listener for the paste menu item in the pop up menu.
 		 * @author Alex
 		 */
@@ -631,6 +671,9 @@ public class RFPView {
 			}
 		});
 
+		/*
+		 * @author Alex
+		 */
 		mntmUndo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -641,7 +684,7 @@ public class RFPView {
 			}
 		});
 
-		/**
+		/*
 		 * Help menu to show that user can email us for assistance.
 		 * @author Chutiwat
 		 */
@@ -656,7 +699,7 @@ public class RFPView {
 			}
 		});
 
-		/**
+		/*
 		 * Show our site for about us and allow the user to click to open the site
 		 * @author Chutiwat
 		 */
@@ -692,8 +735,8 @@ public class RFPView {
 
 	/*
 	 * Private helper method to add the popup menu to specific components in the view.
+	 * @author Stuart
 	 */
-
 	private void save() {
 		if(fileSelected) {
 			StringBuilder sb = new StringBuilder();
@@ -724,6 +767,11 @@ public class RFPView {
 		}
 	}
 
+	/*
+	 * Private helper method to save the selected questions and
+	 * notes made about a specific RFP.
+	 * @author Stuart
+	 */
 	private void saveAs() {
 		int completed;
 		completed = myJFC.showOpenDialog(null);
@@ -733,6 +781,11 @@ public class RFPView {
 		}
 	}
 
+	/*
+	 * Private helper method to load a previously saves list
+	 * of selected questions and the notes made for a specific RFP.
+	 * @author Stuart
+	 */
 	private void load() {
 		int completed;
 		completed = myJFC.showOpenDialog(null);
@@ -788,6 +841,9 @@ public class RFPView {
 
 	}
 
+	/*
+	 * @author Stuart
+	 */
 	private void newRFP() {
 		fileSelected = false;
 		selectedQsList = new ArrayList<QuestionAnswer>();
@@ -798,7 +854,9 @@ public class RFPView {
 	}
 
 
-	//Author - Alex
+	/*
+	 * @author Alex
+	 */
 	private void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -820,8 +878,10 @@ public class RFPView {
 		});
 	}
 
-	//Custom jpanel to make things pretty
-	//Author - Alex
+	/*
+	 * Custom JPanel to make things pretty.
+	 * @author Alex
+	 */
 	@SuppressWarnings("serial")
 	private class ImagePanel extends JPanel{
 
