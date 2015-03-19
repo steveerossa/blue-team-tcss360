@@ -45,7 +45,9 @@ public class AdminView {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JFrame mainFrame;
+	@SuppressWarnings("unused")
 	private Database database;
+	
 	public AdminView() {
 		//empty just because? can't remember why, should be fixed probably....maybe 
 	}

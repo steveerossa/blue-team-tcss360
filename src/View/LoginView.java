@@ -105,6 +105,7 @@ public class LoginView {
 	
 	/**
 	 * No arg constructor to initialize vars and objects
+	 * @author Alex
 	 */
 	public LoginView() {
 		lblLogin = new JLabel("Login:");
@@ -121,6 +122,7 @@ public class LoginView {
 	/**
 	 * Helper method to add listeners to components.
 	 * @author Alex
+	 * Edits by Jeremiah
 	 */
 	private void addListeners() {
 		chckAdmin.addFocusListener(new FocusAdapter() {

@@ -181,7 +181,7 @@ public class RFPView {
 		/////////////////////////////////////////
 		//
 		//			MENU STUFF
-		//
+		//			Author- Alex
 		/////////////////////////////////////////
 		JMenuBar menuBar = new JMenuBar();
 
@@ -231,7 +231,7 @@ public class RFPView {
 		/////////////////////////////////////////////
 		//
 		//			APPLYING LAYOUT TO CONTENT PANE
-		//
+		//			Author- Alex
 		/////////////////////////////////////////////
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{127, 0, 226, 66, 200, 0};
@@ -243,7 +243,7 @@ public class RFPView {
 		/////////////////////////////////////////////
 		//
 		//			QUESTION SEARCH AND LIST STUFF
-		//
+		//			Author- Alex
 		/////////////////////////////////////////////
 
 		//search text field
@@ -291,7 +291,8 @@ public class RFPView {
 		////////////////////////////////////////////
 		//
 		//			TEXT AREA TO DISPLAY ANSWERS
-		//
+		//			Author- Alex
+		//			Major assistance in debugging by Jeremiah
 		////////////////////////////////////////////
 		answerTextArea = new JTextArea();
 		answerTextArea.setEditable(false);
@@ -347,7 +348,7 @@ public class RFPView {
 		///////////////////////////////////////////////
 		//
 		//			NOTES AND SELECTED QUESTIONS
-		//
+		//			Author- Alex
 		///////////////////////////////////////////////
 
 		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
@@ -377,7 +378,7 @@ public class RFPView {
 		///////////////////////////////////////////////////////////
 		//
 		//			ADDING QUESTIONS AND COPYING TO CLIPBOARD
-		//
+		//			Author- Alex
 		///////////////////////////////////////////////////////////
 
 		//Button to add currently selected question to analyst's list
@@ -415,7 +416,7 @@ public class RFPView {
 		////////////////////////////////////////
 		//
 		//				POPUP MENU STUFF
-		//
+		//			Author- Alex
 		////////////////////////////////////////
 
 		//new popup menu
@@ -446,7 +447,7 @@ public class RFPView {
 		///////////////////////////////////////
 		//
 		//			FORMATTING THE FRAME
-		//
+		//			Author- Alex
 		///////////////////////////////////////
 
 		mainFrame.setContentPane(contentPane);
@@ -587,6 +588,7 @@ public class RFPView {
 
 		/*
 		 * @author Jeremiah
+		 * Edits by Alex
 		 */
 		searchTextField.addKeyListener(new KeyListener() {
 			@Override
@@ -758,7 +760,7 @@ public class RFPView {
 			public void actionPerformed(ActionEvent e) {
 				if(notesArea.hasFocus()) {
 					//TODO
-					//////////////////////////////////////////////ALEX FINISH THIS! maybe?
+					//////////////////////////////////////////////ALEX FINISH THIS! maybe? if there is time to do so?
 				}
 			}
 		});
