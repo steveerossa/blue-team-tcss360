@@ -72,10 +72,10 @@ public class Database {
 			//final String dir = System.getProperty("user.dir");
             //FileInputStream file = new FileInputStream(new File("src/files/Answers.xlsx"));
             //FileInputStream file = new FileInputStream(new File(dir + "/Answers.xlsx"));
-            InputStream test = this.getClass().getResourceAsStream("/Answers.xlsx");
+            InputStream file = this.getClass().getResourceAsStream("/Answers.xlsx");
             
             //Create Workbook instance holding reference to .xlsx file
-            XSSFWorkbook workbook = new XSSFWorkbook(test);
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
  
             //Get first/desired sheet from the workbook
             XSSFSheet sheet = workbook.getSheetAt(0);
@@ -110,8 +110,7 @@ public class Database {
                 my_data.add(new QuestionAnswer(rowContents[0],rowContents[1],rowContents[2],rowContents[3],editLevel));
             }
             workbook.close();
-            //file.close();
-            test.close();
+            file.close();
             //Bit to get rid of the first header line read in
             QuestionAnswer remove = null;
             for(QuestionAnswer cur : my_data)
@@ -119,11 +118,6 @@ public class Database {
             	if(cur.getKeyPhrases().contains("KeyPhrase")){remove = cur;}
             }
             my_data.remove(remove);
-            ///////////////////////////////////////////////////
-//            for(QuestionAnswer cur : my_data)
-//            {
-//            	System.out.println(cur.toString());
-//            }
             
         }
         catch (Exception e)
