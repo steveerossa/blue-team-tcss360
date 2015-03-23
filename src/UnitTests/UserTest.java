@@ -14,6 +14,9 @@ package UnitTests;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -90,7 +93,28 @@ public class UserTest
 	 */
 	@Test
 	public void testLoginAttempt()
-	{
+	{    
+		List<User> userList = new ArrayList<>();
+		new User("todd", "0001", false);
+		userList.add(new User("karlene", "0002", false));
+		userList.add(new User("scott", "0003", false));
+		userList.add(new User("cheryl", "0004", false));
+		userList.add(new User("terry", "0005", false));
+		userList.add(new User("martin", "0006", false));
+		userList.add(new User("bobby", "0007", false));
+		userList.add(new User("brian", "0008", false));
+		userList.add(new User("lisa", "0009", false));
+		userList.add(new User("daniel", "0010", false)); 
+		userList.add(new User("steve", "0011", false));
+		userList.add(new User("john", "0012", false)); 
+		userList.add(new User("admin", "1234", true));  
+		             
+		
+		for(User the_user: userList) 
+		{
+			assertTrue("Login Failed.", the_user.loginAttempt());
+			System.out.println(the_user.getName());
+		}
 		 
 		assertFalse("Login succesful", my_user.loginAttempt()); 
 		assertFalse("Login failed", new User("todd", "0091", false).loginAttempt());
